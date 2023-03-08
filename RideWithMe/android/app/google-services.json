@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "42746787776",
+    "project_id": "ridewithmedb",
+    "storage_bucket": "ridewithmedb.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:42746787776:android:eaa343cd6baa601dff7a25",
+        "android_client_info": {
+          "package_name": "com.ridewithme"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "42746787776-s2gq5e2r1mleh8r42r7s9vu4fj0d8tca.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.ridewithme",
+            "certificate_hash": "5e8f16062ea3cd2c4a0d547876baa6f38cabf625"
+          }
+        },
+        {
+          "client_id": "42746787776-63ru7f1fs1p5nasghdugqq2nm4b103ig.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAIO097UrPGN-tahjdE3U-vtnv5RqxOBQA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "42746787776-63ru7f1fs1p5nasghdugqq2nm4b103ig.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
