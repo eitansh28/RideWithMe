@@ -4,7 +4,11 @@ import React from 'react'
 const S = ({navigation}) => {
 
     const move = () =>{
-        navigation.navigate('Login')
+        navigation.navigate({
+            name:'Login',
+            params: {text: 'hello'}
+          
+          })
     }
   return (
     <View>
