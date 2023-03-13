@@ -1,7 +1,7 @@
 import React from 'react';
 import {StyleSheet,Button, Text, View, ImageBackground} from 'react-native';
 
-const Main_page = ({navigation}) => {
+const StartScreen = ({navigation}) => {
 
   function movetologin() {
     navigation.navigate("Login");
@@ -11,7 +11,7 @@ const Main_page = ({navigation}) => {
   }
 
   return(
-    <ImageBackground source={require('./pic1.jpg')} style={styles.background}>
+    <ImageBackground source={require('../components/pic1.jpg')} style={styles.background}>
     <View style={styles.container}>
       <View style={styles.circle}>
         <Text style={styles.text}>Welcome to RideWithMe!</Text>
@@ -66,4 +66,4 @@ const styles = StyleSheet.create({
     height: '5%',
   },
 });
-export default Main_page
+export default StartScreen
