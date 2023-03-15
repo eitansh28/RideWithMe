@@ -31,6 +31,8 @@ const HomeScreen = ({navigation}) => {
     <View style={styles.centered}>
        <Button title=" Log out  " onPress={logout}></Button>
        <Button title=" Profile  " onPress={moveToProfile}></Button>
+       <Button title=" com  " onPress={()=> navigation.navigate('com')}></Button>
+       <Button title=" Ride  " onPress={()=> navigation.navigate('ride')}></Button>
       </View>
     </View>
     </ImageBackground>

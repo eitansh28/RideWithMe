@@ -7,6 +7,7 @@ import SignIn from '../screens/SignIn';
 import HomeScreen from '../screens/HomeScreen';
 import SetUserData from '../screens/SetUserData';
 import ProfileScreen from '../screens/ProfileScreen';
+import SearchRide from '../screens/SearchRide';
 
 const Stack = createNativeStackNavigator();
 
@@ -38,6 +39,12 @@ function MainContainer() {
             name="Profile" 
             options={{ headerShown: false }} 
             component={ProfileScreen} />
+
+          <Stack.Screen 
+            name="ride" 
+            options={{ headerShown: false }} 
+            component={SearchRide} />
+            
         </Stack.Navigator>
     </NavigationContainer>
   )

@@ -1,7 +1,11 @@
 import React, { useEffect, useState } from 'react';
-import { View, Text, StyleSheet, ImageBackground, Image, Dimensions, TextInput,TouchableOpacity } from 'react-native';
+import { View, Text, StyleSheet, ImageBackground, Image, Dimensions, TextInput,TouchableOpacity,SafeAreaView, Modal } from 'react-native';
 import { firebase } from "@react-native-firebase/auth";
 import firestore from "@react-native-firebase/firestore";
+import storage from "@react-native-firebase/storage";
+import { Picker } from "@react-native-picker/picker";
+import ImagePicker from "react-native-image-crop-picker";
+
 
 const ProfileScreen = ({ user }) => {
 
@@ -12,7 +16,9 @@ const ProfileScreen = ({ user }) => {
   const [age, setAge] = useState("18");
   const [gender, setGender] = useState("Male");
   const [email, setEmail] = useState("yarin@gmail.com");
-  const [photoURL,setPhotoURL] = useState('https://www.shutterstock.com/image-photo/cool-grandma-showing-peace-sign-260nw-583662652.jpg')
+  const [photoURL,setPhotoURL] = useState('https://www.shutterstock.com/image-photo/cool-grandma-showing-peace-sign-260nw-583662652.jpg');
+  const [showModal,setShowModal] = useState(false);
+//   const [image, setImage] = useState(currentUser.photoURL);
 
   const { width, height } = Dimensions.get('window');
   const pictureWidth = width;
@@ -24,16 +30,26 @@ const ProfileScreen = ({ user }) => {
         setAge(doc.data().age);
         setGender(doc.data().gender);
         setPhotoURL(doc.data().photoURL);
+        
     })
   },[]);
 
-  const saveChanges = () => {
+  const saveChanges = async () => {
     // Save changes to the Firestore database
-    firestore().collection('users').doc(userId).set({
+
+    if (name && age && image) {
+        uploadImageToStorage(image, `${currentUser.uid}`);
+  
+        const ref = firebase.storage().ref(`${currentUser.uid}`);
+        const url = await ref.getDownloadURL();
+
+    firestore().collection('users').doc(userId).update({
+      id : currentUser.uid,
       name: name,
       age: age,
       gender: gender,
-      email: email
+      email: email,
+      photoURL: url,
     }, { merge: true })
       .then(() => {
         console.log('User data updated.');
@@ -41,37 +57,95 @@ const ProfileScreen = ({ user }) => {
       .catch((error) => {
         console.error('Error updating user data:', error);
       });
+  }};
+
+  const uploadImage = () => {
+    ImagePicker.openPicker({
+      width: 300,
+      height: 300,
+      cropping: true,
+    }).then((image) => {
+      path = image.path;
+      setImage(image.path);
+      currentUser.updateProfile({
+        photoURL: image.path,
+      });
+    });
   };
+
+  const uploadImageToStorage = (path, imageName) => {
+    let reference = storage().ref(imageName);
+    let task = reference.putFile(path);
+
+    task
+      .then(() => {
+        // 4
+        console.log("Image uploaded to the bucket!");
+      })
+      .catch((e) => console.error("uploading image error => ", e));
+  }
 
   return (
     <View style={styles.container}>
       <ImageBackground source={{ uri:'https://images.pexels.com/photos/1590549/pexels-photo-1590549.jpeg?auto=compress&cs=tinysrgb&w=600' }} style={styles.backgroundImage}>
         <View style={styles.card}>
-          <View style={[styles.photoContainer, { width: pictureWidth, height: pictureHeight }]}>
-            <Image source={{ uri: 'https://www.shutterstock.com/image-photo/cool-grandma-showing-peace-sign-260nw-583662652.jpg' }} style={styles.profilePicture} />
-          </View>
-          <View style={styles.detailsContainer}>
+          <View style={[styles.photoContainer, { width: pictureWidth, height: pictureHeight,paddingTop:50 }]}>
+            <Image source={{ uri: photoURL }} style={styles.profilePicture} />
+            <TouchableOpacity  onPress={()=>setShowModal(true)}>
+                <Image 
+                source={{uri:'https://as2.ftcdn.net/v2/jpg/05/44/29/99/1000_F_544299988_zMBMn7clJywwQJ3Bb4jAhywvuQgdPkmA.jpg'}}
+                style = {{width:50,height:50,borderRadius:100}}
+                
+                />
+            </TouchableOpacity>
+            <Modal
+            transparent = {true}
+            visible = {showModal}
+            >
+        <View style={{backgroundColor:'white',opacity:0.8,marginTop:'10%'}}>
           <View style={styles.detailsRow}>
-            <Text style={styles.detailsLabel}>Name:</Text>
+            <Text style={styles.detailsLabel}>Edit-Name:</Text>
             <TextInput style={styles.detailsValue} value={name} onChangeText={setName} />
             
             </View>
             <View style={styles.detailsRow}>
-              <Text style={styles.detailsLabel}>Age:</Text>
+              <Text style={styles.detailsLabel}>Edit-Age:</Text>
               <TextInput style={styles.detailsValue} value={age} onChangeText={setAge} />
             </View>
             <View style={styles.detailsRow}>
-              <Text style={styles.detailsLabel}>Gender:</Text>
+              <Text style={styles.detailsLabel}>Edit-Gender:</Text>
               <TextInput style={styles.detailsValue} value={gender} onChangeText={setGender} />
             </View>
             <View style={styles.detailsRow}>
-              <Text style={styles.detailsLabel}>Email:</Text>
+              <Text style={styles.detailsLabel}>Edit-Mail:</Text>
               <TextInput style={styles.detailsValue} value={email} onChangeText={setEmail} />
             </View>
-            <View style={styles.saveButtonContainer}>
+            <View style={{flexDirection:'row',alignContent:'space-between',justifyContent:'space-evenly'}}>
               <TouchableOpacity style={styles.saveButton} onPress={saveChanges}>
-                <Text style={styles.saveButtonText}>Save Changes</Text>
+                <Text style={{color:'red',fontSize:18}}>Save Changes</Text>
               </TouchableOpacity>
+              <TouchableOpacity style={styles.saveButton} onPress={()=>setShowModal(false)}>
+                <Text style={{color:'red',fontSize:18}}>Back</Text>
+              </TouchableOpacity>
+              <TouchableOpacity style={styles.saveButton} onPress={()=>(uploadImage)}>
+                <Text style={{color:'red',fontSize:18}}>Update Picture</Text>
+              </TouchableOpacity>
+            </View>
+            </View>
+            </Modal>
+          </View>
+          <View style={styles.detailsContainer}>
+          <View style={styles.detailsRow}>
+            <Text style={styles.detailsLabel}>Name:   {name}</Text>
+            </View>
+            <View style={styles.detailsRow}>
+              <Text style={styles.detailsLabel}>Age:   {age}</Text>
+            </View>
+            <View style={styles.detailsRow}>
+              <Text style={styles.detailsLabel}>Gender:   {gender}</Text>
+            </View>
+            <View style={styles.detailsRow}>
+              <Text style={styles.detailsLabel}>Email:   {email}</Text>
             </View>
           </View>
         </View>
@@ -96,7 +170,7 @@ const ProfileScreen = ({ user }) => {
       borderTopStartRadius:0,
       borderTopEndRadius:0,
       overflow: 'hidden',
-      opacity:0.8,
+      opacity:0.9,
     },
     photoContainer: {
       justifyContent: 'flex-end',
