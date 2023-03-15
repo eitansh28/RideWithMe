@@ -36,7 +36,9 @@ const HomeScreen = ({navigation}) => {
        <Button title=" Log out  " onPress={logout}></Button>
        <View style={styles.separator}></View>
        <Button title=" Profile  " onPress={moveToProfile}></Button>
-       <Button title=" Ride  " onPress={()=> navigation.navigate('ride')}></Button>
+       <View style={styles.separator}></View>
+       <Button title=" SearchRide  " onPress={()=> navigation.navigate('ride')}></Button>
+       <View style={styles.separator}></View>
        <Button title=" post ride  " onPress={move_to_post_ride}></Button>
       </View>
     </View>
