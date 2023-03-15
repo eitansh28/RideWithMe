@@ -11,6 +11,13 @@ const HomeScreen = ({navigation}) => {
     navigation.navigate("SignUp");
   }
 
+  function moveToProfile(){
+    navigation.navigate("Profile");
+  }
+  function move_to_post_ride(){
+    navigation.navigate("PostRide");
+  }
+
   const logout = () => {
     auth()
       .signOut()
@@ -23,10 +30,14 @@ const HomeScreen = ({navigation}) => {
     <ImageBackground source={require('../components/pic1.jpg')} style={styles.background}>
     <View style={styles.container}>
       <View style={styles.circle}>
-        <Text style={styles.text}>Awesome!</Text>
+        <Text style={styles.text}> Awsome!</Text>
       </View>
     <View style={styles.centered}>
        <Button title=" Log out  " onPress={logout}></Button>
+       <View style={styles.separator}></View>
+       <Button title=" Profile  " onPress={moveToProfile}></Button>
+       <Button title=" Ride  " onPress={()=> navigation.navigate('ride')}></Button>
+       <Button title=" post ride  " onPress={move_to_post_ride}></Button>
       </View>
     </View>
     </ImageBackground>
@@ -70,7 +81,7 @@ const styles = StyleSheet.create({
   },
   separator: {
     width: 1,
-    height: '5%',
+    height: '8%',
   },
 });
 export default HomeScreen

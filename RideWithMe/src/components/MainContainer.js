@@ -6,6 +6,10 @@ import SignUp from '../screens/SignUp';
 import SignIn from '../screens/SignIn';
 import HomeScreen from '../screens/HomeScreen';
 import SetUserData from '../screens/SetUserData';
+import ProfileScreen from '../screens/ProfileScreen';
+import SearchRide from '../screens/SearchRide';
+import PostRide from '../screens/PostRide';
+
 
 const Stack = createNativeStackNavigator();
 
@@ -33,6 +37,18 @@ function MainContainer() {
             name="Set User Data" 
             options={{ headerShown: false }} 
             component={SetUserData} />
+          <Stack.Screen 
+            name="Profile" 
+            options={{ headerShown: false }} 
+            component={ProfileScreen} />
+          <Stack.Screen 
+            name="ride" 
+            options={{ headerShown: false }} 
+            component={SearchRide} />
+            <Stack.Screen 
+            name="PostRide" 
+            options={{ headerShown: false }} 
+            component={PostRide} />
         </Stack.Navigator>
     </NavigationContainer>
   )
