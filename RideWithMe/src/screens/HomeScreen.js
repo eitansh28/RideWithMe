@@ -10,6 +10,9 @@ const HomeScreen = ({navigation}) => {
   function movetosignup(){
     navigation.navigate("SignUp");
   }
+  function moveToProfile(){
+    navigation.navigate("Profile");
+  }
 
   function moveToProfile(){
     navigation.navigate("Profile");

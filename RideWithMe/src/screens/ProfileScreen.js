@@ -214,3 +214,4 @@ const ProfileScreen = ({ user }) => {
   });
   
   export default ProfileScreen;
+  

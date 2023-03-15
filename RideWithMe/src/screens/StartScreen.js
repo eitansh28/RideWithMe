@@ -10,6 +10,8 @@ const StartScreen = ({navigation}) => {
     navigation.navigate("SignUp");
   }
 
+
+
   return(
     <ImageBackground source={require('../components/pic1.jpg')} style={styles.background}>
     <View style={styles.container}>
