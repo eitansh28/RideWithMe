@@ -68,6 +68,7 @@ import {
                     console.error("Error adding document: ", e);
                   }
                   alert("We got your data successfully :)");
+                  // <HomeScreen message={ {msg: 'name'} }/>
                   navigation.navigate("Home");
             }
             else {
