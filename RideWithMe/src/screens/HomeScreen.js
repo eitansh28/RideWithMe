@@ -3,7 +3,7 @@ import {StyleSheet,Button, Text, View, ImageBackground} from 'react-native';
 import auth from "@react-native-firebase/auth";
 
 const HomeScreen = ({navigation}) => {
-
+  
   function movetologin() {
     navigation.navigate("Login");
   }
