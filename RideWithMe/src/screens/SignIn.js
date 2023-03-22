@@ -1,6 +1,7 @@
 import React, {useState, useEffect} from "react";
 import {View, Text, StyleSheet, Button ,Alert, TextInput, ImageBackground} from 'react-native';
 import auth, { firebase} from "@react-native-firebase/auth";
+import firestore from '@react-native-firebase/firestore';
 
   const SignIn = ({navigation}) => {
 
@@ -34,7 +35,10 @@ import auth, { firebase} from "@react-native-firebase/auth";
           navigation.navigate("Admin1");
         }
         else {
-          navigation.navigate("Home");
+          firestore().collection('users').doc(userId).get().then((doc) => {
+            let name = doc.data().name;
+            navigation.navigate({name:'Home', params:{username: name}});
+          })
         }  
       }
     }

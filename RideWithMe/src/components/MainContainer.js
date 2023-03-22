@@ -8,6 +8,8 @@ import HomeScreen from '../screens/HomeScreen';
 import SetUserData from '../screens/SetUserData';
 import ProfileScreen from '../screens/ProfileScreen';
 import SearchRide from '../screens/SearchRide';
+import PostRide from '../screens/PostRide';
+import PostGroupRide from '../screens/PostGroupRide';
 
 const Stack = createNativeStackNavigator();
 
@@ -28,6 +30,10 @@ function MainContainer() {
             options={{ headerShown: false }} 
             component={SignUp}/>
           <Stack.Screen 
+            name="SignIn"
+            options={{ headerShown: false }} 
+            component={SignIn}/>
+          <Stack.Screen 
             name="Home" 
             options={{ headerShown: false }} 
             component={HomeScreen} />
@@ -39,12 +45,18 @@ function MainContainer() {
             name="Profile" 
             options={{ headerShown: false }} 
             component={ProfileScreen} />
-
           <Stack.Screen 
-            name="ride" 
+            name="SearchRide" 
             options={{ headerShown: false }} 
             component={SearchRide} />
-            
+          <Stack.Screen 
+            name="PostRide" 
+            options={{ headerShown: false }} 
+            component={PostRide} />
+            <Stack.Screen 
+            name="PostGroupRide" 
+            options={{ headerShown: false }} 
+            component={PostGroupRide} />
         </Stack.Navigator>
     </NavigationContainer>
   )
