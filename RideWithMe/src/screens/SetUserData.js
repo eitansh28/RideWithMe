@@ -60,7 +60,12 @@ import {
                     console.error("Error adding document: ", e);
                   }
                   alert("We got your data successfully :)");
+<<<<<<< HEAD
                   navigation.navigate({name:'Home', params:{username: name}});
+=======
+                  // <HomeScreen message={ {msg: 'name'} }/>
+                  navigation.navigate("Home");
+>>>>>>> 1763935c7a87f0878380a309e45a0b19011f9532
             }
             else {
                 alert("age must be 18 or above!");

@@ -9,7 +9,11 @@ import SetUserData from '../screens/SetUserData';
 import ProfileScreen from '../screens/ProfileScreen';
 import SearchRide from '../screens/SearchRide';
 import PostRide from '../screens/PostRide';
+<<<<<<< HEAD
 import PostGroupRide from '../screens/PostGroupRide';
+=======
+
+>>>>>>> 1763935c7a87f0878380a309e45a0b19011f9532
 
 const Stack = createNativeStackNavigator();
 
@@ -49,6 +53,7 @@ function MainContainer() {
             name="SearchRide" 
             options={{ headerShown: false }} 
             component={SearchRide} />
+<<<<<<< HEAD
           <Stack.Screen 
             name="PostRide" 
             options={{ headerShown: false }} 
@@ -57,6 +62,12 @@ function MainContainer() {
             name="PostGroupRide" 
             options={{ headerShown: false }} 
             component={PostGroupRide} />
+=======
+            <Stack.Screen 
+            name="PostRide" 
+            options={{ headerShown: false }} 
+            component={PostRide} />
+>>>>>>> 1763935c7a87f0878380a309e45a0b19011f9532
         </Stack.Navigator>
     </NavigationContainer>
   )
