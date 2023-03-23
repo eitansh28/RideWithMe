@@ -69,7 +69,10 @@ import {
                   }
                   alert("We got your data successfully :)");
                   // <HomeScreen message={ {msg: 'name'} }/>
-                  navigation.navigate("Home");
+                  firestore().collection('users').doc(userId).get().then((doc)=>{
+                    username = doc.data().name;
+                    navigation.navigate({name :"Home", params: {username: username}});
+                  })
             }
             else {
                 alert("age must be 18 or above!");

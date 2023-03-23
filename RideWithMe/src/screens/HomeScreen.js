@@ -1,8 +1,11 @@
 import React from 'react';
 import {StyleSheet,Button, Text, View, ImageBackground} from 'react-native';
 import auth from "@react-native-firebase/auth";
+import { useRoute } from '@react-navigation/native';
 
 const HomeScreen = ({navigation}) => {
+  const {params} = useRoute();
+  const name = params.username;
 
   function movetologin() {
     navigation.navigate("Login");
@@ -13,12 +16,14 @@ const HomeScreen = ({navigation}) => {
   function moveToProfile(){
     navigation.navigate("Profile");
   }
-
   function moveToProfile(){
     navigation.navigate("Profile");
   }
   function move_to_post_ride(){
     navigation.navigate("PostRide");
+  }
+  function move_to_post_group_ride(){
+    navigation.navigate("PostGroupRide");
   }
 
   const logout = () => {
@@ -33,16 +38,19 @@ const HomeScreen = ({navigation}) => {
     <ImageBackground source={require('../components/pic1.jpg')} style={styles.background}>
     <View style={styles.container}>
       <View style={styles.circle}>
-        <Text style={styles.text}> Awsome!</Text>
+        <Text style={styles.text}> welcome {name}</Text>
       </View>
+      <View style={styles.separator}></View>
     <View style={styles.centered}>
-       <Button title=" Log out  " onPress={logout}></Button>
+       <Button title=" Profile  " style={styles.separator} onPress={moveToProfile}></Button>
        <View style={styles.separator}></View>
-       <Button title=" Profile  " onPress={moveToProfile}></Button>
+       <Button title=" Search Ride  " style={styles.separator} onPress={()=> navigation.navigate('ride')}></Button>
        <View style={styles.separator}></View>
-       <Button title=" SearchRide  " onPress={()=> navigation.navigate('ride')}></Button>
+       <Button title=" post ride  " style={styles.separator} onPress={move_to_post_ride}></Button>
        <View style={styles.separator}></View>
-       <Button title=" post ride  " onPress={move_to_post_ride}></Button>
+       <Button title=" post group ride  " style={styles.separator} onPress={move_to_post_group_ride}></Button>
+       <View style={styles.separator_more}></View>
+       <Button title=" Log out  "  color = 'red' onPress={logout}></Button>
       </View>
     </View>
     </ImageBackground>
@@ -71,7 +79,7 @@ const styles = StyleSheet.create({
     width: 200,
     height: 200,
     borderRadius: 150,
-    backgroundColor: 'red',
+    backgroundColor: 'green',
     justifyContent: 'center',
     alignItems: 'center',
   },
@@ -85,8 +93,14 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   separator: {
+    // width: 1,
+    // height: '8%',
+    marginTop: 20,
+    marginBottom: 25,
+  },
+  separator_more: {
     width: 1,
-    height: '8%',
+    height: '25%',
   },
 });
 export default HomeScreen

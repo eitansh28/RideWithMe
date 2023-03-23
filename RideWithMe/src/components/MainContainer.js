@@ -9,7 +9,7 @@ import SetUserData from '../screens/SetUserData';
 import ProfileScreen from '../screens/ProfileScreen';
 import SearchRide from '../screens/SearchRide';
 import PostRide from '../screens/PostRide';
-
+import CreateGroupRide from '../screens/PostGroupRide';
 
 const Stack = createNativeStackNavigator();
 
@@ -49,6 +49,10 @@ function MainContainer() {
             name="PostRide" 
             options={{ headerShown: false }} 
             component={PostRide} />
+            <Stack.Screen 
+            name="PostGroupRide" 
+            options={{ headerShown: false }} 
+            component={CreateGroupRide} />
         </Stack.Navigator>
     </NavigationContainer>
   )

@@ -1,11 +1,14 @@
 import React, {useState, useEffect} from "react";
 import {View, Text, StyleSheet, Button ,Alert, TextInput, ImageBackground} from 'react-native';
 import auth, { firebase} from "@react-native-firebase/auth";
+import firestore from "@react-native-firebase/firestore";
 
   const SignIn = ({navigation}) => {
 
     const [email, setEmail] = useState("");
     const [pass, setPass] = useState("");
+    let username ="";
+    
     
     function Login() {
       // Set an initializing state whilst Firebase connects
@@ -29,15 +32,20 @@ import auth, { firebase} from "@react-native-firebase/auth";
       if (user) {
         const { currentUser } = firebase.auth();
         const userId = currentUser.uid;
+        
   
         if (userId == admin_id) {
           navigation.navigate("Admin1");
         }
         else {
-          navigation.navigate("Home");
+          firestore().collection('users').doc(userId).get().then((doc)=>{
+            username = doc.data().name;
+            navigation.navigate({name :"Home", params: {username: username}});
+          })
         }  
       }
     }
+    
   
     function enter() {
       if (email && pass) {
@@ -96,6 +104,7 @@ import auth, { firebase} from "@react-native-firebase/auth";
       </ImageBackground>
     )
 }
+
 
 const styles = StyleSheet.create({
     background: {

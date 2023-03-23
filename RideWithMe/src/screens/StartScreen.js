@@ -18,6 +18,7 @@ const StartScreen = ({navigation}) => {
       <View style={styles.circle}>
         <Text style={styles.text}>Welcome to RideWithMe!</Text>
       </View>
+      <View style={styles.separator}></View>
     <View style={styles.centered}>
        <Button title=" Log in  " onPress={movetologin}></Button>
       <View style={styles.separator}></View>
@@ -50,7 +51,7 @@ const styles = StyleSheet.create({
     width: 200,
     height: 200,
     borderRadius: 150,
-    backgroundColor: 'red',
+    backgroundColor: 'green',
     justifyContent: 'center',
     alignItems: 'center',
   },
@@ -64,8 +65,8 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   separator: {
-    width: 1,
-    height: '5%',
+    marginTop: 20,
+    marginBottom: 20,
   },
 });
 export default StartScreen
