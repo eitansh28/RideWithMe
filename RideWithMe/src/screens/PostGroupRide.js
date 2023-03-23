@@ -12,7 +12,10 @@ import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplet
   const [origin, setOrigin] = useState('');
   const [destination, setDestination] = useState('');
   const [info, setInfo] = useState('');
+<<<<<<< HEAD
   const [price, setPrice] = useState('');
+=======
+>>>>>>> main
   const [departureTime, setDepartureTime] = useState(null);
   const [isDepartureTimePickerVisible, setDepartureTimePickerVisibility] = useState(false);
   const [desiredArrivalTime, setDesiredArrivalTime] = useState(null);
@@ -22,7 +25,10 @@ import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplet
   
 
   const save = async () => {
+<<<<<<< HEAD
     alert("to be done");
+=======
+>>>>>>> main
     // if (destination && price && seats){
     //   try {
     //     await firestore()
@@ -82,9 +88,15 @@ const handleToLocation = (data, details = null) => {
   const googlemapkey = 'AIzaSyA8T086PYyNfch449m9sfG5HFKwbBWnuo0';
   
   return (
+<<<<<<< HEAD
     <ImageBackground source={require('../components/pic4.jpg')} style={theStyle.background}>
         <View>
             <Text style={theStyle.bold}>Travel group details</Text>
+=======
+    <ImageBackground source={require('../components/pic3.jpg')} style={theStyle.background}>
+        <View>
+            <Text style={theStyle.bold}>Travel details</Text>
+>>>>>>> main
             <GooglePlacesAutocomplete
                 styles={theStyle.location}
                 placeholder='Origin'
@@ -94,7 +106,10 @@ const handleToLocation = (data, details = null) => {
                     language: 'en',
                 }}
             />
+<<<<<<< HEAD
             <View style={theStyle.separator}></View>
+=======
+>>>>>>> main
             <GooglePlacesAutocomplete
                 styles={theStyle.location}
                 placeholder='Destination'
@@ -104,6 +119,7 @@ const handleToLocation = (data, details = null) => {
                     language: 'en',
                 }}
             />
+<<<<<<< HEAD
             <View style={theStyle.separator}></View>
             <TextInput
                 style={theStyle.input}
@@ -112,21 +128,31 @@ const handleToLocation = (data, details = null) => {
                 onChangeText={setPrice}
             />
             {/* <View style={theStyle.separator}></View> */}
+=======
+>>>>>>> main
             <TextInput
                 style={theStyle.input}
                 placeholder="please enter info about the ride"
                 value={info}
                 onChangeText={setInfo}
             />
+<<<<<<< HEAD
             {/* <Text>Departure Time: {departureTime ? departureTime.toString() : 'Not set'}</Text> */}
             <Button title={departureTime ? departureTime.toString() : 'select a departure Time'} onPress={() => setDepartureTimePickerVisibility(true)} />
+=======
+            <Text>Departure Time: {departureTime ? departureTime.toString() : 'Not set'}</Text>
+            <Button title="Select Departure Time" onPress={() => setDepartureTimePickerVisibility(true)} />
+>>>>>>> main
             <DateTimePickerModal
                 isVisible={isDepartureTimePickerVisible}
                 mode="datetime"
                 onConfirm={handleDepartureTimeConfirm}
                 onCancel={handleDepartureTimeCancel}
             />
+<<<<<<< HEAD
             <View style={theStyle.separator_more}></View>
+=======
+>>>>>>> main
             <Button 
                 title="post"
                 color={'green'}
@@ -139,12 +165,15 @@ const handleToLocation = (data, details = null) => {
 
 
 const theStyle = StyleSheet.create({
+<<<<<<< HEAD
 separator: {
     // width: 1,
     // height: '8%',
     marginTop: 20,
     marginBottom: 25,
     },
+=======
+>>>>>>> main
   background: {
     flex: 1,
     resizeMode: 'cover',
@@ -162,6 +191,7 @@ separator: {
     fontWeight: 'bold',
   },
   separator: {
+<<<<<<< HEAD
     marginTop: 25,
     marginBottom: 20,
   },
@@ -169,6 +199,10 @@ separator: {
   separator_more: {
     marginTop: 20,
     marginBottom: 150,
+=======
+    width: 1,
+    height: '8%',
+>>>>>>> main
   },
   root: {
     width: "100%",

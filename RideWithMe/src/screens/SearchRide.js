@@ -183,7 +183,8 @@ import DateTimePickerModal from "react-native-modal-datetime-picker";
     const [to, setTo] = useState("");
     const [departureTime, setDepartureTime] = useState(null);
     const [isDepartureTimePickerVisible, setDepartureTimePickerVisibility] = useState(false);
-
+    const [desiredArrivalTime, setDesiredArrivalTime] = useState(null);
+    const [isDesiredArrivalTimePickerVisible, setDesiredArrivalTimePickerVisibility] = useState(false);
 
 
     const handleFromLocation = (data, details = null) => {

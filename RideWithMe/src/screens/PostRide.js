@@ -338,15 +338,16 @@ import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplet
     setDesiredArrivalTimePickerVisibility(false);
   }
 
-
   const googlemapkey = 'AIzaSyA8T086PYyNfch449m9sfG5HFKwbBWnuo0';
   
   return (
     <ImageBackground source={require('../components/pic3.jpg')} style={theStyle.background}>
       <View>
       <Text style={theStyle.bold}>Travel details</Text>
+
       <View style={theStyle.separator}></View>
-        <GooglePlacesAutocomplete
+        {/* <GooglePlacesAutocomplete */}
+        {/* <GooglePlacesAutocomplete
         placeholder='Origin'
         styles={theStyle.location}
         debounce={200}
@@ -355,14 +356,23 @@ import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplet
         key: 'AIzaSyA8T086PYyNfch449m9sfG5HFKwbBWnuo0',
         language: 'en',
         }}
-        />
-          {/* <TextInput
+        /> */}
+          <View style={theStyle.separator}></View>
+          <TextInput
+
             style={theStyle.input}
             placeholder="Origin"
             value={origin}
             onChangeText={setOrigin}
-          />  */}
+            />
           <View style={theStyle.separator}></View>
+
+<<<<<<< HEAD
+          /> */}
+=======
+          />
+>>>>>>> 1763935c7a87f0878380a309e45a0b19011f9532
+>>>>>>> main
           <TextInput
             style={theStyle.input}
             placeholder="destination"
@@ -482,5 +492,29 @@ const theStyle = StyleSheet.create({
     borderRadius: 20,
     // margin: 10,
   },
+<<<<<<< HEAD
+  location: {
+    container: {
+        flex: 1,
+      },
+      textInputContainer: {
+        width: '100%',
+        backgroundColor: 'rgba(0,0,0,0)',
+        borderTopWidth: 0,
+        borderBottomWidth:0,
+      },
+      textInput: {
+        marginLeft: 0,
+        marginRight: 0,
+        height: 38,
+        color: '#5d5d5d',
+        fontSize: 16,
+      },
+      predefinedPlacesDescription: {
+        color: '#1faadb',
+      },
+}
+=======
+>>>>>>> 1763935c7a87f0878380a309e45a0b19011f9532
 });
   export default PostRide;

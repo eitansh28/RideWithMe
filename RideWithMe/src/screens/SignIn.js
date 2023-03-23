@@ -1,7 +1,7 @@
 import React, {useState, useEffect} from "react";
 import {View, Text, StyleSheet, Button ,Alert, TextInput, ImageBackground} from 'react-native';
 import auth, { firebase} from "@react-native-firebase/auth";
-import firestore from "@react-native-firebase/firestore";
+import firestore from '@react-native-firebase/firestore';
 
   const SignIn = ({navigation}) => {
 
@@ -38,9 +38,9 @@ import firestore from "@react-native-firebase/firestore";
           navigation.navigate("Admin1");
         }
         else {
-          firestore().collection('users').doc(userId).get().then((doc)=>{
-            username = doc.data().name;
-            navigation.navigate({name :"Home", params: {username: username}});
+          firestore().collection('users').doc(userId).get().then((doc) => {
+            let name = doc.data().name;
+            navigation.navigate({name:'Home', params:{username: name}});
           })
         }  
       }

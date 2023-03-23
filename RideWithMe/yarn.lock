@@ -1922,7 +1922,7 @@
   dependencies:
     invariant "^2.2.4"
 
-"@react-native-community/datetimepicker@>=3.0.0":
+"@react-native-community/datetimepicker@^6.7.5", "@react-native-community/datetimepicker@>=3.0.0":
   "integrity" "sha512-E2Zh6mwvZ6CFEMKP++rdxxjJiB45fYPpdZhJwdZ2vUVwqovqu1cQRDLZmz4XrcHSyuacgR4WUnkYFf0F2nnNIg=="
   "resolved" "https://registry.npmjs.org/@react-native-community/datetimepicker/-/datetimepicker-6.7.5.tgz"
   "version" "6.7.5"
