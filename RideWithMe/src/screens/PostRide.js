@@ -79,7 +79,7 @@ import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplet
     setDesiredArrivalTimePickerVisibility(false);
   }
 
-<<<<<<< HEAD
+
   // const handleFromLocation = () => {
   //   console.log("Date selection cancelled.");
   //   setDesiredArrivalTimePickerVisibility(false);
@@ -95,16 +95,13 @@ import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplet
         setOrigin({ latitude: lat, longitude: lng });
     }
 };
-=======
 
->>>>>>> 1763935c7a87f0878380a309e45a0b19011f9532
   const googlemapkey = 'AIzaSyA8T086PYyNfch449m9sfG5HFKwbBWnuo0';
   
   return (
     <ImageBackground source={require('../components/pic3.jpg')} style={theStyle.background}>
     <View>
       <Text style={theStyle.bold}>Travel details</Text>
-<<<<<<< HEAD
       <GooglePlacesAutocomplete
           styles={theStyle.location}
           placeholder='Origin'
@@ -114,33 +111,6 @@ import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplet
               language: 'en',
           }}
       />
-
-          {/* <View style={theStyle.separator}></View> */}
-          {/* <TextInput
-=======
-        {/* <GooglePlacesAutocomplete
-        placeholder='Origin'
-        debounce={400}
-        onPress={(data, details = null) => {
-          console.log(data, details);
-        }}
-        query={{
-        key: googlemapkey,
-        language: 'en',
-        }}
-        /> */}
-          <View style={theStyle.separator}></View>
-          <TextInput
->>>>>>> 1763935c7a87f0878380a309e45a0b19011f9532
-            style={theStyle.input}
-            placeholder="Origin"
-            value={origin}
-            onChangeText={setOrigin}
-<<<<<<< HEAD
-          /> */}
-=======
-          />
->>>>>>> 1763935c7a87f0878380a309e45a0b19011f9532
           <TextInput
             style={theStyle.input}
             placeholder="destination"
@@ -230,7 +200,6 @@ const theStyle = StyleSheet.create({
     borderRadius: 20,
     // margin: 10,
   },
-<<<<<<< HEAD
   location: {
     container: {
         flex: 1,
@@ -252,7 +221,6 @@ const theStyle = StyleSheet.create({
         color: '#1faadb',
       },
 }
-=======
->>>>>>> 1763935c7a87f0878380a309e45a0b19011f9532
+
 });
   export default PostRide;

@@ -40,15 +40,10 @@ const HomeScreen = ({navigation}) => {
     <ImageBackground source={require('../components/pic1.jpg')} style={styles.background}>
     <View style={styles.container}>
       <View style={styles.circle}>
-<<<<<<< HEAD
         <Text style={styles.text}> welcome {name}</Text>
-=======
-        <Text style={styles.text}> Awsome!</Text>
->>>>>>> 1763935c7a87f0878380a309e45a0b19011f9532
       </View>
       <View style ={{flex:1}}> 
     <View style={styles.centered}>
-<<<<<<< HEAD
        <View style={styles.separator}>
        <Button title=" Profile  " onPress={moveToProfile}></Button>
        <Button title=" Search Ride  " onPress={move_to_search_ride}></Button>
@@ -61,18 +56,6 @@ const HomeScreen = ({navigation}) => {
         <Text style={{fontSize:24,fontWeight:'500',color:'white'}}>Log out</Text>
        </Pressable>
        </View>
-       <View>
-      
-=======
-       <Button title=" Log out  " onPress={logout}></Button>
-       <View style={styles.separator}></View>
-       <Button title=" Profile  " onPress={moveToProfile}></Button>
-       <View style={styles.separator}></View>
-       <Button title=" SearchRide  " onPress={()=> navigation.navigate('ride')}></Button>
-       <View style={styles.separator}></View>
-       <Button title=" post ride  " onPress={move_to_post_ride}></Button>
->>>>>>> 1763935c7a87f0878380a309e45a0b19011f9532
-      </View>
     </View>
     </View>
     </ImageBackground>
@@ -124,11 +107,7 @@ const styles = StyleSheet.create({
   },
   separator_more: {
     width: 1,
-<<<<<<< HEAD
     height: '25%',
-=======
-    height: '8%',
->>>>>>> 1763935c7a87f0878380a309e45a0b19011f9532
   },
 });
 export default HomeScreen

@@ -55,17 +55,20 @@ import {
                   const res = await fetch('http://192.168.56.1:1000/addUser', { 
                     method: "POST", 
                     headers: { Accept: "application/json", "Content-Type": "application/json" },
-                    body: JSON.stringify({ id: currentUser.uid, name: name, age: age, gender: gender, photoURL: url, allergies: allergies, smoker: smoker})});
+                    body: JSON.stringify({
+                      id: currentUser.uid,
+                      name: name,
+                      age: age, 
+                      gender: gender,
+                      photoURL: url,
+                      allergies: allergies,
+                      smoker: smoker
+                    })});
                   } catch (e) {
                     console.error("Error adding document: ", e);
                   }
                   alert("We got your data successfully :)");
-<<<<<<< HEAD
                   navigation.navigate({name:'Home', params:{username: name}});
-=======
-                  // <HomeScreen message={ {msg: 'name'} }/>
-                  navigation.navigate("Home");
->>>>>>> 1763935c7a87f0878380a309e45a0b19011f9532
             }
             else {
                 alert("age must be 18 or above!");
