@@ -44,7 +44,7 @@ const HomeScreen = ({navigation}) => {
     <View style={styles.centered}>
        <Button title=" Profile  " style={styles.separator} onPress={moveToProfile}></Button>
        <View style={styles.separator}></View>
-       <Button title=" Search Ride  " style={styles.separator} onPress={()=> navigation.navigate('ride')}></Button>
+       <Button title=" Search Ride  " style={styles.separator} onPress={()=> navigation.navigate("SearchRide")}></Button>
        <View style={styles.separator}></View>
        <Button title=" post ride  " style={styles.separator} onPress={move_to_post_ride}></Button>
        <View style={styles.separator}></View>

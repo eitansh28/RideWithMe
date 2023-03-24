@@ -58,14 +58,6 @@ function MainContainer() {
             name="PostGroupRide" 
             options={{ headerShown: false }} 
             component={PostGroupRide} />
-            <Stack.Screen 
-            name="PostRide" 
-            options={{ headerShown: false }} 
-            component={PostRide} />
-            <Stack.Screen 
-            name="PostGroupRide" 
-            options={{ headerShown: false }} 
-            component={CreateGroupRide} />
         </Stack.Navigator>
     </NavigationContainer>
   )

@@ -53,15 +53,26 @@ import firestore from '@react-native-firebase/firestore';
         .signInWithEmailAndPassword(email, pass)
         .then(() => {
           console.log("User account signed in!");
+          const { currentUser } = firebase.auth();
+          console.log(currentUser);
+          const userId = currentUser.uid;
+          let name = currentUser.email
+          // firestore().collection('users').doc(userId).get().then((doc) => {
+          //   let name = doc.data().email;
+            navigation.navigate({name:'Home', params:{username: name}});
+          // })
         })
         .catch((error) => {
           if (error.code === "auth/email-already-in-use") {
             console.log("That email address is already in use!");
           }
   
-          if (error.code === "auth/invalid-email") {
+          else if (error.code === "auth/invalid-email") {
             console.log("That email address is invalid!");
           }
+          // else{
+            
+          // }
   
           console.error(error);
         });

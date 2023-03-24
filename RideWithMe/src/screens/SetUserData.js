@@ -44,7 +44,10 @@ import {
         uploadImageToStorage(image, `${currentUser.uid}`);
   
         const ref = firebase.storage().ref(`${currentUser.uid}`);
+        alert(ref.fullPath);
+        // console.log("ffffffffffffffff");
         const url = await ref.getDownloadURL();
+        alert(url);
         const intAge = parseInt(age, 10);
         if (isNaN(intAge)) {
             alert("age must be an integer!");
@@ -56,11 +59,17 @@ import {
                     method: "POST", 
                     headers: { Accept: "application/json", "Content-Type": "application/json" },
                     body: JSON.stringify({ id: currentUser.uid, name: name, age: age, gender: gender, photoURL: url, allergies: allergies, smoker: smoker})});
+                    console.log("yessssssss");
                   } catch (e) {
                     console.error("Error adding document: ", e);
                   }
                   alert("We got your data successfully :)");
-                  navigation.navigate("Home");
+                  const userId = currentUser.uid;
+                  alert(userId);
+                  // firestore().collection('users').doc(userId).get().then((doc) => {
+                  //   let name = doc.data().name;
+                  //   navigation.navigate({name:'Home', params:{username: name}});
+                  // })
             }
             else {
                 alert("age must be 18 or above!");
