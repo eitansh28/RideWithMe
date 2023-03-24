@@ -9,8 +9,8 @@ import SetUserData from '../screens/SetUserData';
 import ProfileScreen from '../screens/ProfileScreen';
 import SearchRide from '../screens/SearchRide';
 import PostRide from '../screens/PostRide';
-import CreateGroupRide from '../screens/PostGroupRide';
 import PostGroupRide from '../screens/PostGroupRide';
+
 
 const Stack = createNativeStackNavigator();
 

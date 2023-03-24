@@ -42,16 +42,18 @@ const HomeScreen = ({navigation}) => {
       </View>
       <View style={styles.separator}></View>
     <View style={styles.centered}>
-       <Button title=" Profile  " style={styles.separator} onPress={moveToProfile}></Button>
-       <View style={styles.separator}></View>
-       <Button title=" Search Ride  " style={styles.separator} onPress={()=> navigation.navigate("SearchRide")}></Button>
-       <View style={styles.separator}></View>
-       <Button title=" post ride  " style={styles.separator} onPress={move_to_post_ride}></Button>
-       <View style={styles.separator}></View>
-       <Button title=" post group ride  " style={styles.separator} onPress={move_to_post_group_ride}></Button>
-       <View style={styles.separator_more}></View>
-       <Button title=" Log out  "  color = 'red' onPress={logout}></Button>
+       <View style={styles.separator}>
+       <Button title=" Profile  " onPress={moveToProfile}></Button>
+       <Button title=" Search Ride  " onPress={move_to_search_ride}></Button>
+       <Button title=" post ride  " onPress={move_to_post_ride}></Button>
+       <Button title=" post group ride  " onPress={move_to_post_group_ride}></Button>
+       </View>
       </View>
+      <View style={{flex:0.9,justifyContent:'flex-end'}}>
+       <Pressable style={{backgroundColor:'red',borderRadius:10, alignItems: 'center'}} onPress={logout}>
+        <Text style={{fontSize:24,fontWeight:'500',color:'white'}}>Log out</Text>
+       </Pressable>
+       </View>
     </View>
     </ImageBackground>
   )

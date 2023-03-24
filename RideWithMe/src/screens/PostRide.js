@@ -80,30 +80,37 @@ import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplet
   }
 
 
+  // const handleFromLocation = () => {
+  //   console.log("Date selection cancelled.");
+  //   setDesiredArrivalTimePickerVisibility(false);
+  // }
+
+  const handleFromLocation = (data, details = null) => {
+    // Check if geometry is defined
+    if (data.geometry && data.geometry.location) {
+        // Extract latitude and longitude from the data parameter
+        const { lat, lng } = data.geometry.location;
+
+        // Set the location state
+        setOrigin({ latitude: lat, longitude: lng });
+    }
+};
+
   const googlemapkey = 'AIzaSyA8T086PYyNfch449m9sfG5HFKwbBWnuo0';
   
   return (
     <ImageBackground source={require('../components/pic3.jpg')} style={theStyle.background}>
       <View>
       <Text style={theStyle.bold}>Travel details</Text>
-      <View style={theStyle.separator}></View>
-        <GooglePlacesAutocomplete
-        placeholder='Origin'
-        styles={theStyle.location}
-        debounce={200}
-        onPress={handleDepartureTimeConfirm}
-        query={{
-        key: 'AIzaSyA8T086PYyNfch449m9sfG5HFKwbBWnuo0',
-        language: 'en',
-        }}
-        />
-          {/* <TextInput
-            style={theStyle.input}
-            placeholder="Origin"
-            value={origin}
-            onChangeText={setOrigin}
-          />  */}
-          <View style={theStyle.separator}></View>
+      <GooglePlacesAutocomplete
+          styles={theStyle.location}
+          placeholder='Origin'
+          onPress={handleFromLocation}
+          query={{
+              key: 'AIzaSyA8T086PYyNfch449m9sfG5HFKwbBWnuo0',
+              language: 'en',
+          }}
+      />
           <TextInput
             style={theStyle.input}
             placeholder="destination"
@@ -223,5 +230,27 @@ const theStyle = StyleSheet.create({
     borderRadius: 20,
     // margin: 10,
   },
+  location: {
+    container: {
+        flex: 1,
+      },
+      textInputContainer: {
+        width: '100%',
+        backgroundColor: 'rgba(0,0,0,0)',
+        borderTopWidth: 0,
+        borderBottomWidth:0,
+      },
+      textInput: {
+        marginLeft: 0,
+        marginRight: 0,
+        height: 38,
+        color: '#5d5d5d',
+        fontSize: 16,
+      },
+      predefinedPlacesDescription: {
+        color: '#1faadb',
+      },
+}
+
 });
   export default PostRide;
