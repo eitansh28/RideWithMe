@@ -24,6 +24,7 @@ app.post("/addUser", async (req, res) => {
     const users = db.collection('users');
     try {
         let u_id = req.body.id || "";
+        console.log(u_id)
         let u_name = req.body.name || "";
         let u_age = req.body.age || "";
         let u_gender = req.body.gender || "";
@@ -31,7 +32,7 @@ app.post("/addUser", async (req, res) => {
         let u_allergies = req.body.allergies || "";
         let u_smoker = req.body.smoker || "";
 
-        users.add({
+        users.doc(u_id).set({
             id: `${u_id}`,
             name: `${u_name}`,
             age: `${u_age}`,

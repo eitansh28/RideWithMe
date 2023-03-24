@@ -35,6 +35,8 @@ import firestore from '@react-native-firebase/firestore';
           navigation.navigate("Admin1");
         }
         else {
+          console.log('im here')
+          console.log(userId)
           firestore().collection('users').doc(userId).get().then((doc) => {
             let name = doc.data().name;
             navigation.navigate({name:'Home', params:{username: name}});
