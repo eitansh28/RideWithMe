@@ -84,19 +84,20 @@ import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplet
   
   return (
     <ImageBackground source={require('../components/pic3.jpg')} style={theStyle.background}>
-    <View>
+    <View style ={theStyle.center}>
       <Text style={theStyle.bold}>Travel details</Text>
-        {/* <GooglePlacesAutocomplete
+        <GooglePlacesAutocomplete
         placeholder='Origin'
+        styles={theStyle.location}
         debounce={400}
         onPress={(data, details = null) => {
           console.log(data, details);
         }}
         query={{
-        key: googlemapkey,
+        key: 'AIzaSyA8T086PYyNfch449m9sfG5HFKwbBWnuo0',
         language: 'en',
         }}
-        /> */}
+        />
           <View style={theStyle.separator}></View>
           <TextInput
             style={theStyle.input}
@@ -139,15 +140,16 @@ import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplet
                 onConfirm={handleDesiredArrivalTimeConfirm}
                 onCancel={handleDesiredArrivalTimeCancel}
             /> */}
-          <View style={theStyle.separator}></View>
+          {/* <View style={theStyle.separator}></View>
           <Button 
             title="post"
             color={'green'}
-            onPress={save}
-          />
+            onPress={save} */}
+          {/* /> */}
+     
       </View>
       </ImageBackground>
-  );
+  )
 };
 
 
@@ -160,6 +162,7 @@ const theStyle = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
+    
   },
   bold: {
     textAlign: 'center',
@@ -168,6 +171,27 @@ const theStyle = StyleSheet.create({
     fontSize: 30,
     fontWeight: 'bold',
   },
+  location: {
+    container: {
+        flex: 1,
+      },
+      textInputContainer: {
+        width: '100%',
+        backgroundColor: 'rgba(0,0,0,0)',
+        borderTopWidth: 0,
+        borderBottomWidth:0,
+      },
+      textInput: {
+        marginLeft: 0,
+        marginRight: 0,
+        height: 38,
+        color: '#5d5d5d',
+        fontSize: 16,
+      },
+      predefinedPlacesDescription: {
+        color: '#1faadb',
+      },
+},
   separator: {
     width: 1,
     height: '8%',

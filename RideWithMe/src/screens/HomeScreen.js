@@ -1,9 +1,9 @@
 import React from 'react';
-import {StyleSheet,Button, Text, View, ImageBackground} from 'react-native';
+import {StyleSheet,Button, Text, View, ImageBackground, Pressable} from 'react-native';
 import auth from "@react-native-firebase/auth";
 
 const HomeScreen = ({navigation}) => {
-  
+
   function movetologin() {
     navigation.navigate("Login");
   }
@@ -35,15 +35,23 @@ const HomeScreen = ({navigation}) => {
       <View style={styles.circle}>
         <Text style={styles.text}> Awsome!</Text>
       </View>
+  <View style ={{flex:1}}> 
     <View style={styles.centered}>
-       <Button title=" Log out  " onPress={logout}></Button>
-       <View style={styles.separator}></View>
+       <View style={styles.separator}>
        <Button title=" Profile  " onPress={moveToProfile}></Button>
-       <View style={styles.separator}></View>
        <Button title=" SearchRide  " onPress={()=> navigation.navigate('ride')}></Button>
-       <View style={styles.separator}></View>
        <Button title=" post ride  " onPress={move_to_post_ride}></Button>
+       </View>
       </View>
+      <View style={{flex:0.9,justifyContent:'flex-end'}}>
+       <Pressable style={{backgroundColor:'red',borderRadius:10}} onPress={logout}>
+        <Text style={{fontSize:24,fontWeight:'500',color:'white'}}>Log out</Text>
+       </Pressable>
+       </View>
+       <View>
+      
+      </View>
+    </View>
     </View>
     </ImageBackground>
   )
@@ -85,8 +93,11 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   separator: {
-    width: 1,
-    height: '8%',
+  
+    // margin:10,
+    flex:0.8,
+    justifyContent:'space-evenly'
+    
   },
 });
 export default HomeScreen
