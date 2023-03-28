@@ -1,12 +1,14 @@
 import React, { useState } from "react";
-import { View, Button, Text, TextInput, StyleSheet, ImageBackground } from "react-native";
+import { View, Button, Text, TextInput, StyleSheet, ImageBackground,KeyboardAvoidingView,TouchableWithoutFeedback } from "react-native";
 import { Picker } from "@react-native-picker/picker";
 import DateTimePickerModal from "react-native-modal-datetime-picker";
 import { firebase } from "@react-native-firebase/auth";
 import firestore from "@react-native-firebase/firestore";
 import { useRoute } from '@react-navigation/native';
 import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplete';
-
+import { Keyboard } from 'react-native'
+import { SafeAreaView } from "react-native-safe-area-context";
+import { ScrollView } from "react-native-gesture-handler";
   const PostRide = ({navigation}) => {
   const { currentUser } = firebase.auth();
   const [origin, setOrigin] = useState('');
@@ -22,7 +24,7 @@ import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplet
   const {params} = useRoute();
   // the_date = params.selectedDate1;
   
-
+  
   const save = async () => {
     if (destination && price && seats){
       try {
@@ -80,37 +82,70 @@ import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplet
   }
 
 
+  // const handleFromLocation = () => {
+  //   console.log("Date selection cancelled.");
+  //   setDesiredArrivalTimePickerVisibility(false);
+  // }
+
+  const handleFromLocation = (data, details = null) => {
+    
+    // Check if geometry is defined
+    if (data.geometry && data.geometry.location) {
+        // Extract latitude and longitude from the data parameter
+        const { lat, lng } = data.geometry.location;
+
+        // Set the location state
+        setOrigin({ latitude: lat, longitude: lng });
+    }
+};
+
+const handleToLocation = (data, details = null) => {
+    
+  // Check if geometry is defined
+  if (data.geometry && data.geometry.location) {
+      // Extract latitude and longitude from the data parameter
+      const { lat, lng } = data.geometry.location;
+
+      // Set the location state
+      setDestination({ latitude: lat, longitude: lng });
+  }
+};
+
+
   const googlemapkey = 'AIzaSyA8T086PYyNfch449m9sfG5HFKwbBWnuo0';
   
+
+
   return (
-    <ImageBackground source={require('../components/pic3.jpg')} style={theStyle.background}>
-    <View style ={theStyle.center}>
+
+   <ImageBackground source={require('../components/pic3.jpg')} style={theStyle.background}>
+<View style ={theStyle.center}>
       <Text style={theStyle.bold}>Travel details</Text>
-        <GooglePlacesAutocomplete
-        placeholder='Origin'
-        styles={theStyle.location}
-        debounce={400}
-        onPress={(data, details = null) => {
-          console.log(data, details);
-        }}
-        query={{
-        key: 'AIzaSyA8T086PYyNfch449m9sfG5HFKwbBWnuo0',
-        language: 'en',
-        }}
-        />
-          <View style={theStyle.separator}></View>
-          <TextInput
-            style={theStyle.input}
-            placeholder="Origin"
-            value={origin}
-            onChangeText={setOrigin}
-          />
-          <TextInput
-            style={theStyle.input}
-            placeholder="destination"
-            value={destination}
-            onChangeText={setDestination}
-          />
+
+      <GooglePlacesAutocomplete
+          
+          styles={theStyle.location}
+          
+          placeholder='Origin'
+          onPress={handleFromLocation}
+          query={{
+              key: 'AIzaSyA8T086PYyNfch449m9sfG5HFKwbBWnuo0',
+              language: 'en',
+          }}
+      />
+
+    
+<GooglePlacesAutocomplete
+          
+          styles={theStyle.location}
+          
+          placeholder='Destanation'
+          onPress={handleToLocation}
+          query={{
+              key: 'AIzaSyA8T086PYyNfch449m9sfG5HFKwbBWnuo0',
+              language: 'en',
+          }}
+      />
           <TextInput
             style={theStyle.input}
             placeholder="Price"
@@ -132,23 +167,25 @@ import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplet
                 onConfirm={handleDepartureTimeConfirm}
                 onCancel={handleDepartureTimeCancel}
             />
-            {/* <Text>Desired Arrival Time: {desiredArrivalTime ? desiredArrivalTime.toString() : 'Not set'}</Text>
+            <Text>Desired Arrival Time: {desiredArrivalTime ? desiredArrivalTime.toString() : 'Not set'}</Text>
             <Button title="Select Desired Arrival Time" onPress={() => setDesiredArrivalTimePickerVisibility(true)} />
             <DateTimePickerModal
                 isVisible={isDesiredArrivalTimePickerVisible}
                 mode="datetime"
                 onConfirm={handleDesiredArrivalTimeConfirm}
                 onCancel={handleDesiredArrivalTimeCancel}
-            /> */}
-          {/* <View style={theStyle.separator}></View>
+            />
+          <View style={theStyle.separator}></View>
           <Button 
             title="post"
             color={'green'}
-            onPress={save} */}
-          {/* /> */}
+            onPress={save}
+           />
      
       </View>
-      </ImageBackground>
+       </ImageBackground>
+   
+       
   )
 };
 
@@ -160,8 +197,8 @@ const theStyle = StyleSheet.create({
   },
   center: {
     flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
+    // justifyContent: 'center',
+    // alignItems: 'center',
     
   },
   bold: {
@@ -174,6 +211,7 @@ const theStyle = StyleSheet.create({
   location: {
     container: {
         flex: 1,
+        postion:'relative'
       },
       textInputContainer: {
         width: '100%',
@@ -217,5 +255,27 @@ const theStyle = StyleSheet.create({
     borderRadius: 20,
     // margin: 10,
   },
+  location: {
+    container: {
+        flex: 1,
+      },
+      textInputContainer: {
+        width: '100%',
+        backgroundColor: 'rgba(0,0,0,0)',
+        borderTopWidth: 0,
+        borderBottomWidth:0,
+      },
+      textInput: {
+        marginLeft: 0,
+        marginRight: 0,
+        height: 38,
+        color: '#5d5d5d',
+        fontSize: 16,
+      },
+      predefinedPlacesDescription: {
+        color: '#1faadb',
+      },
+}
+
 });
   export default PostRide;

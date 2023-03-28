@@ -13,7 +13,7 @@ const ProfileScreen = ({ user }) => {
   const userId = currentUser.uid;
 
   const [name, setName] = useState("Yarin");
-  const [age, setAge] = useState("18");
+  const [age, setAge] = useState("19");
   const [gender, setGender] = useState("Male");
   const [email, setEmail] = useState("yarin@gmail.com");
   const [photoURL,setPhotoURL] = useState('https://www.shutterstock.com/image-photo/cool-grandma-showing-peace-sign-260nw-583662652.jpg');
@@ -24,15 +24,38 @@ const ProfileScreen = ({ user }) => {
   const pictureWidth = width;
   const pictureHeight = height * 0.4;
 
-  useEffect(()=>{
-    firestore().collection('users').doc(userId).get().then((doc)=>{
-        setName(doc.data().name);
-        setAge(doc.data().age);
-        setGender(doc.data().gender);
-        setPhotoURL(doc.data().photoURL);
-        
-    })
-  },[]);
+  useEffect(() => {
+    console.log('hi');
+    const getUserDetails = async () => {
+      try {
+        const res = await fetch("http://192.168.1.50:1000/getUserDetails", {
+          method: "POST", 
+          headers: { Accept: "application/json",
+           "Content-Type": "application/json" 
+          },
+          body: JSON.stringify({ id: currentUser.uid })});
+
+        const user_details = await res.json();
+        console.log(user_details);
+        setName(user_details.user_details.name);
+        setAge(user_details.user_details.age);
+        setGender(user_details.user_details.gender);
+        setPhotoURL(user_details.user_details.photoURL);
+      } catch (error) {
+        console.log("im here ", error);
+      }
+    };
+     getUserDetails();
+  }, [currentUser.uid]);
+  
+
+    // firestore().collection('users').doc(userId).get().then((doc)=>{
+    //     setName(doc.data().name);
+    //     setAge(doc.data().age);
+    //     setGender(doc.data().gender);
+    //     setPhotoURL(doc.data().photoURL);
+    // })
+  // },[]);
 
   const saveChanges = async () => {
     // Save changes to the Firestore database
@@ -144,9 +167,9 @@ const ProfileScreen = ({ user }) => {
             <View style={styles.detailsRow}>
               <Text style={styles.detailsLabel}>Gender:   {gender}</Text>
             </View>
-            <View style={styles.detailsRow}>
+            {/* <View style={styles.detailsRow}>
               <Text style={styles.detailsLabel}>Email:   {email}</Text>
-            </View>
+            </View> */}
           </View>
         </View>
       </ImageBackground>
@@ -214,4 +237,3 @@ const ProfileScreen = ({ user }) => {
   });
   
   export default ProfileScreen;
-  
