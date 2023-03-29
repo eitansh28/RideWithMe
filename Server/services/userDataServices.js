@@ -15,4 +15,10 @@ const getUser = async (req,res,next)=>{
         console.error('Error getting details: ', err);
     }
 };
-module.exports = {getUser};
+
+
+module.exports = {
+    getUser
+    
+
+};

@@ -11,8 +11,8 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import { ScrollView } from "react-native-gesture-handler";
   const PostRide = ({navigation}) => {
   const { currentUser } = firebase.auth();
-  const [origin, setOrigin] = useState('');
-  const [destination, setDestination] = useState('');
+  const [origin, setOrigin] = useState('defualt');
+  const [destination, setDestination] = useState('defualt');
   const [date, setDate] = useState(new Date());
   const [price, setPrice] = useState('');
   const [seats, setSeats] = useState('');
@@ -26,24 +26,25 @@ import { ScrollView } from "react-native-gesture-handler";
   
   
   const save = async () => {
+    console.log(destination," ",price," ", seats);
     if (destination && price && seats){
       try {
-        await firestore()
-          .collection("travels")
-          .doc()
-          .set({
-            name_of_the_driver: `${currentUser.name}`,
-            origin: `${origin}`,
-            destination: `${destination}`,
-            price: `${price}`,
-            seats: `${seats}`,
-            date: `${departureTime}`
-          });
-      } catch (e) {
+        const res = await fetch("http://192.168.1.50:1000/postRide",{
+          method: 'POST',
+          headers: {Accept: "application/json",
+          "Content-Type": "application/json" 
+        },
+        body: JSON.stringify({driver_name : currentUser.name,
+                              origin:origin,
+                              dest: destination,
+                              price: price,
+                              seats:seats,
+                              date:departureTime })});
+        } catch (e) {
         console.error("Error adding document: ", e);
       }
       alert("The travel has been successfully added");
-      navigation.navigate("Home");
+      // navigation.navigate("Home");
     }
     else {
       alert("you must fill in all the fields!");
