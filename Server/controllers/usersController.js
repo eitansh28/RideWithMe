@@ -1,8 +1,9 @@
 const express = require("express");
-const { getUser } = require("../services/userDataServices");
+const { getUser,addUser } = require("../services/userDataServices");
 const router = express.Router();
 
 router.post("/getUserDetails", getUser);
+router.post("/addUser", addUser);
 
 
 

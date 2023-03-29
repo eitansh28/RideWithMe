@@ -27,7 +27,7 @@ import {
     const [allergies, setAllergies] = useState("");
     const [image, setImage] = useState(currentUser.photoURL);
   
-    const uploadImageToStorage = (path, imageName) => {
+    const uploadImageToStorage = (path, imageName) => { 
       let reference = storage().ref(imageName);
       let task = reference.putFile(path);
   

@@ -21,6 +21,7 @@ import firestore from '@react-native-firebase/firestore';
       }
   
       useEffect(() => {
+        
         const subscriber = auth().onAuthStateChanged(onAuthStateChanged);
         return subscriber; // unsubscribe on unmount
       }, []);

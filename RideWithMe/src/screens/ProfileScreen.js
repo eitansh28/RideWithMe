@@ -9,6 +9,7 @@ import ImagePicker from "react-native-image-crop-picker";
 
 
 
+
 const ProfileScreen = ({ user }) => {
   
   const { currentUser } = firebase.auth();
@@ -27,10 +28,6 @@ const ProfileScreen = ({ user }) => {
   const pictureHeight = height * 0.4;
 
   useEffect(() => {
-    
-    // let userIp = json(`https://api.ipdata.co?api-key=${apiKey}&fields=ip`).
-    // then(data => { userIp =data. ip });
-    console.log(userId);
     const getUserDetails = async () => {
       try {
         const res = await fetch("http://192.168.1.50:1000/getUserDetails", {

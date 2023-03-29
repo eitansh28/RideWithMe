@@ -3,7 +3,7 @@ const firebase = require('firebase-admin');
 const serviceAccount = require('./config/ridewithmedb-firebase-adminsdk-4hbmz-e6a64ac696.json');
 const cors = require("cors");
 const { firestore } = require("firebase-admin");
-// const { async } = require("@firebase/util");
+
 
 
 const app = express();
