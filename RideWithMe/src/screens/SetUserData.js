@@ -20,6 +20,7 @@ LogBox.ignoreAllLogs();
 
 const SetUserData = ({ navigation }) => {
   const { currentUser } = firebase.auth();
+  // alert(currentUser.uid);
   const [name, setName] = useState("");
   const [age, setAge] = useState("");
   const [gender, setGender] = useState("MALE");
@@ -40,8 +41,8 @@ const SetUserData = ({ navigation }) => {
   };
 
   const save = async () => {
-    if (name && age && image) {
-      uploadImageToStorage(image, `${currentUser.uid}`);
+    if (name && age) {
+      // uploadImageToStorage(image, `${currentUser.uid}`);
 
       const ref = firebase.storage().ref(`${currentUser.uid}`);
       const url = await ref.getDownloadURL();

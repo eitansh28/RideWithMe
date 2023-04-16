@@ -1,2 +1,0 @@
-# RideWithMe
-Final degree project!

@@ -33,7 +33,6 @@ import firestore from '@react-native-firebase/firestore';
         const { currentUser } = firebase.auth();
         const userId = currentUser.uid;
         
-  
         if (userId == admin_id) {
           navigation.navigate("Admin1");
         }

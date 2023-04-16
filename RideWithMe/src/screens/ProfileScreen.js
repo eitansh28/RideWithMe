@@ -28,7 +28,7 @@ const ProfileScreen = ({ user }) => {
     console.log('hi');
     const getUserDetails = async () => {
       try {
-        const res = await fetch("http://192.168.56.1:1000/getUserDetails", {
+          const res = await fetch("http://192.168.56.1:1000/getUserDetails", {
           method: "POST", 
           headers: { Accept: "application/json", "Content-Type": "application/json" },
           body: JSON.stringify({ id: currentUser.uid })

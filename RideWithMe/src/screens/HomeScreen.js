@@ -1,5 +1,5 @@
 import React from 'react';
-import {StyleSheet,Button, Text, View, ImageBackground} from 'react-native';
+import {StyleSheet,Button, Text, View, ImageBackground, Pressable} from 'react-native';
 import auth from "@react-native-firebase/auth";
 import { useRoute } from '@react-navigation/native';
 
@@ -16,8 +16,8 @@ const HomeScreen = ({navigation}) => {
   function moveToProfile(){
     navigation.navigate("Profile");
   }
-  function moveToProfile(){
-    navigation.navigate("Profile");
+  function move_to_search_ride(){
+    navigation.navigate("SearchRide");
   }
   function move_to_post_ride(){
     navigation.navigate("PostRide");
