@@ -1,54 +1,79 @@
 import {
-  ScrollView,
-  Text,
-  StyleSheet,
-  SafeAreaView,
-  Pressable,
-  TextInput,
-  Image,
-  LogBox,
-  Button,
-} from "react-native";
-import React, { useState } from "react";
-import { Picker } from "@react-native-picker/picker";
-import ImagePicker from "react-native-image-crop-picker";
-import { firebase } from "@react-native-firebase/auth";
-import firestore from "@react-native-firebase/firestore";
-import storage from "@react-native-firebase/storage";
-
-LogBox.ignoreAllLogs();
-
-const SetUserData = ({ navigation }) => {
-  const { currentUser } = firebase.auth();
-  // alert(currentUser.uid);
-  const [name, setName] = useState("");
-  const [age, setAge] = useState("");
-  const [gender, setGender] = useState("MALE");
-  const [smoker, setSmoker] = useState("NO");
-  const [allergies, setAllergies] = useState("");
-  const [image, setImage] = useState(currentUser.photoURL);
-
-  const uploadImageToStorage = (path, imageName) => {
-    let reference = storage().ref(imageName);
-    let task = reference.putFile(path);
-
-    task
-      .then(() => {
-        // 4
-        console.log("Image uploaded to the bucket!");
-      })
-      .catch((e) => console.error("uploading image error => ", e));
-  };
-
-  const save = async () => {
-    if (name && age) {
-      // uploadImageToStorage(image, `${currentUser.uid}`);
-
-      const ref = firebase.storage().ref(`${currentUser.uid}`);
-      const url = await ref.getDownloadURL();
-      const intAge = parseInt(age, 10);
-      if (isNaN(intAge)) {
-          alert("age must be an integer!");
+    ScrollView,
+    Text,
+    StyleSheet,
+    SafeAreaView,
+    Pressable,
+    TextInput,
+    Image,
+    LogBox,
+    Button,
+  } from "react-native";
+  import React, { useState } from "react";
+  import { Picker } from "@react-native-picker/picker";
+  import ImagePicker from "react-native-image-crop-picker";
+  import { firebase } from "@react-native-firebase/auth";
+  import firestore from "@react-native-firebase/firestore";
+  import storage from "@react-native-firebase/storage";
+  
+  LogBox.ignoreAllLogs();
+  
+  const SetUserData = ({ navigation }) => {
+    const { currentUser } = firebase.auth();
+    const [name, setName] = useState("");
+    const [age, setAge] = useState("");
+    const [gender, setGender] = useState("MALE");
+    const [smoker, setSmoker] = useState("NO");
+    const [allergies, setAllergies] = useState("");
+    const [image, setImage] = useState(currentUser.photoURL);
+  
+    const uploadImageToStorage = (path, imageName) => { 
+      let reference = storage().ref(imageName);
+      let task = reference.putFile(path);
+  
+      task
+        .then(() => {
+          // 4
+          console.log("Image uploaded to the bucket!");
+        })
+        .catch((e) => console.error("uploading image error => ", e));
+    };
+  
+    const save = async () => {
+      if (name && age && image) {
+        uploadImageToStorage(image, `${currentUser.uid}`);
+  
+        const ref = firebase.storage().ref(`${currentUser.uid}`);
+        const url = await ref.getDownloadURL();
+        const intAge = parseInt(age, 10);
+        if (isNaN(intAge)) {
+            alert("age must be an integer!");
+        }
+        else {   
+            if (intAge >= 18) {
+                try {
+                  const res = await fetch('http://192.168.56.1:1000/addUser', { 
+                    method: "POST", 
+                    headers: { Accept: "application/json", "Content-Type": "application/json" },
+                    body: JSON.stringify({
+                      id: currentUser.uid,
+                      name: name,
+                      age: age, 
+                      gender: gender,
+                      photoURL: url,
+                      allergies: allergies,
+                      smoker: smoker
+                    })});
+                  } catch (e) {
+                    console.error("Error adding document: ", e);
+                  }
+                  alert("We got your data successfully :)");
+                  navigation.navigate({name:'Home', params:{username: name}});
+            }
+            else {
+                alert("age must be 18 or above!");
+            }
+        }
       }
       else {   
           if (intAge >= 18) {
@@ -75,11 +100,12 @@ const SetUserData = ({ navigation }) => {
               alert("age must be 18 or above!");
           }
       }
-    }
     else {
       alert("you must fill all the tabs!");
     }
-  };
+    
+  };}
+
 
   const uploadImage = () => {
     ImagePicker.openPicker({
@@ -151,7 +177,7 @@ const SetUserData = ({ navigation }) => {
       </ScrollView>
     </SafeAreaView>
   );
-};
+;
 
 const theStyle = StyleSheet.create({
   root: {
@@ -181,5 +207,6 @@ const theStyle = StyleSheet.create({
     borderRadius: 15,
   },
 });
+
 
 export default SetUserData

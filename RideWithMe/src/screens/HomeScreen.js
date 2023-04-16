@@ -26,6 +26,8 @@ const HomeScreen = ({navigation}) => {
     navigation.navigate("PostGroupRide");
   }
 
+
+
   const logout = () => {
     auth()
       .signOut()

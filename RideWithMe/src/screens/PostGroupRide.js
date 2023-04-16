@@ -82,9 +82,9 @@ const handleToLocation = (data, details = null) => {
   const googlemapkey = 'AIzaSyA8T086PYyNfch449m9sfG5HFKwbBWnuo0';
   
   return (
-    <ImageBackground source={require('../components/pic4.jpg')} style={theStyle.background}>
-        <View>
-            <Text style={theStyle.bold}>Travel group details</Text>
+    <ImageBackground source={require('../components/pic3.jpg')} style={theStyle.background}>
+        <View style = {{flex:1}}>
+            <Text style={theStyle.bold}>Travel details</Text>
             <GooglePlacesAutocomplete
                 styles={theStyle.location}
                 placeholder='Origin'
@@ -117,8 +117,8 @@ const handleToLocation = (data, details = null) => {
                 value={info}
                 onChangeText={setInfo}
             />
-            {/* <Text>Departure Time: {departureTime ? departureTime.toString() : 'Not set'}</Text> */}
-            <Button title={departureTime ? departureTime.toString() : 'select a departure Time'} onPress={() => setDepartureTimePickerVisibility(true)} />
+            <Text style={{margin:8}}>Departure Time: {departureTime ? departureTime.toString() : 'Not set'}</Text>
+            <Button title="Select Departure Time" onPress={() => setDepartureTimePickerVisibility(true)} />
             <DateTimePickerModal
                 isVisible={isDepartureTimePickerVisible}
                 mode="datetime"
