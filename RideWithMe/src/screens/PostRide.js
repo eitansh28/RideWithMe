@@ -1,16 +1,18 @@
 import React, { useState } from "react";
-import { View, Button, Text, TextInput, StyleSheet, ImageBackground } from "react-native";
+import { View, Button, Text, TextInput, StyleSheet, ImageBackground,KeyboardAvoidingView,TouchableWithoutFeedback } from "react-native";
 import { Picker } from "@react-native-picker/picker";
 import DateTimePickerModal from "react-native-modal-datetime-picker";
 import { firebase } from "@react-native-firebase/auth";
 import firestore from "@react-native-firebase/firestore";
 import { useRoute } from '@react-navigation/native';
 import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplete';
-
+import { Keyboard } from 'react-native'
+import { SafeAreaView } from "react-native-safe-area-context";
+import { ScrollView } from "react-native-gesture-handler";
   const PostRide = ({navigation}) => {
   const { currentUser } = firebase.auth();
-  const [origin, setOrigin] = useState('');
-  const [destination, setDestination] = useState('');
+  const [origin, setOrigin] = useState('defualt');
+  const [destination, setDestination] = useState('defualt');
   const [date, setDate] = useState(new Date());
   const [price, setPrice] = useState('');
   const [seats, setSeats] = useState('');
@@ -22,26 +24,27 @@ import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplet
   const {params} = useRoute();
   // the_date = params.selectedDate1;
   
-
+  
   const save = async () => {
+    console.log(destination," ",price," ", seats);
     if (destination && price && seats){
       try {
-        await firestore()
-          .collection("travels")
-          .doc()
-          .set({
-            name_of_the_driver: `${currentUser.name}`,
-            origin: `${origin}`,
-            destination: `${destination}`,
-            price: `${price}`,
-            seats: `${seats}`,
-            date: `${departureTime}`
-          });
-      } catch (e) {
+        const res = await fetch("http://192.168.1.50:1000/postRide",{
+          method: 'POST',
+          headers: {Accept: "application/json",
+          "Content-Type": "application/json" 
+        },
+        body: JSON.stringify({driver_name : currentUser.name,
+                              origin:origin,
+                              dest: destination,
+                              price: price,
+                              seats:seats,
+                              date:departureTime })});
+        } catch (e) {
         console.error("Error adding document: ", e);
       }
       alert("The travel has been successfully added");
-      navigation.navigate("Home");
+      // navigation.navigate("Home");
     }
     else {
       alert("you must fill in all the fields!");
@@ -86,37 +89,69 @@ import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplet
   // }
 
   const handleFromLocation = (data, details = null) => {
+    
     // Check if geometry is defined
-    if (data.geometry && data.geometry.location) {
-        // Extract latitude and longitude from the data parameter
-        const { lat, lng } = data.geometry.location;
-
-        // Set the location state
-        setOrigin({ latitude: lat, longitude: lng });
+    const { geometry } = data;
+    console.log('Geometry:', geometry);
+    if (geometry && geometry.location) {
+      const { lat, lng } = geometry.location;
+      console.log('Latitude:', lat);
+      console.log('Longitude:', lng);
+      // Set the location state
+      setOrigin({ latitude: lat, longitude: lng });
     }
 };
 
+const handleToLocation = (data, details = null) => {
+    
+  // Check if geometry is defined
+  if (data.geometry && data.geometry.location) {
+      // Extract latitude and longitude from the data parameter
+      const { lat, lng } = data.geometry.location;
+
+      // Set the location state
+      setDestination({ latitude: lat, longitude: lng });
+  }
+};
+
+
   const googlemapkey = 'AIzaSyA8T086PYyNfch449m9sfG5HFKwbBWnuo0';
   
+
+
   return (
-    <ImageBackground source={require('../components/pic3.jpg')} style={theStyle.background}>
-    <View>
+
+   <ImageBackground source={require('../components/pic3.jpg')} style={theStyle.background}>
+<View style ={theStyle.center}>
       <Text style={theStyle.bold}>Travel details</Text>
       <GooglePlacesAutocomplete
+          
           styles={theStyle.location}
+          
           placeholder='Origin'
-          onPress={handleFromLocation}
+          onPress={ (data ,detials = null) => {
+
+              console.log(detials?.geometry);
+
+          }}
           query={{
               key: 'AIzaSyA8T086PYyNfch449m9sfG5HFKwbBWnuo0',
               language: 'en',
           }}
       />
-          <TextInput
-            style={theStyle.input}
-            placeholder="destination"
-            value={destination}
-            onChangeText={setDestination}
-          />
+
+    
+<GooglePlacesAutocomplete
+          
+          styles={theStyle.location}
+          
+          placeholder='Destanation'
+          onPress={handleToLocation}
+          query={{
+              key: 'AIzaSyA8T086PYyNfch449m9sfG5HFKwbBWnuo0',
+              language: 'en',
+          }}
+      />
           <TextInput
             style={theStyle.input}
             placeholder="Price"
@@ -138,23 +173,26 @@ import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplet
                 onConfirm={handleDepartureTimeConfirm}
                 onCancel={handleDepartureTimeCancel}
             />
-            {/* <Text>Desired Arrival Time: {desiredArrivalTime ? desiredArrivalTime.toString() : 'Not set'}</Text>
+            <Text>Desired Arrival Time: {desiredArrivalTime ? desiredArrivalTime.toString() : 'Not set'}</Text>
             <Button title="Select Desired Arrival Time" onPress={() => setDesiredArrivalTimePickerVisibility(true)} />
             <DateTimePickerModal
                 isVisible={isDesiredArrivalTimePickerVisible}
                 mode="datetime"
                 onConfirm={handleDesiredArrivalTimeConfirm}
                 onCancel={handleDesiredArrivalTimeCancel}
-            /> */}
+            />
           <View style={theStyle.separator}></View>
           <Button 
             title="post"
             color={'green'}
             onPress={save}
-          />
+           />
+     
       </View>
-      </ImageBackground>
-  );
+       </ImageBackground>
+   
+       
+  )
 };
 
 
@@ -165,8 +203,9 @@ const theStyle = StyleSheet.create({
   },
   center: {
     flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
+    // justifyContent: 'center',
+    // alignItems: 'center',
+    
   },
   bold: {
     textAlign: 'center',
@@ -175,6 +214,28 @@ const theStyle = StyleSheet.create({
     fontSize: 30,
     fontWeight: 'bold',
   },
+  location: {
+    container: {
+        flex: 1,
+        postion:'relative'
+      },
+      textInputContainer: {
+        width: '100%',
+        backgroundColor: 'rgba(0,0,0,0)',
+        borderTopWidth: 0,
+        borderBottomWidth:0,
+      },
+      textInput: {
+        marginLeft: 0,
+        marginRight: 0,
+        height: 38,
+        color: '#5d5d5d',
+        fontSize: 16,
+      },
+      predefinedPlacesDescription: {
+        color: '#1faadb',
+      },
+},
   separator: {
     width: 1,
     height: '8%',

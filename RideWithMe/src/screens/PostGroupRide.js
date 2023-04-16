@@ -81,7 +81,7 @@ const handleToLocation = (data, details = null) => {
   
   return (
     <ImageBackground source={require('../components/pic3.jpg')} style={theStyle.background}>
-        <View>
+        <View style = {{flex:1}}>
             <Text style={theStyle.bold}>Travel details</Text>
             <GooglePlacesAutocomplete
                 styles={theStyle.location}
@@ -107,7 +107,7 @@ const handleToLocation = (data, details = null) => {
                 value={info}
                 onChangeText={setInfo}
             />
-            <Text>Departure Time: {departureTime ? departureTime.toString() : 'Not set'}</Text>
+            <Text style={{margin:8}}>Departure Time: {departureTime ? departureTime.toString() : 'Not set'}</Text>
             <Button title="Select Departure Time" onPress={() => setDepartureTimePickerVisibility(true)} />
             <DateTimePickerModal
                 isVisible={isDepartureTimePickerVisible}

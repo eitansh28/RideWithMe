@@ -7,13 +7,16 @@ import { Picker } from "@react-native-picker/picker";
 import ImagePicker from "react-native-image-crop-picker";
 
 
-const ProfileScreen = ({ user }) => {
 
+
+
+const ProfileScreen = ({ user }) => {
+  
   const { currentUser } = firebase.auth();
   const userId = currentUser.uid;
 
   const [name, setName] = useState("Yarin");
-  const [age, setAge] = useState("18");
+  const [age, setAge] = useState("19");
   const [gender, setGender] = useState("Male");
   const [email, setEmail] = useState("yarin@gmail.com");
   const [photoURL,setPhotoURL] = useState('https://www.shutterstock.com/image-photo/cool-grandma-showing-peace-sign-260nw-583662652.jpg');
@@ -25,14 +28,15 @@ const ProfileScreen = ({ user }) => {
   const pictureHeight = height * 0.4;
 
   useEffect(() => {
-    console.log('hi');
     const getUserDetails = async () => {
       try {
-        const res = await fetch("http://192.168.56.1:1000/getUserDetails", {
+        const res = await fetch("http://192.168.1.50:1000/getUserDetails", {
           method: "POST", 
-          headers: { Accept: "application/json", "Content-Type": "application/json" },
-          body: JSON.stringify({ id: currentUser.uid })
-        });
+          headers: { Accept: "application/json",
+           "Content-Type": "application/json" 
+          },
+          body: JSON.stringify({ id: currentUser.uid })});
+
         const user_details = await res.json();
         console.log(user_details);
         setName(user_details.user_details.name);
@@ -43,7 +47,7 @@ const ProfileScreen = ({ user }) => {
         console.log("im here ", error);
       }
     };
-    getUserDetails();
+     getUserDetails();
   }, [currentUser.uid]);
   
 

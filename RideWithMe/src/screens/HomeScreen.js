@@ -21,12 +21,7 @@ const HomeScreen = ({navigation}) => {
     navigation.navigate("PostGroupRide");
   }
 
-  function moveToProfile(){
-    navigation.navigate("Profile");
-  }
-  function move_to_post_ride(){
-    navigation.navigate("PostRide");
-  }
+
 
   const logout = () => {
     auth()
