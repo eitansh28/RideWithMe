@@ -24,11 +24,6 @@ app.use(rideController)
 
 
 
-
-
-
-
-
 app.listen(PORT, function() {
     console.log("Server is ready at " + PORT)
 })

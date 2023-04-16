@@ -16,7 +16,7 @@ const getUser = async (req,res,next)=>{
     }
 };
 
-const addUser = async = (req,res,next) =>{
+const addUser = async (req,res,next) =>{
     try{
         let id = req.body.id || "";
         let name = req.body.name || "";

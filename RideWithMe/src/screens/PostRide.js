@@ -91,12 +91,14 @@ import { ScrollView } from "react-native-gesture-handler";
   const handleFromLocation = (data, details = null) => {
     
     // Check if geometry is defined
-    if (data.geometry && data.geometry.location) {
-        // Extract latitude and longitude from the data parameter
-        const { lat, lng } = data.geometry.location;
-
-        // Set the location state
-        setOrigin({ latitude: lat, longitude: lng });
+    const { geometry } = data;
+    console.log('Geometry:', geometry);
+    if (geometry && geometry.location) {
+      const { lat, lng } = geometry.location;
+      console.log('Latitude:', lat);
+      console.log('Longitude:', lng);
+      // Set the location state
+      setOrigin({ latitude: lat, longitude: lng });
     }
 };
 
@@ -128,7 +130,11 @@ const handleToLocation = (data, details = null) => {
           styles={theStyle.location}
           
           placeholder='Origin'
-          onPress={handleFromLocation}
+          onPress={ (data ,detials = null) => {
+
+              console.log(detials?.geometry);
+
+          }}
           query={{
               key: 'AIzaSyA8T086PYyNfch449m9sfG5HFKwbBWnuo0',
               language: 'en',
