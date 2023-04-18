@@ -11,7 +11,7 @@ import SearchRide from '../screens/SearchRide';
 import PostRide from '../screens/PostRide';
 import PostGroupRide from '../screens/PostGroupRide';
 import Sa from '../screens/Sa';
-
+import MainPagesNev from './MainPagesNev';
 
 const Stack = createNativeStackNavigator();
 
@@ -36,23 +36,23 @@ function MainContainer() {
             options={{ headerShown: false }} 
             component={SignIn}/>
           <Stack.Screen 
-            name="Home" 
+            name="Home1" 
             options={{ headerShown: false }} 
-            component={HomeScreen} />
+            component={MainPagesNev} />
           <Stack.Screen 
             name="Set User Data" 
             options={{ headerShown: false }} 
             component={SetUserData} />
           <Stack.Screen 
-            name="Profile" 
+            name="Profile1" 
             options={{ headerShown: false }} 
             component={ProfileScreen} />
           <Stack.Screen 
-            name="SearchRide" 
+            name="SearchRide1" 
             options={{ headerShown: false }} 
             component={SearchRide} />
           <Stack.Screen 
-            name="PostRide" 
+            name="PostRide1" 
             options={{ headerShown: false }} 
             component={PostRide} />
             <Stack.Screen 
