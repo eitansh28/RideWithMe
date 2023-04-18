@@ -2,6 +2,7 @@ import React, {useState, useEffect} from "react";
 import {ScrollView, View, Text, StyleSheet, Button ,Alert, TextInput, ImageBackground} from 'react-native';
 import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplete';
 import DateTimePickerModal from "react-native-modal-datetime-picker";
+import BackButton from "../components/BackButton";
 
   const SearchRide = () => {
 
@@ -69,6 +70,7 @@ import DateTimePickerModal from "react-native-modal-datetime-picker";
     return(
     <ImageBackground source={require('../components/pic2.jpg')} style={styles.background}>
         <View style={styles.center}>
+            <BackButton/>
             <GooglePlacesAutocomplete
                 styles={styles.location}
                 placeholder='Search'

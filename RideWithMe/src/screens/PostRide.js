@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { View, Button, Text, TextInput, StyleSheet, ImageBackground,KeyboardAvoidingView,TouchableWithoutFeedback } from "react-native";
 import { Picker } from "@react-native-picker/picker";
 import DateTimePickerModal from "react-native-modal-datetime-picker";
@@ -9,8 +9,12 @@ import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplet
 import { Keyboard } from 'react-native'
 import { SafeAreaView } from "react-native-safe-area-context";
 import { ScrollView } from "react-native-gesture-handler";
+import { IP } from '../components/constants.js';
+import BackButton from "../components/BackButton";
+
   const PostRide = ({navigation}) => {
   const { currentUser } = firebase.auth();
+  const [user_name, SetUser_name] = useState();
   const [origin, setOrigin] = useState('defualt');
   const [destination, setDestination] = useState('defualt');
   const [date, setDate] = useState(new Date());
@@ -18,28 +22,48 @@ import { ScrollView } from "react-native-gesture-handler";
   const [seats, setSeats] = useState('');
   const [departureTime, setDepartureTime] = useState(null);
   const [isDepartureTimePickerVisible, setDepartureTimePickerVisibility] = useState(false);
-  const [desiredArrivalTime, setDesiredArrivalTime] = useState(null);
-  const [isDesiredArrivalTimePickerVisible, setDesiredArrivalTimePickerVisibility] = useState(false);
 
   const {params} = useRoute();
   // the_date = params.selectedDate1;
+
+  useEffect(() => {
+    console.log(IP);
+    const getUserDetails = async () => {
+      try {
+        const res = await fetch("http://"+IP+":1000/getUserDetails", {
+          method: "POST", 
+          headers: { Accept: "application/json",
+           "Content-Type": "application/json" 
+          },
+          body: JSON.stringify({ id: currentUser.uid })});
+
+        const user_details = await res.json();
+        console.log(user_details.user_details);
+        SetUser_name(user_details.user_details.name);
+      } catch (error) {
+        console.log("im error ", error);
+      }
+    };
+     getUserDetails();
+  }, [currentUser.uid]);
   
   
   const save = async () => {
     console.log(destination," ",price," ", seats);
     if (destination && price && seats){
       try {
-        const res = await fetch("http://192.168.1.50:1000/postRide",{
+        const res = await fetch("http://"+IP+":1000/postRide",{
           method: 'POST',
           headers: {Accept: "application/json",
           "Content-Type": "application/json" 
         },
-        body: JSON.stringify({driver_name : currentUser.name,
-                              origin:origin,
+        body: JSON.stringify({driver_id: currentUser.uid,
+                              driver_name: user_name,
+                              origin: origin,
                               dest: destination,
                               price: price,
-                              seats:seats,
-                              date:departureTime })});
+                              seats: seats,
+                              date: departureTime })});
         } catch (e) {
         console.error("Error adding document: ", e);
       }
@@ -71,81 +95,50 @@ import { ScrollView } from "react-native-gesture-handler";
     setDepartureTimePickerVisibility(false);
   }
 
-  const handleDesiredArrivalTimeConfirm = (date) => {
-    console.log("Date selected: ", date);
-    setDesiredArrivalTime(date);
-    setDesiredArrivalTimePickerVisibility(false);
-  }
-
-  const handleDesiredArrivalTimeCancel = () => {
-    console.log("Date selection cancelled.");
-    setDesiredArrivalTimePickerVisibility(false);
-  }
-
-
-  // const handleFromLocation = () => {
-  //   console.log("Date selection cancelled.");
-  //   setDesiredArrivalTimePickerVisibility(false);
-  // }
-
   const handleFromLocation = (data, details = null) => {
-    
-    // Check if geometry is defined
-    const { geometry } = data;
-    console.log('Geometry:', geometry);
-    if (geometry && geometry.location) {
-      const { lat, lng } = geometry.location;
-      console.log('Latitude:', lat);
-      console.log('Longitude:', lng);
-      // Set the location state
-      setOrigin({ latitude: lat, longitude: lng });
-    }
+  // Check if geometry is defined
+  if (details.geometry && details.geometry.location) {
+    // Extract latitude and longitude from the data parameter
+    const { lat, lng } = details.geometry.location;
+
+    // Set the location state
+    setOrigin({ latitude: lat, longitude: lng });
+}
 };
 
 const handleToLocation = (data, details = null) => {
     
   // Check if geometry is defined
-  if (data.geometry && data.geometry.location) {
+  if (details.geometry && details.geometry.location) {
       // Extract latitude and longitude from the data parameter
-      const { lat, lng } = data.geometry.location;
+      const { lat, lng } = details.geometry.location;
 
       // Set the location state
       setDestination({ latitude: lat, longitude: lng });
   }
 };
 
-
   const googlemapkey = 'AIzaSyA8T086PYyNfch449m9sfG5HFKwbBWnuo0';
+
   
-
-
   return (
-
    <ImageBackground source={require('../components/pic3.jpg')} style={theStyle.background}>
-<View style ={theStyle.center}>
+    <BackButton/>    
+    <View style ={theStyle.center}>
       <Text style={theStyle.bold}>Travel details</Text>
-
       <GooglePlacesAutocomplete
-          
           styles={theStyle.location}
-          
+          fetchDetails = {true}
           placeholder='Origin'
-          onPress={ (data ,detials = null) => {
-
-              console.log(detials?.geometry);
-
-          }}
+          onPress={handleFromLocation}
           query={{
               key: 'AIzaSyA8T086PYyNfch449m9sfG5HFKwbBWnuo0',
               language: 'en',
           }}
       />
-
-    
-<GooglePlacesAutocomplete
-          
+      <GooglePlacesAutocomplete
           styles={theStyle.location}
-          
+          fetchDetails = {true}
           placeholder='Destanation'
           onPress={handleToLocation}
           query={{
@@ -173,14 +166,6 @@ const handleToLocation = (data, details = null) => {
                 mode="datetime"
                 onConfirm={handleDepartureTimeConfirm}
                 onCancel={handleDepartureTimeCancel}
-            />
-            <Text>Desired Arrival Time: {desiredArrivalTime ? desiredArrivalTime.toString() : 'Not set'}</Text>
-            <Button title="Select Desired Arrival Time" onPress={() => setDesiredArrivalTimePickerVisibility(true)} />
-            <DateTimePickerModal
-                isVisible={isDesiredArrivalTimePickerVisible}
-                mode="datetime"
-                onConfirm={handleDesiredArrivalTimeConfirm}
-                onCancel={handleDesiredArrivalTimeCancel}
             />
           <View style={theStyle.separator}></View>
           <Button 
