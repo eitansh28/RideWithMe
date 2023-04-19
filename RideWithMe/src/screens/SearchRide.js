@@ -189,9 +189,9 @@ import DateTimePickerModal from "react-native-modal-datetime-picker";
 
     const handleFromLocation = (data, details = null) => {
         // Check if geometry is defined
-        if (data.geometry && data.geometry.location) {
+        if (details.geometry && details.geometry.location) {
             // Extract latitude and longitude from the data parameter
-            const { lat, lng } = data.geometry.location;
+            const { lat, lng } = details.geometry.location;
     
             // Set the location state
             setFrom({ latitude: lat, longitude: lng });
@@ -200,9 +200,9 @@ import DateTimePickerModal from "react-native-modal-datetime-picker";
     
     const handleToLocation = (data, details = null) => {
         // Check if geometry is defined
-        if (data.geometry && data.geometry.location) {
+        if (details.geometry && details.geometry.location) {
             // Extract latitude and longitude from the data parameter
-            const { lat, lng } = data.geometry.location;
+            const { lat, lng } = details.geometry.location;
     
             // Set the location state
             setTo({ latitude: lat, longitude: lng });
@@ -231,14 +231,32 @@ import DateTimePickerModal from "react-native-modal-datetime-picker";
         setDesiredArrivalTimePickerVisibility(false);
     }
 
-    function search() {
-        // should do in server:
-        // const departureTimestamp = firebase.firestore.Timestamp.fromDate(new Date(departureTime));
-        // const desiredArrivalTimestamp = firebase.firestore.Timestamp.fromDate(new Date(desiredArrivalTime));
-        
-        // Cast the departure time to a Firebase Timestamp
-        // const departureTimestamp = firebase.firestore.Timestamp.fromDate(departureTime);
-    }
+    const  search = async () => {
+        console.log("serach ride pressed");
+        if (departureTime &&desiredArrivalTime && from && to ){
+            try{
+                const res =  await fetch(("http://192.168.144.1:1000/searchRide"),{
+                    method : 'POST',
+                    headers: {Accept: "application/json",
+                    "Content-Type": "application/json" 
+                  },
+                  body: JSON.stringify({
+                    origin:from,
+                    destination: to,
+                    departureTime: departureTime
+                   })});
+
+                   const ride_details = await res.json();
+                   console.log(ride_details.match_rides[0].origin);
+                }catch(e){
+                    console.error("Error searching ride",e);
+                }
+            }else{
+                alert("you must fill in all the fields!");
+            }
+        };
+
+    
 
     return(
     <ImageBackground source={require('../components/pic3.jpg')} style={styles.background}>
@@ -246,6 +264,7 @@ import DateTimePickerModal from "react-native-modal-datetime-picker";
         <View style={styles.center}>
             <GooglePlacesAutocomplete
                 styles={styles.location}
+                fetchDetails = {true}
                 placeholder='Search'
                 onPress={handleFromLocation}
                 query={{
@@ -255,6 +274,7 @@ import DateTimePickerModal from "react-native-modal-datetime-picker";
             />
             <GooglePlacesAutocomplete
                 styles={styles.location}
+                fetchDetails = {true}
                 placeholder='To'
                 onPress={handleToLocation}
                 query={{

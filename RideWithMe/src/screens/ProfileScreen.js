@@ -10,6 +10,7 @@ import ImagePicker from "react-native-image-crop-picker";
 
 
 
+
 const ProfileScreen = ({ user }) => {
   
   const { currentUser } = firebase.auth();
@@ -48,7 +49,7 @@ const ProfileScreen = ({ user }) => {
         console.log("im here ", error);
       }
     };
-     getUserDetails();
+    
   }, [currentUser.uid]);
   
 
