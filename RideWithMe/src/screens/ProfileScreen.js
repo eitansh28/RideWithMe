@@ -10,6 +10,7 @@ import ImagePicker from "react-native-image-crop-picker";
 
 
 
+
 const ProfileScreen = ({ user }) => {
   
   const { currentUser } = firebase.auth();
@@ -30,7 +31,7 @@ const ProfileScreen = ({ user }) => {
   useEffect(() => {
     const getUserDetails = async () => {
       try {
-        const res = await fetch("http://192.168.1.50:1000/getUserDetails", {
+        const res = await fetch("http://192.168.144.1:1000/getUserDetails", {
           method: "POST", 
           headers: { Accept: "application/json",
            "Content-Type": "application/json" 
@@ -47,7 +48,7 @@ const ProfileScreen = ({ user }) => {
         console.log("im here ", error);
       }
     };
-     getUserDetails();
+    
   }, [currentUser.uid]);
   
 

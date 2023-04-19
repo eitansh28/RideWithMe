@@ -1,11 +1,17 @@
-import React from 'react';
+import React,{useState} from 'react';
 import {StyleSheet,Button, Pressable, Text, View, ImageBackground} from 'react-native';
 import auth from "@react-native-firebase/auth";
 import { useRoute } from '@react-navigation/native';
+import { firebase } from "@react-native-firebase/auth";
+import { getUserDetails } from '../components/getUserDetials';
 
 const HomeScreen = ({navigation}) => {
   const {params} = useRoute();
   const name = params.username;
+  
+
+
+
 
 
   function moveToProfile(){
@@ -31,6 +37,7 @@ const HomeScreen = ({navigation}) => {
     navigation.navigate("Start");
   };
 
+  
   return(
     <ImageBackground source={require('../components/pic1.jpg')} style={styles.background}>
     <View style={styles.container}>
@@ -40,10 +47,6 @@ const HomeScreen = ({navigation}) => {
       <View style ={{flex:1}}> 
     <View style={styles.centered}>
        <View style={styles.separator}>
-       <Button title=" Profile  " onPress={moveToProfile}></Button>
-       <Button title=" Search Ride  " onPress={move_to_search_ride}></Button>
-       <Button title=" post ride  " onPress={move_to_post_ride}></Button>
-       <Button title=" post group ride  " onPress={move_to_post_group_ride}></Button>
        </View>
       </View>
       <View style={{flex:0.9,justifyContent:'flex-end'}}>
@@ -79,7 +82,9 @@ const styles = StyleSheet.create({
     width: 200,
     height: 200,
     borderRadius: 150,
-    backgroundColor: 'green',
+
+    backgroundColor: 'gray',
+    opacity:0.5,
     justifyContent: 'center',
     alignItems: 'center',
   },
