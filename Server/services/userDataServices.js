@@ -22,7 +22,8 @@ const addUser = async (req,res,next) =>{
         let name = req.body.name || "";
         let age = req.body.age || "";
         let gender = req.body.gender || "";
-        let photoURL = req.body.photoURL || "";
+        let phone = req.body.phone || "";
+        // let photoURL = req.body.photoURL || "";
         let allergies = req.body.allergies || "";
         let smoker = req.body.smoker || "";
 
@@ -31,6 +32,7 @@ const addUser = async (req,res,next) =>{
             name:name,
             age: age,
             gender: gender,
+            phone: phone,
             photoURL:photoURL,
             allergies:allergies,
             smoker:smoker,

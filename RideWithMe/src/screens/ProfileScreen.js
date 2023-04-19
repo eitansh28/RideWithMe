@@ -21,6 +21,7 @@ const ProfileScreen = ({ user }) => {
   const [email, setEmail] = useState("yarin@gmail.com");
   const [photoURL,setPhotoURL] = useState('https://www.shutterstock.com/image-photo/cool-grandma-showing-peace-sign-260nw-583662652.jpg');
   const [showModal,setShowModal] = useState(false);
+  const [phone, setPhone] = useState("");
 //   const [image, setImage] = useState(currentUser.photoURL);
 
   const { width, height } = Dimensions.get('window');
@@ -30,7 +31,7 @@ const ProfileScreen = ({ user }) => {
   useEffect(() => {
     const getUserDetails = async () => {
       try {
-        const res = await fetch("http://192.168.1.50:1000/getUserDetails", {
+        const res = await fetch("http://192.168.1.125:1000/getUserDetails", {
           method: "POST", 
           headers: { Accept: "application/json",
            "Content-Type": "application/json" 
@@ -144,6 +145,10 @@ const ProfileScreen = ({ user }) => {
             <View style={styles.detailsRow}>
               <Text style={styles.detailsLabel}>Edit-Mail:</Text>
               <TextInput style={styles.detailsValue} value={email} onChangeText={setEmail} />
+            </View>
+            <View style={styles.detailsRow}>
+              <Text style={styles.detailsLabel}>Edit-phone:</Text>
+              <TextInput style={styles.detailsValue} value={phone} onChangeText={setPhone} />
             </View>
             <View style={{flexDirection:'row',alignContent:'space-between',justifyContent:'space-evenly'}}>
               <TouchableOpacity style={styles.saveButton} onPress={saveChanges}>

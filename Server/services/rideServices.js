@@ -1,7 +1,6 @@
-
-
 const firebase = require('../db/firestore')
 const postRide = async (req,res,next) => {
+    console.log("i go to the server");
     let db = firebase.firestore();
 
     try{
@@ -21,11 +20,31 @@ const postRide = async (req,res,next) => {
             date: `${departureTime}`
         });
     }catch(e){
-        console.error("Error adding document: ", e);
+        console.error("Error adding documentsssssssss: ", e);
     }
 
 }
 
+
+const searchRide = async (req,res,next) => {
+    console.log("i go to the server");
+    let db = firebase.firestore();
+    let a = []
+    try{
+        (await db.collection('travels').where('price', '==', 15).get().then()).forEach((doc) => {
+            a.push(doc.data())
+        } 
+        )
+        res.send({a})
+    }catch(e){
+        console.error("Error --- ", e);
+    }
+
+}
+
+
+
 module.exports = {
-    postRide
+    postRide,
+    searchRide
 };

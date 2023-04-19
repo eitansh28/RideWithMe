@@ -2,10 +2,14 @@ import React from 'react';
 import {StyleSheet,Button, Text, View, ImageBackground, Pressable} from 'react-native';
 import auth from "@react-native-firebase/auth";
 import { useRoute } from '@react-navigation/native';
+import { Linking } from 'react-native';
+import { TouchableOpacity } from 'react-native';
+// import Icon from 'react-native-vector-icons/FontAwesome';
 
 const HomeScreen = ({navigation}) => {
   const {params} = useRoute();
   const name = params.username;
+  const id = params.userid;
 
   function movetologin() {
     navigation.navigate("Login");
@@ -20,13 +24,27 @@ const HomeScreen = ({navigation}) => {
     navigation.navigate("SearchRide");
   }
   function move_to_post_ride(){
-    navigation.navigate("PostRide");
+    navigation.navigate({name:"PostRide", params:{userid: id}});
   }
   function move_to_post_group_ride(){
     navigation.navigate("PostGroupRide");
   }
 
 
+  const phone = '0544510170'; // replace with the phone number of the recipient
+  const phoneNumber = '054-446-8216';
+
+  const openWhatsApp = () => {
+    Linking.openURL(`whatsapp://send?phone=${phoneNumber}`);
+  }
+
+  const makeCall = () => {
+    Linking.openURL(`tel:${phoneNumber}`);
+  }
+
+  const sms = () => {
+    Linking.openURL(`sms:${phoneNumber}`);
+  }
 
   const logout = () => {
     auth()
@@ -49,6 +67,9 @@ const HomeScreen = ({navigation}) => {
        <Button title=" Search Ride  " onPress={move_to_search_ride}></Button>
        <Button title=" post ride  " onPress={move_to_post_ride}></Button>
        <Button title=" post group ride  " onPress={move_to_post_group_ride}></Button>
+       <Button title=" what's-up  " onPress={openWhatsApp}></Button>
+       <Button title=" phonecall  " onPress={makeCall}></Button>
+       <Button title=" sms  " onPress={sms}></Button>
        </View>
       </View>
       <View style={{flex:0.9,justifyContent:'flex-end'}}>

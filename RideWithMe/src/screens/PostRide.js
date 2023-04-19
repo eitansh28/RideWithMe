@@ -11,8 +11,8 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import { ScrollView } from "react-native-gesture-handler";
   const PostRide = ({navigation}) => {
   const { currentUser } = firebase.auth();
-  const [origin, setOrigin] = useState('defualt');
-  const [destination, setDestination] = useState('defualt');
+  const [origin, setOrigin] = useState('default');
+  const [destination, setDestination] = useState('default');
   const [date, setDate] = useState(new Date());
   const [price, setPrice] = useState('');
   const [seats, setSeats] = useState('');
@@ -22,14 +22,15 @@ import { ScrollView } from "react-native-gesture-handler";
   const [isDesiredArrivalTimePickerVisible, setDesiredArrivalTimePickerVisibility] = useState(false);
 
   const {params} = useRoute();
-  // the_date = params.selectedDate1;
+  // const id = params.id;
   
   
   const save = async () => {
     console.log(destination," ",price," ", seats);
     if (destination && price && seats){
       try {
-        const res = await fetch("http://192.168.1.50:1000/postRide",{
+        alert("hhhhhhhhhhhhhhhh")
+        const res = await fetch("http://192.168.1.125:1000/postRide",{
           method: 'POST',
           headers: {Accept: "application/json",
           "Content-Type": "application/json" 
@@ -127,8 +128,8 @@ const handleToLocation = (data, details = null) => {
       <GooglePlacesAutocomplete
           
           styles={theStyle.location}
-          
           placeholder='Origin'
+          fetchDetails = {true}
           onPress={ (data ,detials = null) => {
 
               console.log(detials?.geometry);
@@ -146,6 +147,7 @@ const handleToLocation = (data, details = null) => {
           styles={theStyle.location}
           
           placeholder='Destanation'
+          fetchDetails = {true}
           onPress={handleToLocation}
           query={{
               key: 'AIzaSyA8T086PYyNfch449m9sfG5HFKwbBWnuo0',

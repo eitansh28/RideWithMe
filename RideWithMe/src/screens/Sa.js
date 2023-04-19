@@ -4,7 +4,7 @@ import { TextInput } from 'react-native-gesture-handler'
 
 const getUsers = async () =>{
   try {
-    const res = await fetch("http://192.168.1.50:1000/getUserD", {
+    const res = await fetch("http://192.168.1.125:1000/getUserD", {
       method: "GET", 
     });
 
