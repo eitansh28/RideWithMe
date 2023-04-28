@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { View, Button, Text, TextInput, StyleSheet, ImageBackground,KeyboardAvoidingView,TouchableWithoutFeedback } from "react-native";
+import { View, Button, Text, TextInput, StyleSheet, ImageBackground,KeyboardAvoidingView,TouchableWithoutFeedback }from "react-native";
 import { Picker } from "@react-native-picker/picker";
 import DateTimePickerModal from "react-native-modal-datetime-picker";
 import { firebase } from "@react-native-firebase/auth";
@@ -27,7 +27,6 @@ import BackButton from "../components/BackButton";
   // the_date = params.selectedDate1;
 
   useEffect(() => {
-    console.log(IP);
     const getUserDetails = async () => {
       try {
         const res = await fetch("http://"+IP+":1000/getUserDetails", {
@@ -173,11 +172,8 @@ const handleToLocation = (data, details = null) => {
             color={'green'}
             onPress={save}
            />
-     
       </View>
-       </ImageBackground>
-   
-       
+       </ImageBackground> 
   )
 };
 

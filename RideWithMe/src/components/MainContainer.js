@@ -15,7 +15,10 @@ import MyRides from '../screens/MyRides';
 import RidesWithMe from '../screens/RidesWithMe';
 import RidesWithYou from '../screens/RidesWithYou';
 import RidesRequest from '../screens/RidesRequest';
-
+import SearchResults from '../screens/SearchResults';
+import MainPagesNev from './MainPagesNev';
+import AskedToJoin from '../screens/AskedToJoin';
+import UserDetails from '../screens/UserDetails';
 
 const Stack = createNativeStackNavigator();
 
@@ -40,23 +43,23 @@ function MainContainer() {
             options={{ headerShown: false }} 
             component={SignIn}/>
           <Stack.Screen 
-            name="Home" 
+            name="Home1" 
             options={{ headerShown: false }} 
-            component={HomeScreen} />
+            component={MainPagesNev} />
           <Stack.Screen 
             name="Set User Data" 
             options={{ headerShown: false }} 
             component={SetUserData} />
           <Stack.Screen 
-            name="Profile" 
+            name="Profile1" 
             options={{ headerShown: false }} 
             component={ProfileScreen} />
           <Stack.Screen 
-            name="SearchRide" 
+            name="SearchRide1" 
             options={{ headerShown: false }} 
             component={SearchRide} />
           <Stack.Screen 
-            name="PostRide" 
+            name="PostRide1" 
             options={{ headerShown: false }} 
             component={PostRide} />
             <Stack.Screen 
@@ -83,7 +86,18 @@ function MainContainer() {
             name="RidesRequest"
             options={{ headerShown: false}}
             component={RidesRequest} />
-            
+            <Stack.Screen
+            name="SearchResults"
+            options={{ headerShown: false}}
+            component={SearchResults} />
+            <Stack.Screen
+            name="AskedToJoin"
+            options={{ headerShown: false}}
+            component={AskedToJoin} />
+            <Stack.Screen
+            name="UserDetails"
+            options={{ headerShown: false}}
+            component={UserDetails} />
         </Stack.Navigator>
     </NavigationContainer>
   )

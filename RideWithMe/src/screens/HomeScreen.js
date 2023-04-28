@@ -1,11 +1,17 @@
-import React from 'react';
+import React,{useState} from 'react';
 import {StyleSheet,Button, Pressable, Text, View, ImageBackground} from 'react-native';
 import auth from "@react-native-firebase/auth";
 import { useRoute } from '@react-navigation/native';
+import { firebase } from "@react-native-firebase/auth";
+import { getUserDetails } from '../components/getUserDetials';
 
 const HomeScreen = ({navigation}) => {
   const {params} = useRoute();
   const name = params.username;
+  
+
+
+
 
 
   function moveToProfile(){
@@ -34,6 +40,7 @@ const HomeScreen = ({navigation}) => {
     navigation.navigate("Start");
   };
 
+  
   return(
     <ImageBackground source={require('../components/pic1.jpg')} style={styles.background}>
     <View style={styles.container}>
@@ -83,7 +90,9 @@ const styles = StyleSheet.create({
     width: 200,
     height: 200,
     borderRadius: 150,
-    backgroundColor: 'green',
+
+    backgroundColor: 'gray',
+    opacity:0.5,
     justifyContent: 'center',
     alignItems: 'center',
   },

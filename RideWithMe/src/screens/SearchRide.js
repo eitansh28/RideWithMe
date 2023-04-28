@@ -3,8 +3,10 @@ import {ScrollView, View, Text, StyleSheet, Button ,Alert, TextInput, ImageBackg
 import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplete';
 import DateTimePickerModal from "react-native-modal-datetime-picker";
 import BackButton from "../components/BackButton";
+import { IP } from "../components/constants";
+import SearchResults from "./SearchResults";
 
-  const SearchRide = () => {
+  const SearchRide = ({navigation}) => {
 
     const [from, setFrom] = useState("");
     const [to, setTo] = useState("");
@@ -13,12 +15,11 @@ import BackButton from "../components/BackButton";
     const [desiredArrivalTime, setDesiredArrivalTime] = useState(null);
     const [isDesiredArrivalTimePickerVisible, setDesiredArrivalTimePickerVisibility] = useState(false);
 
-
     const handleFromLocation = (data, details = null) => {
         // Check if geometry is defined
-        if (data.geometry && data.geometry.location) {
+        if (details.geometry && details.geometry.location) {
             // Extract latitude and longitude from the data parameter
-            const { lat, lng } = data.geometry.location;
+            const { lat, lng } = details.geometry.location;
     
             // Set the location state
             setFrom({ latitude: lat, longitude: lng });
@@ -27,9 +28,9 @@ import BackButton from "../components/BackButton";
     
     const handleToLocation = (data, details = null) => {
         // Check if geometry is defined
-        if (data.geometry && data.geometry.location) {
+        if (details.geometry && details.geometry.location) {
             // Extract latitude and longitude from the data parameter
-            const { lat, lng } = data.geometry.location;
+            const { lat, lng } = details.geometry.location;
     
             // Set the location state
             setTo({ latitude: lat, longitude: lng });
@@ -58,14 +59,37 @@ import BackButton from "../components/BackButton";
         setDesiredArrivalTimePickerVisibility(false);
     }
 
-    function search() {
-        // should do in server:
-        // const departureTimestamp = firebase.firestore.Timestamp.fromDate(new Date(departureTime));
-        // const desiredArrivalTimestamp = firebase.firestore.Timestamp.fromDate(new Date(desiredArrivalTime));
-        
-        // Cast the departure time to a Firebase Timestamp
-        // const departureTimestamp = firebase.firestore.Timestamp.fromDate(departureTime);
-    }
+    const search = async () => {
+        console.log("serach ride pressed");
+        //navigation.navigate('SearchResults');
+        if (departureTime &&desiredArrivalTime && from && to ){
+            try{
+                const res =  await fetch(("http://"+IP+":1000/searchRide"),{
+                    method : 'POST',
+                    headers: {Accept: "application/json",
+                    "Content-Type": "application/json" 
+                  },
+                  body: JSON.stringify({
+                    origin:from,
+                    destination: to,
+                    departureTime: departureTime
+                   })});
+
+                   const ride_details = await res.json();
+                   //console.log(ride_details.match_rides[0]);
+                    navigation.navigate('SearchResults', {
+                    screen : 'SearchResults',       
+                    params : {results: ride_details, user_location: from},
+                  });
+                }catch(e){
+                    console.error("Error searching ride",e);
+                }
+            }else{
+                alert("you must fill in all the fields!");
+            }
+        };
+
+    
 
     return(
     <ImageBackground source={require('../components/pic2.jpg')} style={styles.background}>
@@ -73,6 +97,7 @@ import BackButton from "../components/BackButton";
             <BackButton/>
             <GooglePlacesAutocomplete
                 styles={styles.location}
+                fetchDetails = {true}
                 placeholder='Search'
                 onPress={handleFromLocation}
                 query={{
@@ -82,6 +107,7 @@ import BackButton from "../components/BackButton";
             />
             <GooglePlacesAutocomplete
                 styles={styles.location}
+                fetchDetails = {true}
                 placeholder='To'
                 onPress={handleToLocation}
                 query={{

@@ -1,5 +1,5 @@
-import React, { useState } from "react";
-import { View, Button, Text, TextInput, StyleSheet, ImageBackground,KeyboardAvoidingView,TouchableWithoutFeedback } from "react-native";
+import React, { useState, useEffect } from "react";
+import { View, Button, Text, TextInput, StyleSheet, ImageBackground,KeyboardAvoidingView,TouchableWithoutFeedback, FlatList } from "react-native";
 import { Picker } from "@react-native-picker/picker";
 import DateTimePickerModal from "react-native-modal-datetime-picker";
 import { firebase } from "@react-native-firebase/auth";
@@ -10,18 +10,47 @@ import { Keyboard } from 'react-native'
 import { SafeAreaView } from "react-native-safe-area-context";
 import { ScrollView } from "react-native-gesture-handler";
 import BackButton from "../components/BackButton";
+import { IP } from "../components/constants";
+import RidesRequestDisplay from "../components/RidesRequestDisplay";
+// import RidesRowDisplay from "../components/RidesRowDisplay";
 
   const RidesRequest = ({navigation}) => {
   const { currentUser } = firebase.auth();
   const {params} = useRoute();
+  const [rides_requests, SetRides_requests] = useState([]);
 
+  // console.log('rides request page!');
+  useEffect(() => {
+    const getRidesRequests = async () => {
+      try {
+        const res = await fetch("http://"+IP+":1000/ridesRequests", {
+          method: "POST", 
+          headers: { Accept: "application/json",
+           "Content-Type": "application/json" 
+          },
+          body: JSON.stringify({id: currentUser.uid})});
+
+        const rides_requests_data = await res.json();
+        // console.log(rides_requests_data.rides_requests_data);
+        SetRides_requests(rides_requests_data.rides_requests_data);
+      } catch (error) {
+        console.log("im error ", error);
+      }
+    };
+    getRidesRequests();
+  }, [currentUser.uid]);
 
   return (
    <ImageBackground source={require('../components/pic3.jpg')} style={theStyle.background}>
     <View style ={theStyle.center}>
       <BackButton/>
       <Text style={theStyle.bold}>RidesRequest</Text>
-      <View style={theStyle.separator}></View> 
+      <View style={theStyle.separator}></View>
+      <FlatList
+           data={rides_requests}
+           keyExtractor = {item=> item.id}
+           renderItem = {({item}) => <RidesRequestDisplay UseRides = {item}/>}
+      />
     </View>
   </ImageBackground>     
   )

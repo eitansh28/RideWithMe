@@ -10,6 +10,7 @@ import BackButton from "../components/BackButton";
 
 
 
+
 const ProfileScreen = ({ user }) => {
   
   const { currentUser } = firebase.auth();
@@ -48,7 +49,7 @@ const ProfileScreen = ({ user }) => {
         console.log("im error ", error);
       }
     };
-     getUserDetails();
+    
   }, [currentUser.uid]);
   
 
@@ -171,9 +172,6 @@ const ProfileScreen = ({ user }) => {
             <View style={styles.detailsRow}>
               <Text style={styles.detailsLabel}>Gender:   {gender}</Text>
             </View>
-            {/* <View style={styles.detailsRow}>
-              <Text style={styles.detailsLabel}>Email:   {email}</Text>
-            </View> */}
           </View>
         </View>
       </ImageBackground>

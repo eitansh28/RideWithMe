@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { View, Button, Text, TextInput, StyleSheet, ImageBackground,KeyboardAvoidingView,TouchableWithoutFeedback, FlatList} from "react-native";
+import { View, Button, Text, TextInput, StyleSheet, ImageBackground,KeyboardAvoidingView,TouchableWithoutFeedback, FlatList } from "react-native";
 import { Picker } from "@react-native-picker/picker";
 import DateTimePickerModal from "react-native-modal-datetime-picker";
 import { firebase } from "@react-native-firebase/auth";
@@ -9,49 +9,50 @@ import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplet
 import { Keyboard } from 'react-native'
 import { SafeAreaView } from "react-native-safe-area-context";
 import { ScrollView } from "react-native-gesture-handler";
-import { IP } from '../components/constants';
 import BackButton from "../components/BackButton";
-import RidesRowDisplay from "../components/RidesRowDisplay";
+import AskedToJoinDisplay from "../components/AskedToJoinDisplay";
+import { IP } from "../components/constants";
 
-  const RidesWithMe = ({navigation}) => {
+  const AskedToJoin = ({navigation}) => {
   const { currentUser } = firebase.auth();
   const {params} = useRoute();
-  const [rides_with_me, SetRides_with_me] = useState([]);
-
+  const [asked_to_join, SetAsked_to_join] = useState([]);
+  const travel_doc_id = params.params;
 
   useEffect(() => {
-    const getRidesWithMe = async () => {
+    const getAskedToJoin = async () => {
       try {
-        const res = await fetch("http://"+IP+":1000/getRidesWithMe", {
+        const res = await fetch("http://"+IP+":1000/getAskedToJoin", {
           method: "POST", 
           headers: { Accept: "application/json",
            "Content-Type": "application/json" 
           },
-          body: JSON.stringify({ id: currentUser.uid })});
+          body: JSON.stringify({travel_doc_id: travel_doc_id})});
 
-        const user_rides = await res.json();
-        console.log(user_rides.rides_with_me);
-        SetRides_with_me(user_rides.rides_with_me);
+        const asked_to_join_data = await res.json();
+        SetAsked_to_join(asked_to_join_data.asked_to_join_data);
       } catch (error) {
         console.log("im error ", error);
       }
     };
-      getRidesWithMe();
-  }, [currentUser.uid]);
+    getAskedToJoin();
+  }, [currentUser.uid, asked_to_join]);
 
   return (
-  <ImageBackground source={require('../components/pic3.jpg')} style={theStyle.background}>
-    <View style ={theStyle.center}>
-      <BackButton/>
-      <Text style={theStyle.bold}>Rides With Me</Text>
+   <ImageBackground source={require('../components/pic3.jpg')} style={theStyle.background}>
+<View style ={theStyle.center}>
+  <BackButton/>
+      <Text style={theStyle.bold}>Asked To Join</Text>
       <View style={theStyle.separator}></View>
       <FlatList
-           data={rides_with_me}
+           data={asked_to_join}
            keyExtractor = {item=> item.doc_id}
-           renderItem = {({item}) => <RidesRowDisplay UseRides = {item}/>}
+           renderItem = {({item}) => <AskedToJoinDisplay user = {item} travelDocId={travel_doc_id}/>}
       />
-    </View>
-  </ImageBackground>
+      </View>
+       </ImageBackground>
+   
+       
   )
 };
 
@@ -144,4 +145,4 @@ const theStyle = StyleSheet.create({
 }
 
 });
-  export default RidesWithMe;
+  export default AskedToJoin;
