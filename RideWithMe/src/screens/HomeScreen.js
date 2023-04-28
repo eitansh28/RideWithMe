@@ -1,19 +1,10 @@
-<<<<<<< HEAD
-import React from 'react';
-import {StyleSheet,Button, Text, View, ImageBackground, Pressable} from 'react-native';
-import auth from "@react-native-firebase/auth";
-import { useRoute } from '@react-navigation/native';
-import { Linking } from 'react-native';
-import { TouchableOpacity } from 'react-native';
-// import Icon from 'react-native-vector-icons/FontAwesome';
-=======
 import React,{useState} from 'react';
 import {StyleSheet,Button, Pressable, Text, View, ImageBackground} from 'react-native';
 import auth from "@react-native-firebase/auth";
 import { useRoute } from '@react-navigation/native';
 import { firebase } from "@react-native-firebase/auth";
 import { getUserDetails } from '../components/getUserDetials';
->>>>>>> main
+import { Linking } from 'react-native';
 
 const HomeScreen = ({navigation}) => {
   const {params} = useRoute();
@@ -36,7 +27,7 @@ const HomeScreen = ({navigation}) => {
     navigation.navigate("SearchRide");
   }
   function move_to_post_ride(){
-    navigation.navigate({name:"PostRide", params:{userid: id}});
+    navigation.navigate("PostRide");
   }
   function move_to_post_group_ride(){
     navigation.navigate("PostGroupRide");
@@ -118,7 +109,7 @@ const styles = StyleSheet.create({
     height: 200,
     borderRadius: 150,
 
-    backgroundColor: 'gray',
+    backgroundColor: 'green',
     opacity:0.5,
     justifyContent: 'center',
     alignItems: 'center',

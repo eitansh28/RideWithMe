@@ -8,6 +8,7 @@ import HomeScreen from '../screens/HomeScreen';
 import SetUserData from '../screens/SetUserData';
 import ProfileScreen from '../screens/ProfileScreen';
 import SearchRide from '../screens/SearchRide';
+import SearchResults from '../screens/SearchResults';
 import PostRide from '../screens/PostRide';
 import PostGroupRide from '../screens/PostGroupRide';
 import Sa from '../screens/Sa';
@@ -59,10 +60,14 @@ function MainContainer() {
             name="PostGroupRide" 
             options={{ headerShown: false }} 
             component={PostGroupRide} />
-                        <Stack.Screen 
+            <Stack.Screen 
             name="Sa" 
             options={{ headerShown: false }} 
             component={Sa} />
+            <Stack.Screen 
+            name="SearchResults" 
+            options={{ headerShown: false }} 
+            component={SearchResults} />
             
         </Stack.Navigator>
     </NavigationContainer>

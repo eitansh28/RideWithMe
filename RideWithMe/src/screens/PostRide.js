@@ -9,27 +9,34 @@ import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplet
 import { Keyboard } from 'react-native'
 import { SafeAreaView } from "react-native-safe-area-context";
 import { ScrollView } from "react-native-gesture-handler";
+// import { getAddressFromLatLong } from './googlePlaces.js';
+
 
 
 
   const PostRide = ({navigation}) => {
   const { currentUser } = firebase.auth();
-<<<<<<< HEAD
-  const [origin, setOrigin] = useState('default');
-  const [destination, setDestination] = useState('default');
-=======
   const [user_name, SetUser_name] = useState();
   const [origin, setOrigin] = useState('defualt');
   const [destination, setDestination] = useState('defualt');
->>>>>>> main
+  const [origin1, setOrigin1] = useState('defualt');
+  const [destination1, setDestination1] = useState('defualt');
   const [date, setDate] = useState(new Date());
   const [price, setPrice] = useState('');
+  const [phone, setPhone] = useState('');
   const [seats, setSeats] = useState('');
   const [departureTime, setDepartureTime] = useState(null);
   const [isDepartureTimePickerVisible, setDepartureTimePickerVisibility] = useState(false);
 
   const {params} = useRoute();
-  // the_date = params.selectedDate1;
+
+  // const { currentUser } = firebase.auth();
+  const userId = currentUser.id;
+  // const {phone} = userId.phone;
+  // let phone = "";
+  // firestore().collection('users').doc(userId).get().then((doc) => {
+  //   phone = doc.data().phone;
+  // })
 
   useEffect(() => {
 
@@ -43,6 +50,7 @@ import { ScrollView } from "react-native-gesture-handler";
           body: JSON.stringify({ id: currentUser.uid })});
 
         const user_details = await res.json();
+        setPhone(user_details.user_details.phone);
         console.log(user_details.user_details);
         SetUser_name(user_details.user_details.name);
       } catch (error) {
@@ -55,6 +63,7 @@ import { ScrollView } from "react-native-gesture-handler";
   
   const save = async () => {
     console.log(destination," ",price," ", seats);
+    
     if (destination && price && seats){
       try {
         alert("hhhhhhhhhhhhhhhh")
@@ -67,7 +76,10 @@ import { ScrollView } from "react-native-gesture-handler";
                               driver_name: user_name,
                               origin: origin,
                               dest: destination,
+                              // origin_name: origin1,
+                              // dest_name: destination1,
                               price: price,
+                              phone: phone,
                               seats: seats,
                               date: departureTime })});
         } catch (e) {
@@ -109,6 +121,8 @@ import { ScrollView } from "react-native-gesture-handler";
 
     // Set the location state
     setOrigin({ latitude: lat, longitude: lng });
+
+    // getAddressFromLatLong(lat, lng).then(address => setOrigin1(address));
 }
 };
 
@@ -121,6 +135,7 @@ const handleToLocation = (data, details = null) => {
 
       // Set the location state
       setDestination({ latitude: lat, longitude: lng });
+      // getAddressFromLatLong(lat, lng).then(address => setDestination1(address));
   }
 };
 
@@ -145,7 +160,6 @@ const handleToLocation = (data, details = null) => {
           styles={theStyle.location}
           fetchDetails = {true}
           placeholder='Destanation'
-          fetchDetails = {true}
           onPress={handleToLocation}
           query={{
               key: 'AIzaSyA8T086PYyNfch449m9sfG5HFKwbBWnuo0',

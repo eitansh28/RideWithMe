@@ -1,7 +1,7 @@
 import { View, Text } from 'react-native'
 import React from 'react'
 
-const myRides = () => {
+const MyRides = () => {
   return (
     <View>
       <Text>myRides</Text>
@@ -9,4 +9,4 @@ const myRides = () => {
   )
 }
 
-export default myRides
+export default MyRides

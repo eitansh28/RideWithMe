@@ -41,11 +41,12 @@ import {
     };
   
     const save = async () => {
-      if (name && age && image) {
-        uploadImageToStorage(image, `${currentUser.uid}`);
+      alert("wwwwww")
+      if (name && age) {
+        // uploadImageToStorage(image, `${currentUser.uid}`);
   
-        const ref = firebase.storage().ref(`${currentUser.uid}`);
-        const url = await ref.getDownloadURL();
+        // const ref = firebase.storage().ref(`${currentUser.uid}`);
+        // const url = await ref.getDownloadURL();
         const intAge = parseInt(age, 10);
         if (isNaN(intAge)) {
             alert("age must be an integer!");
@@ -87,7 +88,7 @@ import {
                     age: age, 
                     gender: gender,
                     phone: phone,
-                    photoURL: url,
+                    // photoURL: url,
                     allergies: allergies,
                     smoker: smoker
                   })});
