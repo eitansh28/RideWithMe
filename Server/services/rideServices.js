@@ -10,10 +10,13 @@ const postRide = async (req,res,next) => {
         let driver_id = req.body.driver_id || "";
         let driver_name = req.body.driver_name || "";
         let origin = req.body.origin || "";
+        // let origin_name = req.body.origin_name || "";
         console.log(origin);
         // let string_origin = "latitude: "+origin.latitude+", longtitude: "+origin.longtitude;
         let destination = req.body.dest || "";
+        // let destination_name = req.body.destination_name || "";
         let price = req.body.price || "";
+        let phone = req.body.phone || "";
         let seats = req.body.seats || "";
         let departureTime = req.body.date || "";
         await db.collection('travels')
@@ -24,6 +27,7 @@ const postRide = async (req,res,next) => {
             destination: `${JSON.stringify(destination)}`,
             price: `${price}`,
             seats: `${seats}`,
+            phone: `${phone}`,
             date: `${departureTime}`
         });
     }catch(e){

@@ -33,7 +33,7 @@ const addUser = async (req,res,next) =>{
             age: age,
             gender: gender,
             phone: phone,
-            photoURL:photoURL,
+            // photoURL:photoURL,
             allergies:allergies,
             smoker:smoker,
         })
