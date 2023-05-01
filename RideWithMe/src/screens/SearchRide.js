@@ -2,8 +2,11 @@ import React, {useState, useEffect} from "react";
 import {ScrollView, View, Text, StyleSheet, Button ,Alert, TextInput, ImageBackground} from 'react-native';
 import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplete';
 import DateTimePickerModal from "react-native-modal-datetime-picker";
+import BackButton from "../components/BackButton";
+import { IP } from "../components/constants";
+import SearchResults from "./SearchResults";
 
-  const SearchRide = () => {
+  const SearchRide = ({navigation}) => {
 
     const [from, setFrom] = useState("");
     const [to, setTo] = useState("");
@@ -11,7 +14,6 @@ import DateTimePickerModal from "react-native-modal-datetime-picker";
     const [isDepartureTimePickerVisible, setDepartureTimePickerVisibility] = useState(false);
     const [desiredArrivalTime, setDesiredArrivalTime] = useState(null);
     const [isDesiredArrivalTimePickerVisible, setDesiredArrivalTimePickerVisibility] = useState(false);
-
 
     const handleFromLocation = (data, details = null) => {
         // Check if geometry is defined
@@ -57,11 +59,12 @@ import DateTimePickerModal from "react-native-modal-datetime-picker";
         setDesiredArrivalTimePickerVisibility(false);
     }
 
-    const  search = async () => {
+    const search = async () => {
         console.log("serach ride pressed");
+        //navigation.navigate('SearchResults');
         if (departureTime &&desiredArrivalTime && from && to ){
             try{
-                const res =  await fetch(("http://192.168.144.1:1000/searchRide"),{
+                const res =  await fetch(("http://"+IP+":1000/searchRide"),{
                     method : 'POST',
                     headers: {Accept: "application/json",
                     "Content-Type": "application/json" 
@@ -73,7 +76,11 @@ import DateTimePickerModal from "react-native-modal-datetime-picker";
                    })});
 
                    const ride_details = await res.json();
-                   console.log(ride_details.match_rides[0].origin);
+                   //console.log(ride_details.match_rides[0]);
+                    navigation.navigate('SearchResults', {
+                    screen : 'SearchResults',       
+                    params : {results: ride_details, user_location: from},
+                  });
                 }catch(e){
                     console.error("Error searching ride",e);
                 }
@@ -87,6 +94,7 @@ import DateTimePickerModal from "react-native-modal-datetime-picker";
     return(
     <ImageBackground source={require('../components/pic2.jpg')} style={styles.background}>
         <View style={styles.center}>
+            <BackButton/>
             <GooglePlacesAutocomplete
                 styles={styles.location}
                 fetchDetails = {true}

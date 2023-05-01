@@ -1,5 +1,5 @@
-import React, { useState } from "react";
-import { View, Button, Text, TextInput, StyleSheet, ImageBackground,KeyboardAvoidingView,TouchableWithoutFeedback } from "react-native";
+import React, { useState, useEffect } from "react";
+import { View, Button, Text, TextInput, StyleSheet, ImageBackground,KeyboardAvoidingView,TouchableWithoutFeedback, FlatList} from "react-native";
 import { Picker } from "@react-native-picker/picker";
 import DateTimePickerModal from "react-native-modal-datetime-picker";
 import { firebase } from "@react-native-firebase/auth";
@@ -9,51 +9,49 @@ import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplet
 import { Keyboard } from 'react-native'
 import { SafeAreaView } from "react-native-safe-area-context";
 import { ScrollView } from "react-native-gesture-handler";
+import { IP } from '../components/constants';
 import BackButton from "../components/BackButton";
+import RidesRowDisplay from "../components/RidesRowDisplay";
 
-  const MyRides = ({navigation}) => {
+  const RidesWithMe = ({navigation}) => {
   const { currentUser } = firebase.auth();
   const {params} = useRoute();
+  const [rides_with_me, SetRides_with_me] = useState([]);
 
-  
-    function move_to_rides_with_me() {
-        navigation.navigate("RidesWithMe");
-    }
 
-    function move_to_rides_with_you() {
-        navigation.navigate("RidesWithYou");
-    }
+  useEffect(() => {
+    const getRidesWithMe = async () => {
+      try {
+        const res = await fetch("http://"+IP+":1000/getRidesWithMe", {
+          method: "POST", 
+          headers: { Accept: "application/json",
+           "Content-Type": "application/json" 
+          },
+          body: JSON.stringify({ id: currentUser.uid })});
 
-    function move_to_rides_request() {
-        navigation.navigate("RidesRequest");
-    }
+        const user_rides = await res.json();
+        console.log(user_rides.rides_with_me);
+        SetRides_with_me(user_rides.rides_with_me);
+      } catch (error) {
+        console.log("im error ", error);
+      }
+    };
+      getRidesWithMe();
+  }, [currentUser.uid]);
 
   return (
-   <ImageBackground source={require('../components/pic3.jpg')} style={theStyle.background}>
-<View style ={theStyle.center}>
-  <BackButton/>
-      <Text style={theStyle.bold}>My Rides</Text>
-          <View style={theStyle.separator}></View>
-          <Button 
-            title="Rides With Me"
-            color={'green'}
-            onPress={move_to_rides_with_me}
-           />
-           <Button 
-            title="Rides With You"
-            color={'green'}
-            onPress={move_to_rides_with_you}
-           />
-           <Button 
-            title="Rides Request"
-            color={'green'}
-            onPress={move_to_rides_request}
-           />
-     
-      </View>
-       </ImageBackground>
-   
-       
+  <ImageBackground source={require('../components/pic3.jpg')} style={theStyle.background}>
+    <View style ={theStyle.center}>
+      <BackButton/>
+      <Text style={theStyle.bold}>Rides With Me</Text>
+      <View style={theStyle.separator}></View>
+      <FlatList
+           data={rides_with_me}
+           keyExtractor = {item=> item.doc_id}
+           renderItem = {({item}) => <RidesRowDisplay UseRides = {item}/>}
+      />
+    </View>
+  </ImageBackground>
   )
 };
 
@@ -146,4 +144,4 @@ const theStyle = StyleSheet.create({
 }
 
 });
-  export default MyRides;
+  export default RidesWithMe;
