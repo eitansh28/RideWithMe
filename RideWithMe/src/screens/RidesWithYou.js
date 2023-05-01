@@ -11,44 +11,16 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import { ScrollView } from "react-native-gesture-handler";
 import BackButton from "../components/BackButton";
 
-  const MyRides = ({navigation}) => {
+  const RidesWithYou = ({navigation}) => {
   const { currentUser } = firebase.auth();
   const {params} = useRoute();
-
-  
-    function move_to_rides_with_me() {
-        navigation.navigate("RidesWithMe");
-    }
-
-    function move_to_rides_with_you() {
-        navigation.navigate("RidesWithYou");
-    }
-
-    function move_to_rides_request() {
-        navigation.navigate("RidesRequest");
-    }
 
   return (
    <ImageBackground source={require('../components/pic3.jpg')} style={theStyle.background}>
 <View style ={theStyle.center}>
   <BackButton/>
-      <Text style={theStyle.bold}>My Rides</Text>
+      <Text style={theStyle.bold}>Rides With You</Text>
           <View style={theStyle.separator}></View>
-          <Button 
-            title="Rides With Me"
-            color={'green'}
-            onPress={move_to_rides_with_me}
-           />
-           <Button 
-            title="Rides With You"
-            color={'green'}
-            onPress={move_to_rides_with_you}
-           />
-           <Button 
-            title="Rides Request"
-            color={'green'}
-            onPress={move_to_rides_request}
-           />
      
       </View>
        </ImageBackground>
@@ -146,4 +118,4 @@ const theStyle = StyleSheet.create({
 }
 
 });
-  export default MyRides;
+  export default RidesWithYou;

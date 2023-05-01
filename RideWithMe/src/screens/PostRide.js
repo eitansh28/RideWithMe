@@ -9,10 +9,8 @@ import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplet
 import { Keyboard } from 'react-native'
 import { SafeAreaView } from "react-native-safe-area-context";
 import { ScrollView } from "react-native-gesture-handler";
-// import { getAddressFromLatLong } from './googlePlaces.js';
-
-
-
+// import { IP } from '../components/constants.js';
+import BackButton from "../components/BackButton";
 
   const PostRide = ({navigation}) => {
   const { currentUser } = firebase.auth();
@@ -39,7 +37,6 @@ import { ScrollView } from "react-native-gesture-handler";
   // })
 
   useEffect(() => {
-
     const getUserDetails = async () => {
       try {
         const res = await fetch("http://192.168.1.125:1000/getUserDetails", {
@@ -143,7 +140,8 @@ const handleToLocation = (data, details = null) => {
 
   
   return (
-   <ImageBackground source={require('../components/pic3.jpg')} style={theStyle.background}> 
+   <ImageBackground source={require('../components/pic3.jpg')} style={theStyle.background}>
+    <BackButton/>    
     <View style ={theStyle.center}>
       <Text style={theStyle.bold}>Travel details</Text>
       <GooglePlacesAutocomplete
@@ -194,11 +192,8 @@ const handleToLocation = (data, details = null) => {
             color={'green'}
             onPress={save}
            />
-     
       </View>
-       </ImageBackground>
-   
-       
+       </ImageBackground> 
   )
 };
 

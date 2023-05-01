@@ -1,5 +1,5 @@
-import React, { useState } from "react";
-import { View, Button, Text, TextInput, StyleSheet, ImageBackground,KeyboardAvoidingView,TouchableWithoutFeedback } from "react-native";
+import React, { useState, useEffect } from "react";
+import { View, Button, Text, TextInput, StyleSheet, ImageBackground,KeyboardAvoidingView,TouchableWithoutFeedback, FlatList } from "react-native";
 import { Picker } from "@react-native-picker/picker";
 import DateTimePickerModal from "react-native-modal-datetime-picker";
 import { firebase } from "@react-native-firebase/auth";
@@ -10,46 +10,45 @@ import { Keyboard } from 'react-native'
 import { SafeAreaView } from "react-native-safe-area-context";
 import { ScrollView } from "react-native-gesture-handler";
 import BackButton from "../components/BackButton";
+import AskedToJoinDisplay from "../components/AskedToJoinDisplay";
+import { IP } from "../components/constants";
 
-  const MyRides = ({navigation}) => {
+  const AskedToJoin = ({navigation}) => {
   const { currentUser } = firebase.auth();
   const {params} = useRoute();
+  const [asked_to_join, SetAsked_to_join] = useState([]);
+  const travel_doc_id = params.params;
 
-  
-    function move_to_rides_with_me() {
-        navigation.navigate("RidesWithMe");
-    }
+  useEffect(() => {
+    const getAskedToJoin = async () => {
+      try {
+        const res = await fetch("http://"+IP+":1000/getAskedToJoin", {
+          method: "POST", 
+          headers: { Accept: "application/json",
+           "Content-Type": "application/json" 
+          },
+          body: JSON.stringify({travel_doc_id: travel_doc_id})});
 
-    function move_to_rides_with_you() {
-        navigation.navigate("RidesWithYou");
-    }
-
-    function move_to_rides_request() {
-        navigation.navigate("RidesRequest");
-    }
+        const asked_to_join_data = await res.json();
+        SetAsked_to_join(asked_to_join_data.asked_to_join_data);
+      } catch (error) {
+        console.log("im error ", error);
+      }
+    };
+    getAskedToJoin();
+  }, [currentUser.uid, asked_to_join]);
 
   return (
    <ImageBackground source={require('../components/pic3.jpg')} style={theStyle.background}>
 <View style ={theStyle.center}>
   <BackButton/>
-      <Text style={theStyle.bold}>My Rides</Text>
-          <View style={theStyle.separator}></View>
-          <Button 
-            title="Rides With Me"
-            color={'green'}
-            onPress={move_to_rides_with_me}
-           />
-           <Button 
-            title="Rides With You"
-            color={'green'}
-            onPress={move_to_rides_with_you}
-           />
-           <Button 
-            title="Rides Request"
-            color={'green'}
-            onPress={move_to_rides_request}
-           />
-     
+      <Text style={theStyle.bold}>Asked To Join</Text>
+      <View style={theStyle.separator}></View>
+      <FlatList
+           data={asked_to_join}
+           keyExtractor = {item=> item.doc_id}
+           renderItem = {({item}) => <AskedToJoinDisplay user = {item} travelDocId={travel_doc_id}/>}
+      />
       </View>
        </ImageBackground>
    
@@ -146,4 +145,4 @@ const theStyle = StyleSheet.create({
 }
 
 });
-  export default MyRides;
+  export default AskedToJoin;

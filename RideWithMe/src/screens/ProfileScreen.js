@@ -5,8 +5,8 @@ import firestore from "@react-native-firebase/firestore";
 import storage from "@react-native-firebase/storage";
 import { Picker } from "@react-native-picker/picker";
 import ImagePicker from "react-native-image-crop-picker";
-
-
+import { IP } from '../components/constants';
+import BackButton from "../components/BackButton";
 
 
 
@@ -30,6 +30,7 @@ const ProfileScreen = ({ user }) => {
   const pictureHeight = height * 0.4;
 
   useEffect(() => {
+    console.log(IP);
     const getUserDetails = async () => {
       try {
         const res = await fetch("http://192.168.1.125:1000/getUserDetails", {
@@ -40,13 +41,13 @@ const ProfileScreen = ({ user }) => {
           body: JSON.stringify({ id: currentUser.uid })});
 
         const user_details = await res.json();
-        console.log(user_details);
+        console.log(user_details.user_details);
         setName(user_details.user_details.name);
         setAge(user_details.user_details.age);
         setGender(user_details.user_details.gender);
         setPhotoURL(user_details.user_details.photoURL);
       } catch (error) {
-        console.log("im here ", error);
+        console.log("im error ", error);
       }
     };
     
@@ -114,6 +115,7 @@ const ProfileScreen = ({ user }) => {
 
   return (
     <View style={styles.container}>
+      <BackButton/>
       <ImageBackground source={{ uri:'https://images.pexels.com/photos/1590549/pexels-photo-1590549.jpeg?auto=compress&cs=tinysrgb&w=600' }} style={styles.backgroundImage}>
         <View style={styles.card}>
           <View style={[styles.photoContainer, { width: pictureWidth, height: pictureHeight,paddingTop:50 }]}>
@@ -175,9 +177,6 @@ const ProfileScreen = ({ user }) => {
             <View style={styles.detailsRow}>
               <Text style={styles.detailsLabel}>Gender:   {gender}</Text>
             </View>
-            {/* <View style={styles.detailsRow}>
-              <Text style={styles.detailsLabel}>Email:   {email}</Text>
-            </View> */}
           </View>
         </View>
       </ImageBackground>

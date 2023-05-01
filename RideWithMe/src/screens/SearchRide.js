@@ -3,7 +3,9 @@ import {ScrollView, View, Text, StyleSheet, Button ,Alert, TextInput, ImageBackg
 import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplete';
 import DateTimePickerModal from "react-native-modal-datetime-picker";
 import { Linking } from 'react-native';
-
+import BackButton from "../components/BackButton";
+// import { IP } from "../components/constants";
+import SearchResults from "./SearchResults";
 
   const SearchRide = ({navigation}) => {
 
@@ -14,7 +16,6 @@ import { Linking } from 'react-native';
     const [desiredArrivalTime, setDesiredArrivalTime] = useState(null);
     const [isDesiredArrivalTimePickerVisible, setDesiredArrivalTimePickerVisibility] = useState(false);
     
-
 
     const handleFromLocation = (data, details = null) => {
         // Check if geometry is defined
@@ -61,8 +62,9 @@ import { Linking } from 'react-native';
     }
 
     const search = async () => {
-        console.log("search ride pressed");
-        if (from && to ){
+        console.log("serach ride pressed");
+        //navigation.navigate('SearchResults');
+        if (departureTime &&desiredArrivalTime && from && to ){
             try{
                 const res =  await fetch(("http://192.168.1.125:1000/searchRide"),{
                     method : 'POST',
@@ -76,11 +78,11 @@ import { Linking } from 'react-native';
                    })});
 
                    const ride_details = await res.json();
-                   console.log(ride_details.match_rides[0].origin);
-                  //  alert(ride_details.match_rides[0].driver_name);
-                   let p = ride_details.match_rides[0].phone;
-                   navigation.navigate({name: "SearchResults", params: {results: ride_details}});
-                  //  Linking.openURL(`whatsapp://send?phone=${p}`);
+                   //console.log(ride_details.match_rides[0]);
+                    navigation.navigate('SearchResults', {
+                    screen : 'SearchResults',       
+                    params : {results: ride_details, user_location: from},
+                  });
                 }catch(e){
                     console.error("Error searching ride",e);
                 }
@@ -95,10 +97,7 @@ import { Linking } from 'react-native';
     <ImageBackground source={require('../components/pic3.jpg')} style={styles.background}>
         <Text style={styles.bold}>ride search</Text>
         <View style={styles.center}>
-        <Button
-                title="Search"
-                onPress={search}
-            />
+            <BackButton/>
             <GooglePlacesAutocomplete
                 styles={styles.location}
                 fetchDetails = {true}
