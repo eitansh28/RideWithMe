@@ -4,7 +4,8 @@ import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplet
 import DateTimePickerModal from "react-native-modal-datetime-picker";
 
   const SearchRide = () => {
-
+    const [originName, setOriginName] = useState('defualt');
+    const [destinationName, setDestinationName] = useState('defualt');
     const [from, setFrom] = useState("");
     const [to, setTo] = useState("");
     const [departureTime, setDepartureTime] = useState(null);
@@ -18,7 +19,8 @@ import DateTimePickerModal from "react-native-modal-datetime-picker";
         if (details.geometry && details.geometry.location) {
             // Extract latitude and longitude from the data parameter
             const { lat, lng } = details.geometry.location;
-    
+            
+            setOriginName(data.description);
             // Set the location state
             setFrom({ latitude: lat, longitude: lng });
         }
@@ -29,7 +31,7 @@ import DateTimePickerModal from "react-native-modal-datetime-picker";
         if (details.geometry && details.geometry.location) {
             // Extract latitude and longitude from the data parameter
             const { lat, lng } = details.geometry.location;
-    
+            setDestinationName(data.description);
             // Set the location state
             setTo({ latitude: lat, longitude: lng });
         }
@@ -61,19 +63,21 @@ import DateTimePickerModal from "react-native-modal-datetime-picker";
         console.log("serach ride pressed");
         if (departureTime &&desiredArrivalTime && from && to ){
             try{
-                const res =  await fetch(("http://192.168.144.1:1000/searchRide"),{
+                const res =  await fetch(("http://192.168.1.42:1000/searchRide"),{
                     method : 'POST',
                     headers: {Accept: "application/json",
                     "Content-Type": "application/json" 
                   },
                   body: JSON.stringify({
                     origin:from,
+                    originName:originName,              
                     destination: to,
+                    destinationName:destinationName,
                     departureTime: departureTime
                    })});
 
                    const ride_details = await res.json();
-                   console.log(ride_details.match_rides[0].origin);
+                   console.log(ride_details.match_rides);
                 }catch(e){
                     console.error("Error searching ride",e);
                 }

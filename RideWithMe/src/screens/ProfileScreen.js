@@ -29,9 +29,10 @@ const ProfileScreen = ({ user }) => {
   const pictureHeight = height * 0.4;
 
   useEffect(() => {
+    console.log('here');
     const getUserDetails = async () => {
       try {
-        const res = await fetch("http://192.168.144.1:1000/getUserDetails", {
+        const res = await fetch("http://192.168.1.42:1000/getUserDetails", {
           method: "POST", 
           headers: { Accept: "application/json",
            "Content-Type": "application/json" 
