@@ -8,7 +8,9 @@ const {
     ridesRequests,
     getAskedToJoin,
     approveRequest, 
-    rejectRequest } = require("../services/rideServices");
+    rejectRequest,
+    getPassengers,
+    getRidesWithYou } = require("../services/rideServices");
 const router = express.Router();
 
 router.post("/postRide", postRide);
@@ -19,7 +21,8 @@ router.post("/ridesRequests", ridesRequests);
 router.post("/approveRequest", approveRequest);
 router.post("/rejectRequest", rejectRequest);
 router.post("/getAskedToJoin", getAskedToJoin);
-
+router.post("/getPassengers", getPassengers);
+router.post("/getRidesWithYou", getRidesWithYou);
 
 
 module.exports = router;

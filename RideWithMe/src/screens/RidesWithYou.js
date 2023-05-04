@@ -1,5 +1,5 @@
-import React, { useState } from "react";
-import { View, Button, Text, TextInput, StyleSheet, ImageBackground,KeyboardAvoidingView,TouchableWithoutFeedback } from "react-native";
+import React, { useState, useEffect } from "react";
+import { View, Button, Text, TextInput, StyleSheet, ImageBackground,KeyboardAvoidingView,TouchableWithoutFeedback, FlatList } from "react-native";
 import { Picker } from "@react-native-picker/picker";
 import DateTimePickerModal from "react-native-modal-datetime-picker";
 import { firebase } from "@react-native-firebase/auth";
@@ -10,10 +10,33 @@ import { Keyboard } from 'react-native'
 import { SafeAreaView } from "react-native-safe-area-context";
 import { ScrollView } from "react-native-gesture-handler";
 import BackButton from "../components/BackButton";
+import { IP } from "../components/constants";
+import YouRidesRowDisplay from "../components/YouRidesRowDisplay";
 
-  const RidesWithYou = ({navigation}) => {
+const RidesWithYou = ({navigation}) => {
   const { currentUser } = firebase.auth();
+  console.log(currentUser.uid);
   const {params} = useRoute();
+  const [rides_with_you, SetRides_with_you] = useState([]);
+  useEffect(() => {
+    const getRidesWithYou = async () => {
+      try {
+        const res = await fetch("http://"+IP+":1000/getRidesWithYou", {
+          method: "POST", 
+          headers: { Accept: "application/json",
+           "Content-Type": "application/json" 
+          },
+          body: JSON.stringify({ id: currentUser.uid })});
+
+        const user_rides = await res.json();
+        console.log(user_rides.rides);
+        SetRides_with_you(user_rides.rides);
+      } catch (error) {
+        console.log("im error ", error);
+      }
+    };
+    getRidesWithYou();
+  }, [currentUser.uid]);
 
   return (
    <ImageBackground source={require('../components/pic3.jpg')} style={theStyle.background}>
@@ -21,7 +44,11 @@ import BackButton from "../components/BackButton";
   <BackButton/>
       <Text style={theStyle.bold}>Rides With You</Text>
           <View style={theStyle.separator}></View>
-     
+          <FlatList
+            data={rides_with_you}
+            keyExtractor = {item=> item.doc_id}
+            renderItem = {({item}) => <YouRidesRowDisplay UseRides = {item}/>}
+          />
       </View>
        </ImageBackground>
    

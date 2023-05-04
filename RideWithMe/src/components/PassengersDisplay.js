@@ -4,9 +4,9 @@ import firestore from "@react-native-firebase/firestore";
 import { IP } from './constants';
 import { useNavigation } from '@react-navigation/native';
 
-const AskedToJoinDisplay = ({user, travelDocId}) => {
+const PassengersDisplay = ({user, travelDocId}) => {
   const navigation = useNavigation();
-    console.log("im inside here!")
+    console.log("im inside!")
     console.log(user);
 
     function move_to_user_details() {
@@ -14,51 +14,11 @@ const AskedToJoinDisplay = ({user, travelDocId}) => {
       console.log("func has been called!");
     }
 
-    const approve_user = async () => {
-      console.log("approve has been clicked!");
-      try {
-        const res = await fetch("http://"+IP+":1000/approveRequest", {
-          method: "POST", 
-          headers: { Accept: "application/json",
-           "Content-Type": "application/json" 
-          },
-          body: JSON.stringify({ 
-            travel_doc_id: travelDocId,
-            asked_doc_id: user.doc_id,
-            user_id: user.user_id,
-            user_name: user.user_name,
-            from_where: user.from_where
-           })});
-      } catch (error) {
-        console.log("im error ", error);
-      }
-    }
-
-    const reject_user = async () => {
-      console.log("reject clicked");
-      try {
-        const res = await fetch("http://"+IP+":1000/rejectRequest", {
-          method: "POST", 
-          headers: { Accept: "application/json",
-           "Content-Type": "application/json" 
-          },
-          body: JSON.stringify({
-            user_id: user.user_id,
-            travel_doc_id: travelDocId,
-            asked_doc_id: user.doc_id
-           })});
-      } catch (error) {
-        console.log("im error ", error);
-      }
-    }
-   
     return (  
     <View style = {{flex : 1,paddingBottom:10}}>    
         <View style = {{flex:0.5,backgroundColor:'#d0c7b7',borderRadius:10}}>
             <View style={{flexDirection:'row',justifyContent:'space-between'}}>
             <Button title= {"Name: "+user.user_name} color={'blue'} onPress={move_to_user_details}/>
-            <Button title="Approve" color={'green'} onPress={approve_user}/>
-            <Button title="Reject" color={'red'} onPress={reject_user}/>
         </View>
         <Text style={[styles.User,{marginBottom:10}]}>from : {user.from_where}</Text>
       </View>
@@ -88,4 +48,4 @@ const styles = StyleSheet.create({
         },
 })
 
-export default AskedToJoinDisplay
+export default PassengersDisplay

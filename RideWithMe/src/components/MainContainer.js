@@ -19,6 +19,7 @@ import RidesRequest from '../screens/RidesRequest';
 import MainPagesNev from './MainPagesNev';
 import AskedToJoin from '../screens/AskedToJoin';
 import UserDetails from '../screens/UserDetails';
+import Passengers from '../screens/Passengers';
 
 const Stack = createNativeStackNavigator();
 
@@ -98,6 +99,10 @@ function MainContainer() {
             name="UserDetails"
             options={{ headerShown: false}}
             component={UserDetails} />
+            <Stack.Screen
+            name="Passengers"
+            options={{ headerShown: false}}
+            component={Passengers} />
         </Stack.Navigator>
     </NavigationContainer>
   )

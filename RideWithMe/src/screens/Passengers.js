@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { View, Button, Text, TextInput, StyleSheet, ImageBackground,KeyboardAvoidingView,TouchableWithoutFeedback, FlatList} from "react-native";
+import { View, Button, Text, TextInput, StyleSheet, ImageBackground,KeyboardAvoidingView,TouchableWithoutFeedback, FlatList } from "react-native";
 import { Picker } from "@react-native-picker/picker";
 import DateTimePickerModal from "react-native-modal-datetime-picker";
 import { firebase } from "@react-native-firebase/auth";
@@ -9,49 +9,51 @@ import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplet
 import { Keyboard } from 'react-native'
 import { SafeAreaView } from "react-native-safe-area-context";
 import { ScrollView } from "react-native-gesture-handler";
-import { IP } from '../components/constants';
 import BackButton from "../components/BackButton";
-import MyRidesRowDisplay from "../components/MyRidesRowDisplay";
+import AskedToJoinDisplay from "../components/AskedToJoinDisplay";
+import { IP } from "../components/constants";
+import PassengersDisplay from "../components/PassengersDisplay";
 
-const RidesWithMe = ({navigation}) => {
+const Passengers = ({navigation}) => {
   const { currentUser } = firebase.auth();
   const {params} = useRoute();
-  const [rides_with_me, SetRides_with_me] = useState([]);
-
+  const [passengers, SetPassengers] = useState([]);
+  const travel_doc_id = params.params;
 
   useEffect(() => {
-    const getRidesWithMe = async () => {
+    const getPassengers = async () => {
       try {
-        const res = await fetch("http://"+IP+":1000/getRidesWithMe", {
+        const res = await fetch("http://"+IP+":1000/getPassengers", {
           method: "POST", 
           headers: { Accept: "application/json",
            "Content-Type": "application/json" 
           },
-          body: JSON.stringify({ id: currentUser.uid })});
+          body: JSON.stringify({travel_doc_id: travel_doc_id})});
 
-        const user_rides = await res.json();
-        console.log(user_rides.rides_with_me);
-        SetRides_with_me(user_rides.rides_with_me);
+        const passengers_data = await res.json();
+        SetPassengers(passengers_data.passengers_data);
       } catch (error) {
         console.log("im error ", error);
       }
     };
-      getRidesWithMe();
+    getPassengers();
   }, [currentUser.uid]);
 
   return (
-  <ImageBackground source={require('../components/pic3.jpg')} style={theStyle.background}>
-    <View style ={theStyle.center}>
-      <BackButton/>
-      <Text style={theStyle.bold}>Rides With Me</Text>
+   <ImageBackground source={require('../components/pic3.jpg')} style={theStyle.background}>
+<View style ={theStyle.center}>
+  <BackButton/>
+      <Text style={theStyle.bold}>Passengers</Text>
       <View style={theStyle.separator}></View>
       <FlatList
-        data={rides_with_me}
-        keyExtractor = {item=> item.doc_id}
-        renderItem = {({item}) => <MyRidesRowDisplay UseRides = {item}/>}
+           data={passengers}
+           keyExtractor = {item=> item.doc_id}
+           renderItem = {({item}) => <PassengersDisplay user = {item} travelDocId={travel_doc_id}/>}
       />
-    </View>
-  </ImageBackground>
+      </View>
+       </ImageBackground>
+   
+       
   )
 };
 
@@ -144,4 +146,4 @@ const theStyle = StyleSheet.create({
 }
 
 });
-  export default RidesWithMe;
+  export default Passengers;

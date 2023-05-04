@@ -261,6 +261,7 @@ const getAskedToJoin = async (req, res, next) => {
         let asked_doc_id = req.body.asked_doc_id || "";
         let user_id = req.body.user_id || "";
         let user_name = req.body.user_name || "";
+        let from_where = req.body.from_where || "";
         const travel = await db.collection('travels').doc(travel_doc_id).get();
         // 1. decrease seats by one
         await travel.ref.update({
@@ -273,7 +274,8 @@ const getAskedToJoin = async (req, res, next) => {
         await db.collection('travels').doc(travel_doc_id).collection('passengers')
         .add({
             user_id: user_id,
-            user_name: user_name
+            user_name: user_name,
+            from_where: from_where
         });
         // 3. add the user to the answered collection
         await db.collection('travels').doc(travel_doc_id).collection('answered')
@@ -306,6 +308,55 @@ const getAskedToJoin = async (req, res, next) => {
     }
   };
 
+  const getPassengers = async (req, res, next) => {
+    let db = firebase.firestore();
+    try{
+        let travel_doc_id = req.body.travel_doc_id || "";
+        const passengers_docs = await db.collection('travels').doc(travel_doc_id).collection('passengers').get();
+        const passengers_data = passengers_docs.docs.filter((doc) => {
+            // Filter out the empty documents
+            const data = doc.data();
+            return data.hasOwnProperty('user_id');
+        }).map((doc) => {
+            // Extract the data from the Firestore document
+            const data = doc.data();
+            // Add the doc.id to the data object
+            data.doc_id = doc.id;
+            // Return the data object
+            return data;
+        });
+        res.send({passengers_data});
+    } catch(e) {
+        console.error("Error getting asked_to_join data: ", e);
+    }
+};
+
+const getRidesWithYou = async (req, res, next) => {
+    console.log('rides with you ready!');
+    let db = firebase.firestore();
+    let u_id = req.body.id || "";
+    console.log(u_id);
+    try {
+        const mainSnapshot1 = await db.collection("travels").get();
+        const rides = [];
+        await Promise.all(mainSnapshot1.docs.map(async(doc) => {
+            const res = await db.collection("travels").doc(doc.id).collection("passengers").where("user_id", "==", u_id).get()
+            if(!res.empty) {
+                const ride = doc.data();
+                ride.doc_id = doc.id;
+                rides.push(ride);
+            }
+        }));
+        console.log(rides);
+        res.send({rides});
+    } catch (error) {
+        console.error("Error getting documents: ", error);
+        res.status(500).send({error: "Failed to get rides with you"});
+    }
+};
+
+  
+
 module.exports = {
     postRide, 
     getRidesWithMe, 
@@ -314,5 +365,7 @@ module.exports = {
     ridesRequests,
     getAskedToJoin,
     approveRequest, 
-    rejectRequest
+    rejectRequest,
+    getPassengers,
+    getRidesWithYou
 };

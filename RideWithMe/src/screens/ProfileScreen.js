@@ -51,7 +51,7 @@ const ProfileScreen = ({ user }) => {
         console.log("im error ", error);
       }
     };
-    
+    getUserDetails();
   }, [currentUser.uid]);
   
 

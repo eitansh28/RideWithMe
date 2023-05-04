@@ -1,10 +1,15 @@
 import { View, Text, Image,StyleSheet,Modal, TouchableOpacity, Button, ScrollView, FlatList,Pressable } from 'react-native'
 import React, { useState } from 'react'
 import firestore from "@react-native-firebase/firestore";
+import { useNavigation } from '@react-navigation/native';
 
-const RidesRowDisplay = ({UseRides}) => {
-    // console.log("user rides:")
-    // console.log(UseRides);
+const YouRidesRowDisplay = ({UseRides}) => {
+  const navigation = useNavigation();
+  
+  function move_to_driver_details() {
+    navigation.navigate('UserDetails', {params: UseRides.driver_id});
+    console.log("func has been called!");
+  }
    
     return (  
     <View style = {{flex : 1,paddingBottom:10}}>    
@@ -16,6 +21,11 @@ const RidesRowDisplay = ({UseRides}) => {
         <Text style={[styles.User,{marginBottom:10}]}>origin : {UseRides.origin} </Text>
         <Text style = {[styles.User,{paddingBottom:4}]} >price : {UseRides.price}</Text>
         <Text style = {[styles.User,{paddingBottom:4}]} >seats : {UseRides.seats}</Text>
+        <Button 
+          title="driver"
+          color={'blue'}
+          onPress={move_to_driver_details}
+        />
       </View>
     </View>
   )
@@ -43,4 +53,4 @@ const styles = StyleSheet.create({
         },
 })
 
-export default RidesRowDisplay
+export default YouRidesRowDisplay
