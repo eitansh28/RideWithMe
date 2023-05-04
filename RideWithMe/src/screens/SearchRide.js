@@ -62,9 +62,9 @@ import SearchResults from "./SearchResults";
     }
 
     const search = async () => {
-        console.log("serach ride pressed");
+        console.log("search ride pressed");
         //navigation.navigate('SearchResults');
-        if (departureTime &&desiredArrivalTime && from && to ){
+        if (departureTime && from && to ){
             try{
                 const res =  await fetch(("http://192.168.1.125:1000/searchRide"),{
                     method : 'POST',
@@ -98,6 +98,10 @@ import SearchResults from "./SearchResults";
         <Text style={styles.bold}>ride search</Text>
         <View style={styles.center}>
             <BackButton/>
+            <Button
+                title="Search"
+                onPress={search}
+            />
             <GooglePlacesAutocomplete
                 styles={styles.location}
                 fetchDetails = {true}
@@ -135,10 +139,10 @@ import SearchResults from "./SearchResults";
                 onConfirm={handleDesiredArrivalTimeConfirm}
                 onCancel={handleDesiredArrivalTimeCancel}
             /> */}
-            {/* <Button
+            <Button
                 title="Search"
                 onPress={search}
-            /> */}
+            />
         </View>
       </ImageBackground>
     )

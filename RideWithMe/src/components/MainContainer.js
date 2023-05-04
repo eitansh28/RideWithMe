@@ -16,7 +16,6 @@ import MyRides from '../screens/MyRides';
 import RidesWithMe from '../screens/RidesWithMe';
 import RidesWithYou from '../screens/RidesWithYou';
 import RidesRequest from '../screens/RidesRequest';
-import SearchResults from '../screens/SearchResults';
 import MainPagesNev from './MainPagesNev';
 import AskedToJoin from '../screens/AskedToJoin';
 import UserDetails from '../screens/UserDetails';
@@ -56,11 +55,11 @@ function MainContainer() {
             options={{ headerShown: false }} 
             component={ProfileScreen} />
           <Stack.Screen 
-            name="SearchRide1" 
+            name="SearchRide" 
             options={{ headerShown: false }} 
             component={SearchRide} />
           <Stack.Screen 
-            name="PostRide1" 
+            name="PostRide" 
             options={{ headerShown: false }} 
             component={PostRide} />
             <Stack.Screen 

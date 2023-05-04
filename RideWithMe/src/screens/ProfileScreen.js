@@ -30,7 +30,8 @@ const ProfileScreen = ({ user }) => {
   const pictureHeight = height * 0.4;
 
   useEffect(() => {
-    console.log(IP);
+    // console.log(IP);
+    // alert("hhh");
     const getUserDetails = async () => {
       try {
         const res = await fetch("http://192.168.1.125:1000/getUserDetails", {
@@ -45,7 +46,7 @@ const ProfileScreen = ({ user }) => {
         setName(user_details.user_details.name);
         setAge(user_details.user_details.age);
         setGender(user_details.user_details.gender);
-        setPhotoURL(user_details.user_details.photoURL);
+        // setPhotoURL(user_details.user_details.photoURL);
       } catch (error) {
         console.log("im error ", error);
       }
