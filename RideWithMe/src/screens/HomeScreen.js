@@ -65,15 +65,19 @@ const HomeScreen = ({navigation}) => {
     <ImageBackground source={require('../components/pic1.jpg')} style={styles.background}>
     <View style={styles.container}>
       <View style={styles.circle}>
-        <Text style={styles.text}> welcome {name}</Text>
+        <Text style={styles.text}> Welcome {name}</Text>
       </View>
       <View style={styles.separator}></View>
     <View style={styles.centered}>
        <View style={styles.separator}>
        <Button title=" Profile  " onPress={moveToProfile}></Button>
+       <View style={styles.separator1}></View>
        <Button title=" Search Ride  " onPress={move_to_search_ride}></Button>
+       <View style={styles.separator1}></View>
        <Button title=" post ride  " onPress={move_to_post_ride}></Button>
+       <View style={styles.separator1}></View>
        <Button title=" post group ride  " onPress={move_to_post_group_ride}></Button>
+       <View style={styles.separator1}></View>
        <Button title=" My Rides  " onPress={move_to_my_rides}></Button>
        </View>
       </View>
@@ -111,13 +115,13 @@ const styles = StyleSheet.create({
     borderRadius: 150,
 
     backgroundColor: 'green',
-    opacity:0.5,
+    opacity:0.2,
     justifyContent: 'center',
     alignItems: 'center',
   },
   text: {
-    color: 'white',
-    fontWeight: 'bold',
+    color: 'black',
+    fontWeight: '800',
     fontSize: 30,
     textAlign: 'center',
   },
@@ -129,6 +133,12 @@ const styles = StyleSheet.create({
     // height: '8%',
     marginTop: 20,
     marginBottom: 25,
+  },
+  separator1: {
+    // width: 1,
+    // height: '8%',
+    marginTop: 10,
+    marginBottom: 10,
   },
   separator_more: {
     width: 1,

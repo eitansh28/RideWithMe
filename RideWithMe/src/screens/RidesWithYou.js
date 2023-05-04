@@ -21,7 +21,7 @@ const RidesWithYou = ({navigation}) => {
   useEffect(() => {
     const getRidesWithYou = async () => {
       try {
-        const res = await fetch("http://"+IP+":1000/getRidesWithYou", {
+        const res = await fetch("http://192.168.1.125:1000/getRidesWithYou", {
           method: "POST", 
           headers: { Accept: "application/json",
            "Content-Type": "application/json" 

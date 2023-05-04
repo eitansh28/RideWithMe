@@ -17,6 +17,7 @@ const RidesRequestDisplay = ({UseRides}) => {
                 <View style={{flexDirection:'row',justifyContent:'space-between'}}>
                     <Text style ={{fontSize:20}}> date: {UseRides.date}</Text>
                 </View>
+                <Text style={[styles.User,{marginBottom:10}]}> destination : {UseRides.driver_name}</Text>
                 <Text style={[styles.User,{marginBottom:10}]}> destination : {UseRides.destination}</Text>
                 <Text style={[styles.User,{marginBottom:10}]}> origin : {UseRides.origin} </Text>
                 <Text style = {[styles.User,{paddingBottom:4}]}> price : {UseRides.price}</Text>

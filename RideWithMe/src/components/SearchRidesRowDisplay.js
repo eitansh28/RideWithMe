@@ -21,7 +21,7 @@ const SearchRidesRowDisplay = ({UseRides}) => {
         console.log("doc id: "+ UseRides.id);
         try {
             // get id
-            const res1 = await fetch("http://"+IP+":1000/getUserDetails", {
+            const res1 = await fetch("http://192.168.1.125:1000/getUserDetails", {
             method: "POST", 
             headers: { Accept: "application/json",
             "Content-Type": "application/json" 
@@ -31,7 +31,7 @@ const SearchRidesRowDisplay = ({UseRides}) => {
             const user_name = user_details.user_details.name;
             console.log(user_name);
             // ask to join
-            const res = await fetch("http://"+IP+":1000/askToJoin",{
+            const res = await fetch("http://192.168.1.125:1000/askToJoin",{
               method: 'POST',
               headers: {Accept: "application/json",
               "Content-Type": "application/json" 

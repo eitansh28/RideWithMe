@@ -17,7 +17,7 @@ const AskedToJoinDisplay = ({user, travelDocId}) => {
     const approve_user = async () => {
       console.log("approve has been clicked!");
       try {
-        const res = await fetch("http://"+IP+":1000/approveRequest", {
+        const res = await fetch("http://192.168.1.125:1000/approveRequest", {
           method: "POST", 
           headers: { Accept: "application/json",
            "Content-Type": "application/json" 
@@ -37,7 +37,7 @@ const AskedToJoinDisplay = ({user, travelDocId}) => {
     const reject_user = async () => {
       console.log("reject clicked");
       try {
-        const res = await fetch("http://"+IP+":1000/rejectRequest", {
+        const res = await fetch("http://192.168.1.125:1000/rejectRequest", {
           method: "POST", 
           headers: { Accept: "application/json",
            "Content-Type": "application/json" 

@@ -44,7 +44,7 @@ function MainContainer() {
             options={{ headerShown: false }} 
             component={SignIn}/>
           <Stack.Screen 
-            name="Home1" 
+            name="Home" 
             options={{ headerShown: false }} 
             component={MainPagesNev} />
           <Stack.Screen 
