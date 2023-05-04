@@ -1054,8 +1054,8 @@
     "@babel/helper-split-export-declaration" "^7.18.6"
     "@babel/parser" "^7.21.0"
     "@babel/types" "^7.21.0"
-    "debug" "^4.1.0"
-    "globals" "^11.1.0"
+    debug "^4.1.0"
+    globals "^11.1.0"
 
 "@babel/types@^7.0.0", "@babel/types@^7.18.6", "@babel/types@^7.18.9", "@babel/types@^7.20.0", "@babel/types@^7.20.2", "@babel/types@^7.20.5", "@babel/types@^7.20.7", "@babel/types@^7.21.0", "@babel/types@^7.3.0", "@babel/types@^7.3.3", "@babel/types@^7.4.4":
   "integrity" "sha512-uR7NWq2VNFnDi7EYqiRz2Jv/VQIu38tu64Zy8TX2nQFQ6etJ9V/Rr2msW8BS132mum2rL645qpDrLtAJtVpuow=="
@@ -1260,12 +1260,12 @@
     "jest-get-type" "^29.4.3"
 
 "@jest/expect@^29.4.3":
-  "integrity" "sha512-iktRU/YsxEtumI9zsPctYUk7ptpC+AVLLk1Ax3AsA4g1C+8OOnKDkIQBDHtD5hA/+VtgMd5AWI5gNlcAlt2vxQ=="
-  "resolved" "https://registry.npmjs.org/@jest/expect/-/expect-29.4.3.tgz"
-  "version" "29.4.3"
+  version "29.4.3"
+  resolved "https://registry.npmjs.org/@jest/expect/-/expect-29.4.3.tgz"
+  integrity sha512-iktRU/YsxEtumI9zsPctYUk7ptpC+AVLLk1Ax3AsA4g1C+8OOnKDkIQBDHtD5hA/+VtgMd5AWI5gNlcAlt2vxQ==
   dependencies:
-    "expect" "^29.4.3"
-    "jest-snapshot" "^29.4.3"
+    expect "^29.4.3"
+    jest-snapshot "^29.4.3"
 
 "@jest/fake-timers@^29.4.3":
   "integrity" "sha512-4Hote2MGcCTWSD2gwl0dwbCpBRHhE6olYEuTj8FMowdg3oQWNKr2YuxenPQYZ7+PfqPY1k98wKDU4Z+Hvd4Tiw=="
@@ -1280,14 +1280,14 @@
     "jest-util" "^29.4.3"
 
 "@jest/globals@^29.4.3":
-  "integrity" "sha512-8BQ/5EzfOLG7AaMcDh7yFCbfRLtsc+09E1RQmRBI4D6QQk4m6NSK/MXo+3bJrBN0yU8A2/VIcqhvsOLFmziioA=="
-  "resolved" "https://registry.npmjs.org/@jest/globals/-/globals-29.4.3.tgz"
-  "version" "29.4.3"
+  version "29.4.3"
+  resolved "https://registry.npmjs.org/@jest/globals/-/globals-29.4.3.tgz"
+  integrity sha512-8BQ/5EzfOLG7AaMcDh7yFCbfRLtsc+09E1RQmRBI4D6QQk4m6NSK/MXo+3bJrBN0yU8A2/VIcqhvsOLFmziioA==
   dependencies:
     "@jest/environment" "^29.4.3"
     "@jest/expect" "^29.4.3"
     "@jest/types" "^29.4.3"
-    "jest-mock" "^29.4.3"
+    jest-mock "^29.4.3"
 
 "@jest/reporters@^29.4.3":
   "integrity" "sha512-sr2I7BmOjJhyqj9ANC6CTLsL4emMoka7HkQpcoMRlhCbQJjz2zsRzw0BDPiPyEFDXAbxKgGFYuQZiSJ1Y6YoTg=="
@@ -1346,14 +1346,14 @@
     "collect-v8-coverage" "^1.0.0"
 
 "@jest/test-sequencer@^29.4.3":
-  "integrity" "sha512-yi/t2nES4GB4G0mjLc0RInCq/cNr9dNwJxcGg8sslajua5Kb4kmozAc+qPLzplhBgfw1vLItbjyHzUN92UXicw=="
-  "resolved" "https://registry.npmjs.org/@jest/test-sequencer/-/test-sequencer-29.4.3.tgz"
-  "version" "29.4.3"
+  version "29.4.3"
+  resolved "https://registry.npmjs.org/@jest/test-sequencer/-/test-sequencer-29.4.3.tgz"
+  integrity sha512-yi/t2nES4GB4G0mjLc0RInCq/cNr9dNwJxcGg8sslajua5Kb4kmozAc+qPLzplhBgfw1vLItbjyHzUN92UXicw==
   dependencies:
     "@jest/test-result" "^29.4.3"
-    "graceful-fs" "^4.2.9"
-    "jest-haste-map" "^29.4.3"
-    "slash" "^3.0.0"
+    graceful-fs "^4.2.9"
+    jest-haste-map "^29.4.3"
+    slash "^3.0.0"
 
 "@jest/transform@^29.4.3":
   "integrity" "sha512-8u0+fBGWolDshsFgPQJESkDa72da/EVwvL+II0trN2DR66wMwiQ9/CihaGfHdlLGFzbBZwMykFtxuwFdZqlKwg=="
@@ -1678,13 +1678,6 @@
     "graceful-fs" "^4.1.3"
     "prompts" "^2.4.0"
     "semver" "^6.3.0"
-
-"@react-native-community/datetimepicker@^6.7.5", "@react-native-community/datetimepicker@>=3.0.0":
-  "integrity" "sha512-E2Zh6mwvZ6CFEMKP++rdxxjJiB45fYPpdZhJwdZ2vUVwqovqu1cQRDLZmz4XrcHSyuacgR4WUnkYFf0F2nnNIg=="
-  "resolved" "https://registry.npmjs.org/@react-native-community/datetimepicker/-/datetimepicker-6.7.5.tgz"
-  "version" "6.7.5"
-  dependencies:
-    "invariant" "^2.2.4"
 
 "@react-native-community/eslint-config@^3.2.0":
   "integrity" "sha512-ZjGvoeiBtCbd506hQqwjKmkWPgynGUoJspG8/MuV/EfKnkjCtBmeJvq2n+sWbWEvL9LWXDp2GJmPzmvU5RSvKQ=="
@@ -2041,7 +2034,7 @@
     "@typescript-eslint/scope-manager" "5.53.0"
     "@typescript-eslint/types" "5.53.0"
     "@typescript-eslint/typescript-estree" "5.53.0"
-    "debug" "^4.3.4"
+    debug "^4.3.4"
 
 "@typescript-eslint/scope-manager@5.53.0":
   "integrity" "sha512-Opy3dqNsp/9kBBeCPhkCNR7fmdSQqA+47r21hr9a14Bx0xnkElEQmhoHga+VoaoQ6uDHjDKmQPIYcUcKJifS7w=="

@@ -2,8 +2,9 @@ import React, {useState, useEffect} from "react";
 import {ScrollView, View, Text, StyleSheet, Button ,Alert, TextInput, ImageBackground} from 'react-native';
 import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplete';
 import DateTimePickerModal from "react-native-modal-datetime-picker";
+import { Linking } from 'react-native';
 import BackButton from "../components/BackButton";
-import { IP } from "../components/constants";
+// import { IP } from "../components/constants";
 import SearchResults from "./SearchResults";
 
   const SearchRide = ({navigation}) => {
@@ -14,6 +15,7 @@ import SearchResults from "./SearchResults";
     const [isDepartureTimePickerVisible, setDepartureTimePickerVisibility] = useState(false);
     const [desiredArrivalTime, setDesiredArrivalTime] = useState(null);
     const [isDesiredArrivalTimePickerVisible, setDesiredArrivalTimePickerVisibility] = useState(false);
+    
 
     const handleFromLocation = (data, details = null) => {
         // Check if geometry is defined
@@ -61,11 +63,11 @@ import SearchResults from "./SearchResults";
     }
 
     const search = async () => {
-        console.log("serach ride pressed");
+        console.log("search ride pressed");
         //navigation.navigate('SearchResults');
-        if (departureTime &&desiredArrivalTime && from && to ){
+        if (departureTime && from && to ){
             try{
-                const res =  await fetch(("http://"+IP+":1000/searchRide"),{
+                const res =  await fetch(("http://192.168.1.125:1000/searchRide"),{
                     method : 'POST',
                     headers: {Accept: "application/json",
                     "Content-Type": "application/json" 
@@ -95,9 +97,14 @@ import SearchResults from "./SearchResults";
     
 
     return(
-    <ImageBackground source={require('../components/pic2.jpg')} style={styles.background}>
+    <ImageBackground source={require('../components/pic3.jpg')} style={styles.background}>
+        <Text style={styles.bold}>ride search</Text>
         <View style={styles.center}>
             <BackButton/>
+            <Button
+                title="Search"
+                onPress={search}
+            />
             <GooglePlacesAutocomplete
                 styles={styles.location}
                 fetchDetails = {true}
@@ -127,14 +134,14 @@ import SearchResults from "./SearchResults";
                 onConfirm={handleDepartureTimeConfirm}
                 onCancel={handleDepartureTimeCancel}
             />
-            <Text>Desired Arrival Time: {desiredArrivalTime ? desiredArrivalTime.toString() : 'Not set'}</Text>
+            {/* <Text>Desired Arrival Time: {desiredArrivalTime ? desiredArrivalTime.toString() : 'Not set'}</Text>
             <Button title="Select Desired Arrival Time" onPress={() => setDesiredArrivalTimePickerVisibility(true)} />
             <DateTimePickerModal
                 isVisible={isDesiredArrivalTimePickerVisible}
                 mode="datetime"
                 onConfirm={handleDesiredArrivalTimeConfirm}
                 onCancel={handleDesiredArrivalTimeCancel}
-            />
+            /> */}
             <Button
                 title="Search"
                 onPress={search}
@@ -148,13 +155,20 @@ const styles = StyleSheet.create({
     background: {
       flex: 1,
       resizeMode: 'cover',
-      justifyContent: 'center',
+    //   justifyContent: 'center',
       alignItems: 'center',
     },
     center: {
       alignItems: 'center',
       justifyContent: 'center',
     },
+    bold: {
+        textAlign: 'center',
+        justifyContent: 'center',
+        alignItems: 'center',
+        fontSize: 30,
+        fontWeight: 'bold',
+      },
     input: {
       backgroundColor: 'pink',
       width: "90%",
@@ -165,9 +179,9 @@ const styles = StyleSheet.create({
       borderRadius: 10,
     },
     location: {
-        container: {
-            flex: 1,
-          },
+        // container: {
+        //     flex: 1,
+        //   },
           textInputContainer: {
             width: '100%',
             backgroundColor: 'rgba(0,0,0,0)',

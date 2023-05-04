@@ -7,6 +7,8 @@ import firestore from '@react-native-firebase/firestore';
 
     const [email, setEmail] = useState("");
     const [pass, setPass] = useState("");
+    let username ="";
+    
     
     function Login() {
       // Set an initializing state whilst Firebase connects
@@ -31,7 +33,7 @@ import firestore from '@react-native-firebase/firestore';
       if (user) {
         const { currentUser } = firebase.auth();
         const userId = currentUser.uid;
-  
+        
         if (userId == admin_id) {
           navigation.navigate("Admin1");
         }
@@ -40,7 +42,7 @@ import firestore from '@react-native-firebase/firestore';
           console.log(userId)
           firestore().collection('users').doc(userId).get().then((doc) => {
             let name = doc.data().name;
-            navigation.navigate('Home1', {
+            navigation.navigate('Home', {
               screen : 'Home',       
               params : {username: name},
             });
@@ -48,6 +50,7 @@ import firestore from '@react-native-firebase/firestore';
         }  
       }
     }
+    
   
     function enter() {
       if (email && pass) {
@@ -55,15 +58,26 @@ import firestore from '@react-native-firebase/firestore';
         .signInWithEmailAndPassword(email, pass)
         .then(() => {
           console.log("User account signed in!");
+          const { currentUser } = firebase.auth();
+          console.log(currentUser);
+          const userId = currentUser.uid;
+          let name = currentUser.email
+          // firestore().collection('users').doc(userId).get().then((doc) => {
+          //   let name = doc.data().email;
+            navigation.navigate({name:'Home', params:{username: name}});
+          // })
         })
         .catch((error) => {
           if (error.code === "auth/email-already-in-use") {
             console.log("That email address is already in use!");
           }
   
-          if (error.code === "auth/invalid-email") {
+          else if (error.code === "auth/invalid-email") {
             console.log("That email address is invalid!");
           }
+          // else{
+            
+          // }
   
           console.error(error);
         });
@@ -106,6 +120,7 @@ import firestore from '@react-native-firebase/firestore';
       </ImageBackground>
     )
 }
+
 
 const styles = StyleSheet.create({
     background: {

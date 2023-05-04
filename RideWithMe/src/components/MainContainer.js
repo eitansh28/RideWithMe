@@ -8,6 +8,7 @@ import HomeScreen from '../screens/HomeScreen';
 import SetUserData from '../screens/SetUserData';
 import ProfileScreen from '../screens/ProfileScreen';
 import SearchRide from '../screens/SearchRide';
+import SearchResults from '../screens/SearchResults';
 import PostRide from '../screens/PostRide';
 import PostGroupRide from '../screens/PostGroupRide';
 import Sa from '../screens/Sa';
@@ -15,7 +16,6 @@ import MyRides from '../screens/MyRides';
 import RidesWithMe from '../screens/RidesWithMe';
 import RidesWithYou from '../screens/RidesWithYou';
 import RidesRequest from '../screens/RidesRequest';
-import SearchResults from '../screens/SearchResults';
 import MainPagesNev from './MainPagesNev';
 import AskedToJoin from '../screens/AskedToJoin';
 import UserDetails from '../screens/UserDetails';
@@ -44,7 +44,7 @@ function MainContainer() {
             options={{ headerShown: false }} 
             component={SignIn}/>
           <Stack.Screen 
-            name="Home1" 
+            name="Home" 
             options={{ headerShown: false }} 
             component={MainPagesNev} />
           <Stack.Screen 
@@ -56,11 +56,11 @@ function MainContainer() {
             options={{ headerShown: false }} 
             component={ProfileScreen} />
           <Stack.Screen 
-            name="SearchRide1" 
+            name="SearchRide" 
             options={{ headerShown: false }} 
             component={SearchRide} />
           <Stack.Screen 
-            name="PostRide1" 
+            name="PostRide" 
             options={{ headerShown: false }} 
             component={PostRide} />
             <Stack.Screen 

@@ -22,6 +22,7 @@ const ProfileScreen = ({ user }) => {
   const [email, setEmail] = useState("yarin@gmail.com");
   const [photoURL,setPhotoURL] = useState('https://www.shutterstock.com/image-photo/cool-grandma-showing-peace-sign-260nw-583662652.jpg');
   const [showModal,setShowModal] = useState(false);
+  const [phone, setPhone] = useState("");
 //   const [image, setImage] = useState(currentUser.photoURL);
 
   const { width, height } = Dimensions.get('window');
@@ -29,10 +30,11 @@ const ProfileScreen = ({ user }) => {
   const pictureHeight = height * 0.4;
 
   useEffect(() => {
-    console.log(IP);
+    // console.log(IP);
+    // alert("hhh");
     const getUserDetails = async () => {
       try {
-        const res = await fetch("http://"+IP+":1000/getUserDetails", {
+        const res = await fetch("http://192.168.1.125:1000/getUserDetails", {
           method: "POST", 
           headers: { Accept: "application/json",
            "Content-Type": "application/json" 
@@ -44,7 +46,7 @@ const ProfileScreen = ({ user }) => {
         setName(user_details.user_details.name);
         setAge(user_details.user_details.age);
         setGender(user_details.user_details.gender);
-        setPhotoURL(user_details.user_details.photoURL);
+        // setPhotoURL(user_details.user_details.photoURL);
       } catch (error) {
         console.log("im error ", error);
       }
@@ -147,6 +149,10 @@ const ProfileScreen = ({ user }) => {
             <View style={styles.detailsRow}>
               <Text style={styles.detailsLabel}>Edit-Mail:</Text>
               <TextInput style={styles.detailsValue} value={email} onChangeText={setEmail} />
+            </View>
+            <View style={styles.detailsRow}>
+              <Text style={styles.detailsLabel}>Edit-phone:</Text>
+              <TextInput style={styles.detailsValue} value={phone} onChangeText={setPhone} />
             </View>
             <View style={{flexDirection:'row',alignContent:'space-between',justifyContent:'space-evenly'}}>
               <TouchableOpacity style={styles.saveButton} onPress={saveChanges}>

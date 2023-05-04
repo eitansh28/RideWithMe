@@ -9,7 +9,7 @@ import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplet
 import { Keyboard } from 'react-native'
 import { SafeAreaView } from "react-native-safe-area-context";
 import { ScrollView } from "react-native-gesture-handler";
-import { IP } from '../components/constants.js';
+// import { IP } from '../components/constants.js';
 import BackButton from "../components/BackButton";
 
   const PostRide = ({navigation}) => {
@@ -21,17 +21,25 @@ import BackButton from "../components/BackButton";
   const [destinationName, setDestinationName] = useState('defualt');
   const [date, setDate] = useState(new Date());
   const [price, setPrice] = useState('');
+  const [phone, setPhone] = useState('');
   const [seats, setSeats] = useState('');
   const [departureTime, setDepartureTime] = useState(null);
   const [isDepartureTimePickerVisible, setDepartureTimePickerVisibility] = useState(false);
 
   const {params} = useRoute();
-  // the_date = params.selectedDate1;
+
+  // const { currentUser } = firebase.auth();
+  const userId = currentUser.id;
+  // const {phone} = userId.phone;
+  // let phone = "";
+  // firestore().collection('users').doc(userId).get().then((doc) => {
+  //   phone = doc.data().phone;
+  // })
 
   useEffect(() => {
     const getUserDetails = async () => {
       try {
-        const res = await fetch("http://"+IP+":1000/getUserDetails", {
+        const res = await fetch("http://192.168.1.125:1000/getUserDetails", {
           method: "POST", 
           headers: { Accept: "application/json",
            "Content-Type": "application/json" 
@@ -39,6 +47,7 @@ import BackButton from "../components/BackButton";
           body: JSON.stringify({ id: currentUser.uid })});
 
         const user_details = await res.json();
+        setPhone(user_details.user_details.phone);
         console.log(user_details.user_details);
         SetUser_name(user_details.user_details.name);
       } catch (error) {
@@ -51,9 +60,11 @@ import BackButton from "../components/BackButton";
   
   const save = async () => {
     console.log(destination," ",price," ", seats);
+    
     if (destination && price && seats){
       try {
-        const res = await fetch("http://"+IP+":1000/postRide",{
+        alert("hhhhhhhhhhhhhhhh")
+        const res = await fetch("http://192.168.1.125:1000/postRide",{
           method: 'POST',
           headers: {Accept: "application/json",
           "Content-Type": "application/json" 
@@ -65,6 +76,7 @@ import BackButton from "../components/BackButton";
                               originName:originName,
                               destinationName:destinationName,
                               price: price,
+                              phone: phone,
                               seats: seats,
                               date: departureTime
                              })});
@@ -108,6 +120,8 @@ import BackButton from "../components/BackButton";
     setOriginName(data.description);
     // Set the location state
     setOrigin({ latitude: lat, longitude: lng });
+
+    // getAddressFromLatLong(lat, lng).then(address => setOrigin1(address));
 }
 };
 
@@ -120,6 +134,7 @@ const handleToLocation = (data, details = null) => {
       setDestinationName(data.description);
       // Set the location state
       setDestination({ latitude: lat, longitude: lng });
+      // getAddressFromLatLong(lat, lng).then(address => setDestination1(address));
   }
 };
 
@@ -157,6 +172,7 @@ const handleToLocation = (data, details = null) => {
             value={price}
             onChangeText={setPrice}
           />
+          <View style={theStyle.separator}></View>
           <TextInput
             style={theStyle.input}
             placeholder="Number of places available"
@@ -188,6 +204,8 @@ const theStyle = StyleSheet.create({
   background: {
     flex: 1,
     resizeMode: 'cover',
+    // justifyContent: 'center',
+    // alignItems: 'center',
   },
   center: {
     flex: 1,
@@ -225,8 +243,12 @@ const theStyle = StyleSheet.create({
       },
 },
   separator: {
+    // marginTop: 20,
+    marginBottom: 20,
+  },
+  separator_more: {
     width: 1,
-    height: '8%',
+    height: '25%',
   },
   root: {
     width: "100%",

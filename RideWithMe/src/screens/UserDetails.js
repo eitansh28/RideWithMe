@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { View, Button, Text, TextInput, StyleSheet, ImageBackground,KeyboardAvoidingView,TouchableWithoutFeedback, Image, Dimensions } from "react-native";
+import { View, Button, Text, TextInput, TouchableOpacity, StyleSheet, ImageBackground,KeyboardAvoidingView,TouchableWithoutFeedback, Image, Dimensions } from "react-native";
 import { Picker } from "@react-native-picker/picker";
 import DateTimePickerModal from "react-native-modal-datetime-picker";
 import { firebase } from "@react-native-firebase/auth";
@@ -11,6 +11,8 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import { ScrollView } from "react-native-gesture-handler";
 import BackButton from "../components/BackButton";
 import { IP } from "../components/constants";
+import Ionicons from "react-native-vector-icons/Ionicons";
+import { Linking } from 'react-native';
 
   const UserDetails = ({navigation}) => {
   const { currentUser } = firebase.auth();
@@ -19,6 +21,7 @@ import { IP } from "../components/constants";
   const [age, setAge] = useState("");
   const [gender, setGender] = useState("");
   const [photoURL,setPhotoURL] = useState('');
+  const [phone,setPhone] = useState('');
 
 
     const getUserDetails = async () => {
@@ -35,11 +38,24 @@ import { IP } from "../components/constants";
         setAge(user_details.user_details.age);
         setGender(user_details.user_details.gender);
         setPhotoURL(user_details.user_details.photoURL);
+        setPhone(user_details.user_details.phone);
       } catch (error) {
         console.log("im error ", error);
       }
     };
     getUserDetails();
+
+    const onPressWhatsApp = () => {
+      Linking.openURL(`whatsapp://send?phone=${phone}`);
+  };
+
+  const onPressCall = () => {
+      Linking.openURL(`tel:${phone}`);
+  };
+
+  const onPressSms = () => {
+      Linking.openURL(`sms:${phone}`);
+  };
 
   return (
     <ImageBackground source={require('../components/pic3.jpg')} style={styles.background}>
@@ -57,7 +73,22 @@ import { IP } from "../components/constants";
             </View>
             <View style={styles.detailsRow}>
               <Text style={styles.detailsLabel}>Gender:   {gender}</Text>
+              <View style={styles.separator}>
+              </View>
+              <View style={styles.detailsRow}></View>
             </View>
+            <Text style={styles.detailsLabel}>contact</Text>
+            <View style={{ flexDirection: 'row' , justifyContent: 'space-between' }}>
+            <TouchableOpacity onPress={onPressWhatsApp}>
+          <Ionicons name="logo-whatsapp" size={60} color="#25D366" />
+        </TouchableOpacity>
+        <TouchableOpacity onPress={onPressCall}>
+          <Ionicons name="call-outline" size={60} color="blue" />
+        </TouchableOpacity>
+        <TouchableOpacity onPress={onPressSms}>
+          <Ionicons name="chatbubble-outline" size={60} color="brown" />
+        </TouchableOpacity>
+        </View>
           </View>
     </View>
     </ImageBackground>  
@@ -93,6 +124,13 @@ const styles = StyleSheet.create({
         fontSize: 30,
         fontWeight: 'bold',
     },
+    bold1: {
+      textAlign: 'center',
+      justifyContent: 'center',
+      alignItems: 'center',
+      fontSize: 15,
+      fontWeight: 'bold',
+  },
     card: {
       backgroundColor: 'rgba(255, 255, 255, 0.8)',
       marginHorizontal: '0%',
@@ -102,6 +140,12 @@ const styles = StyleSheet.create({
       borderTopEndRadius:0,
       overflow: 'hidden',
       opacity:0.9,
+    },
+    separator: {
+      // width: 1,
+      // height: '8%',
+      marginTop: 20,
+      marginBottom: 25,
     },
     photoContainer: {
       justifyContent: 'flex-end',

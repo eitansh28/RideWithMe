@@ -7,11 +7,12 @@ import firestore from "@react-native-firebase/firestore";
 import { useRoute } from '@react-navigation/native';
 import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplete';
 
-  const CreateGroupRide = ({navigation}) => {
+  const PostGroupRide = ({navigation}) => {
   const { currentUser } = firebase.auth();
   const [origin, setOrigin] = useState('');
   const [destination, setDestination] = useState('');
   const [info, setInfo] = useState('');
+  const [price, setPrice] = useState('');
   const [departureTime, setDepartureTime] = useState(null);
   const [isDepartureTimePickerVisible, setDepartureTimePickerVisibility] = useState(false);
   const [desiredArrivalTime, setDesiredArrivalTime] = useState(null);
@@ -21,6 +22,7 @@ import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplet
   
 
   const save = async () => {
+    alert("to be done");
     // if (destination && price && seats){
     //   try {
     //     await firestore()
@@ -101,6 +103,14 @@ const handleToLocation = (data, details = null) => {
                     language: 'en',
                 }}
             />
+            <View style={theStyle.separator}></View>
+            <TextInput
+                style={theStyle.input}
+                placeholder="price"
+                value={price}
+                onChangeText={setPrice}
+            />
+            {/* <View style={theStyle.separator}></View> */}
             <TextInput
                 style={theStyle.input}
                 placeholder="please enter info about the ride"
@@ -127,6 +137,12 @@ const handleToLocation = (data, details = null) => {
 
 
 const theStyle = StyleSheet.create({
+separator: {
+    // width: 1,
+    // height: '8%',
+    marginTop: 20,
+    marginBottom: 25,
+    },
   background: {
     flex: 1,
     resizeMode: 'cover',
@@ -190,4 +206,4 @@ const theStyle = StyleSheet.create({
       },
 }
 });
-  export default CreateGroupRide;
+  export default PostGroupRide;

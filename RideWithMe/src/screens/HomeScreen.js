@@ -4,6 +4,7 @@ import auth from "@react-native-firebase/auth";
 import { useRoute } from '@react-navigation/native';
 import { firebase } from "@react-native-firebase/auth";
 import { getUserDetails } from '../components/getUserDetials';
+import { Linking } from 'react-native';
 
 const HomeScreen = ({navigation}) => {
   const {params} = useRoute();
@@ -13,7 +14,12 @@ const HomeScreen = ({navigation}) => {
 
 
 
-
+  function movetologin() {
+    navigation.navigate("Login");
+  }
+  function movetosignup(){
+    navigation.navigate("SignUp");
+  }
   function moveToProfile(){
     navigation.navigate("Profile");
   }
@@ -31,6 +37,20 @@ const HomeScreen = ({navigation}) => {
   }
 
 
+  const phone = '0544510170'; // replace with the phone number of the recipient
+  const phoneNumber = '054-446-8216';
+
+  const openWhatsApp = () => {
+    Linking.openURL(`whatsapp://send?phone=${phoneNumber}`);
+  }
+
+  const makeCall = () => {
+    Linking.openURL(`tel:${phoneNumber}`);
+  }
+
+  const sms = () => {
+    Linking.openURL(`sms:${phoneNumber}`);
+  }
 
   const logout = () => {
     auth()
@@ -45,15 +65,19 @@ const HomeScreen = ({navigation}) => {
     <ImageBackground source={require('../components/pic1.jpg')} style={styles.background}>
     <View style={styles.container}>
       <View style={styles.circle}>
-        <Text style={styles.text}> welcome {name}</Text>
+        <Text style={styles.text}> Welcome {name}</Text>
       </View>
-      <View style ={{flex:1}}> 
+      <View style={styles.separator}></View>
     <View style={styles.centered}>
        <View style={styles.separator}>
        <Button title=" Profile  " onPress={moveToProfile}></Button>
+       <View style={styles.separator1}></View>
        <Button title=" Search Ride  " onPress={move_to_search_ride}></Button>
+       <View style={styles.separator1}></View>
        <Button title=" post ride  " onPress={move_to_post_ride}></Button>
+       <View style={styles.separator1}></View>
        <Button title=" post group ride  " onPress={move_to_post_group_ride}></Button>
+       <View style={styles.separator1}></View>
        <Button title=" My Rides  " onPress={move_to_my_rides}></Button>
        </View>
       </View>
@@ -62,7 +86,6 @@ const HomeScreen = ({navigation}) => {
         <Text style={{fontSize:24,fontWeight:'500',color:'white'}}>Log out</Text>
        </Pressable>
        </View>
-    </View>
     </View>
     </ImageBackground>
   )
@@ -91,14 +114,14 @@ const styles = StyleSheet.create({
     height: 200,
     borderRadius: 150,
 
-    backgroundColor: 'gray',
-    opacity:0.5,
+    backgroundColor: 'green',
+    opacity:0.2,
     justifyContent: 'center',
     alignItems: 'center',
   },
   text: {
-    color: 'white',
-    fontWeight: 'bold',
+    color: 'black',
+    fontWeight: '800',
     fontSize: 30,
     textAlign: 'center',
   },
@@ -106,12 +129,16 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   separator: {
-    flex: 0.8,
-    justifyContent: 'space-evenly',
     // width: 1,
     // height: '8%',
-    //marginTop: 25,
-    //marginBottom: 25,
+    marginTop: 20,
+    marginBottom: 25,
+  },
+  separator1: {
+    // width: 1,
+    // height: '8%',
+    marginTop: 10,
+    marginBottom: 10,
   },
   separator_more: {
     width: 1,

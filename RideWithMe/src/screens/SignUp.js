@@ -31,7 +31,9 @@ const SignUp = ({navigation}) => {
   }
 
   function create() {
+    alert("mmmmmm")
     if (email && pass) {
+      alert("bbbb")
       setGo(true);
     auth()
       .createUserWithEmailAndPassword(email, pass)

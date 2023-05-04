@@ -45,13 +45,22 @@ const postRide = async (req,res,next) => {
         let driver_id = req.body.driver_id || "";
         let driver_name = req.body.driver_name || "";
         let origin = req.body.origin || "";
+<<<<<<< HEAD
         let originName = req.body.originName || "";
+=======
+        // let origin_name = req.body.origin_name || "";
+>>>>>>> main
         console.log(origin);
         console.log(origin.latitude);
         // let string_origin = "latitude: "+origin.latitude+", longtitude: "+origin.longtitude;
         let destination = req.body.dest || "";
+<<<<<<< HEAD
         let destinationName = req.body.destinationName || "";
+=======
+        // let destination_name = req.body.destination_name || "";
+>>>>>>> main
         let price = req.body.price || "";
+        let phone = req.body.phone || "";
         let seats = req.body.seats || "";
         let departureTime = req.body.date || "";
         const travelsRef = db.collection('travels');
@@ -65,6 +74,7 @@ const postRide = async (req,res,next) => {
             destinationName: `${destinationName}`,
             price: `${price}`,
             seats: `${seats}`,
+            phone: `${phone}`,
             date: `${departureTime}`
         });
       const id1 = uuidv4();
@@ -85,11 +95,30 @@ const postRide = async (req,res,next) => {
         await docRef.collection('answered').add({});
 
     }catch(e){
-        console.error("Error adding document: ", e);
+        console.error("Error adding documentsssssssss: ", e);
     }
 
 }
 
+<<<<<<< HEAD
+=======
+
+// const searchRide = async (req,res,next) => {
+//     console.log("i go to the server");
+//     let db = firebase.firestore();
+//     let a = []
+//     try{
+//         (await db.collection('travels').where('price', '==', 15).get().then()).forEach((doc) => {
+//             a.push(doc.data())
+//         } 
+//         )
+//         res.send({a})
+//     }catch(e){
+//         console.error("Error --- ", e);
+//     }
+
+// }
+>>>>>>> main
 const searchRide = async (req,res,next) => {
     try {
       let origin = req.body.origin || "";
