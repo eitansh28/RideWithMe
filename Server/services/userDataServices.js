@@ -8,8 +8,6 @@ let db = firebase.firestore();
 
 
 const getUser = async (req,res,next)=>{
-
-    console.log("here");
     const users = db.collection('users');
     try{
         let u_id = req.body.id || "";

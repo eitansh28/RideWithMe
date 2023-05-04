@@ -1,5 +1,5 @@
-import React, { useState } from "react";
-import { View, Button, Text, TextInput, StyleSheet, ImageBackground,KeyboardAvoidingView,TouchableWithoutFeedback } from "react-native";
+import React, { useState, useEffect } from "react";
+import { View, Button, Text, TextInput, StyleSheet, ImageBackground,KeyboardAvoidingView,TouchableWithoutFeedback, FlatList } from "react-native";
 import { Picker } from "@react-native-picker/picker";
 import DateTimePickerModal from "react-native-modal-datetime-picker";
 import { firebase } from "@react-native-firebase/auth";
@@ -10,46 +10,46 @@ import { Keyboard } from 'react-native'
 import { SafeAreaView } from "react-native-safe-area-context";
 import { ScrollView } from "react-native-gesture-handler";
 import BackButton from "../components/BackButton";
+import AskedToJoinDisplay from "../components/AskedToJoinDisplay";
+import { IP } from "../components/constants";
+import PassengersDisplay from "../components/PassengersDisplay";
 
-  const MyRides = ({navigation}) => {
+const Passengers = ({navigation}) => {
   const { currentUser } = firebase.auth();
   const {params} = useRoute();
+  const [passengers, SetPassengers] = useState([]);
+  const travel_doc_id = params.params;
 
-  
-    function move_to_rides_with_me() {
-        navigation.navigate("RidesWithMe");
-    }
+  useEffect(() => {
+    const getPassengers = async () => {
+      try {
+        const res = await fetch("http://"+IP+":1000/getPassengers", {
+          method: "POST", 
+          headers: { Accept: "application/json",
+           "Content-Type": "application/json" 
+          },
+          body: JSON.stringify({travel_doc_id: travel_doc_id})});
 
-    function move_to_rides_with_you() {
-        navigation.navigate("RidesWithYou");
-    }
-
-    function move_to_rides_request() {
-        navigation.navigate("RidesRequest");
-    }
+        const passengers_data = await res.json();
+        SetPassengers(passengers_data.passengers_data);
+      } catch (error) {
+        console.log("im error ", error);
+      }
+    };
+    getPassengers();
+  }, [currentUser.uid]);
 
   return (
    <ImageBackground source={require('../components/pic3.jpg')} style={theStyle.background}>
 <View style ={theStyle.center}>
   <BackButton/>
-      <Text style={theStyle.bold}>My Rides</Text>
-          <View style={theStyle.separator}></View>
-          <Button 
-            title="Rides With Me"
-            color={'green'}
-            onPress={move_to_rides_with_me}
-           />
-           <Button 
-            title="Rides With You"
-            color={'green'}
-            onPress={move_to_rides_with_you}
-           />
-           <Button 
-            title="Rides Request"
-            color={'green'}
-            onPress={move_to_rides_request}
-           />
-     
+      <Text style={theStyle.bold}>Passengers</Text>
+      <View style={theStyle.separator}></View>
+      <FlatList
+           data={passengers}
+           keyExtractor = {item=> item.doc_id}
+           renderItem = {({item}) => <PassengersDisplay user = {item} travelDocId={travel_doc_id}/>}
+      />
       </View>
        </ImageBackground>
    
@@ -146,4 +146,4 @@ const theStyle = StyleSheet.create({
 }
 
 });
-  export default MyRides;
+  export default Passengers;

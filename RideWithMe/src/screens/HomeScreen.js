@@ -26,6 +26,9 @@ const HomeScreen = ({navigation}) => {
   function move_to_post_group_ride(){
     navigation.navigate("PostGroupRide");
   }
+  function move_to_my_rides(){
+    navigation.navigate("MyRides");
+  }
 
 
 
@@ -47,6 +50,11 @@ const HomeScreen = ({navigation}) => {
       <View style ={{flex:1}}> 
     <View style={styles.centered}>
        <View style={styles.separator}>
+       <Button title=" Profile  " onPress={moveToProfile}></Button>
+       <Button title=" Search Ride  " onPress={move_to_search_ride}></Button>
+       <Button title=" post ride  " onPress={move_to_post_ride}></Button>
+       <Button title=" post group ride  " onPress={move_to_post_group_ride}></Button>
+       <Button title=" My Rides  " onPress={move_to_my_rides}></Button>
        </View>
       </View>
       <View style={{flex:0.9,justifyContent:'flex-end'}}>
@@ -110,4 +118,4 @@ const styles = StyleSheet.create({
     height: '25%',
   },
 });
-export default HomeScreen
+export default HomeScreen;

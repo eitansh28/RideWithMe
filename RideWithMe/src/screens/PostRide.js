@@ -9,8 +9,8 @@ import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplet
 import { Keyboard } from 'react-native'
 import { SafeAreaView } from "react-native-safe-area-context";
 import { ScrollView } from "react-native-gesture-handler";
-
-
+import { IP } from '../components/constants.js';
+import BackButton from "../components/BackButton";
 
   const PostRide = ({navigation}) => {
   const { currentUser } = firebase.auth();
@@ -29,10 +29,9 @@ import { ScrollView } from "react-native-gesture-handler";
   // the_date = params.selectedDate1;
 
   useEffect(() => {
-
     const getUserDetails = async () => {
       try {
-        const res = await fetch("http://192.168.144.1:1000/getUserDetails", {
+        const res = await fetch("http://"+IP+":1000/getUserDetails", {
           method: "POST", 
           headers: { Accept: "application/json",
            "Content-Type": "application/json" 
@@ -54,7 +53,7 @@ import { ScrollView } from "react-native-gesture-handler";
     console.log(destination," ",price," ", seats);
     if (destination && price && seats){
       try {
-        const res = await fetch("http://192.168.1.42:1000/postRide",{
+        const res = await fetch("http://"+IP+":1000/postRide",{
           method: 'POST',
           headers: {Accept: "application/json",
           "Content-Type": "application/json" 
@@ -128,7 +127,8 @@ const handleToLocation = (data, details = null) => {
 
   
   return (
-   <ImageBackground source={require('../components/pic3.jpg')} style={theStyle.background}> 
+   <ImageBackground source={require('../components/pic3.jpg')} style={theStyle.background}>
+    <BackButton/>    
     <View style ={theStyle.center}>
       <Text style={theStyle.bold}>Travel details</Text>
       <GooglePlacesAutocomplete
@@ -178,11 +178,8 @@ const handleToLocation = (data, details = null) => {
             color={'green'}
             onPress={save}
            />
-     
       </View>
-       </ImageBackground>
-   
-       
+       </ImageBackground> 
   )
 };
 

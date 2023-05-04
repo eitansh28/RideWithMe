@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { View, Button, Text, TextInput, StyleSheet, ImageBackground,KeyboardAvoidingView,TouchableWithoutFeedback } from "react-native";
+import { View, Button, Text, TextInput, StyleSheet, ImageBackground,KeyboardAvoidingView,TouchableWithoutFeedback, FlatList } from "react-native";
 import { Picker } from "@react-native-picker/picker";
 import DateTimePickerModal from "react-native-modal-datetime-picker";
 import { firebase } from "@react-native-firebase/auth";
@@ -10,46 +10,33 @@ import { Keyboard } from 'react-native'
 import { SafeAreaView } from "react-native-safe-area-context";
 import { ScrollView } from "react-native-gesture-handler";
 import BackButton from "../components/BackButton";
+// import RidesRowDisplay from "../components/RidesRowDisplay";
+import SearchRidesRowDisplay from "../components/SearchRidesRowDisplay";
 
-  const MyRides = ({navigation}) => {
+  const SearchResults = ({navigation}) => {
   const { currentUser } = firebase.auth();
   const {params} = useRoute();
-
-  
-    function move_to_rides_with_me() {
-        navigation.navigate("RidesWithMe");
-    }
-
-    function move_to_rides_with_you() {
-        navigation.navigate("RidesWithYou");
-    }
-
-    function move_to_rides_request() {
-        navigation.navigate("RidesRequest");
-    }
+  console.log(params.params.results.match_rides);
+  console.log(params.params.user_location);
 
   return (
    <ImageBackground source={require('../components/pic3.jpg')} style={theStyle.background}>
 <View style ={theStyle.center}>
   <BackButton/>
-      <Text style={theStyle.bold}>My Rides</Text>
-          <View style={theStyle.separator}></View>
-          <Button 
-            title="Rides With Me"
-            color={'green'}
-            onPress={move_to_rides_with_me}
-           />
-           <Button 
-            title="Rides With You"
-            color={'green'}
-            onPress={move_to_rides_with_you}
-           />
-           <Button 
-            title="Rides Request"
-            color={'green'}
-            onPress={move_to_rides_request}
-           />
-     
+      <Text style={theStyle.bold}>Search Results</Text>
+      <View style={theStyle.separator}></View>
+      <FlatList
+        data={params.params.results.match_rides}
+        keyExtractor={item => item.id}
+        renderItem={({item}) => {
+          // create a new object that includes the existing item data and the user_location field
+          const modifiedItem = {
+            ...item,
+            user_location: params.params.user_location
+          };
+          return <SearchRidesRowDisplay UseRides={modifiedItem} />;
+        }}
+      />
       </View>
        </ImageBackground>
    
@@ -146,4 +133,4 @@ const theStyle = StyleSheet.create({
 }
 
 });
-  export default MyRides;
+  export default SearchResults;
