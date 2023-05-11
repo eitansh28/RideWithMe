@@ -11,6 +11,7 @@ import SearchResults from "./SearchResults";
 
     const [from, setFrom] = useState("");
     const [to, setTo] = useState("");
+    const [howManyPassenger,setHowManyPassenger] = useState(-1);
     const [originName, setOriginName] = useState('defualt');
     const [destinationName, setDestinationName] = useState('defualt');
     const [departureTime, setDepartureTime] = useState(null);
@@ -18,6 +19,9 @@ import SearchResults from "./SearchResults";
     const [desiredArrivalTime, setDesiredArrivalTime] = useState(null);
     const [isDesiredArrivalTimePickerVisible, setDesiredArrivalTimePickerVisibility] = useState(false);
     
+    const handleChange = (value) => {
+      setHowManyPassenger(value);
+    }
 
     const handleFromLocation = (data, details = null) => {
         // Check if geometry is defined
@@ -67,7 +71,7 @@ import SearchResults from "./SearchResults";
     const search = async () => {
         console.log("search ride pressed");
         //navigation.navigate('SearchResults');
-        if (departureTime && from ){
+        if (departureTime && from && howManyPassenger>0 ){
             try{
                 const res =  await fetch(("http://"+IP+":1000/searchRide"),{
                     method : 'POST',
@@ -79,7 +83,8 @@ import SearchResults from "./SearchResults";
                     originName:originName,              
                     destination: to,
                     destinationName:destinationName,
-                    departureTime: departureTime
+                    departureTime: departureTime,
+                    passengersNum: howManyPassenger
                    })});
 
                    const ride_details = await res.json();
@@ -127,6 +132,17 @@ import SearchResults from "./SearchResults";
                     language: 'en',
                 }}
             />
+           <Text style={{fontSize:16}}>
+            Insert number of passenger in white box:
+            </Text> 
+           <TextInput
+
+        style={{fontSize:13,padding:4,backgroundColor: '#fff'}}
+        placeholder=""
+        keyboardType="numeric"
+        value={howManyPassenger}
+        onChangeText={(text) => setHowManyPassenger(text)}
+      />
             <Text>Departure Time: {departureTime ? departureTime.toString() : 'Not set'}</Text>
             <Button title="Select Departure Time" onPress={() => setDepartureTimePickerVisibility(true)} />
             <DateTimePickerModal
