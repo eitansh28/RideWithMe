@@ -41,10 +41,10 @@ import RidesRequestDisplay from "../components/RidesRequestDisplay";
   }, [currentUser.uid]);
 
   return (
-   <ImageBackground source={require('../components/pic3.jpg')} style={theStyle.background}>
+   <ImageBackground source={require('../components/pic4.jpg')} style={theStyle.background}>
     <View style ={theStyle.center}>
       <BackButton/>
-      <Text style={theStyle.bold}>RidesRequest</Text>
+      <Text style={theStyle.bold}>Rides Request</Text>
       <View style={theStyle.separator}></View>
       <FlatList
            data={rides_requests}

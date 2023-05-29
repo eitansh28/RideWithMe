@@ -189,7 +189,7 @@ import SearchRidesRowDisplay from "../components/SearchRidesRowDisplay";
   console.log(params.params.user_location);
 
   return (
-   <ImageBackground source={require('../components/pic3.jpg')} style={theStyle.background}>
+   <ImageBackground source={require('../components/pic4.jpg')} style={theStyle.background}>
 <View style ={theStyle.center}>
   <BackButton/>
       <Text style={theStyle.bold}>Search Results</Text>

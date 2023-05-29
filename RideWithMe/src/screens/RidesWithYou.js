@@ -39,7 +39,7 @@ const RidesWithYou = ({navigation}) => {
   }, [currentUser.uid]);
 
   return (
-   <ImageBackground source={require('../components/pic3.jpg')} style={theStyle.background}>
+   <ImageBackground source={require('../components/pic4.jpg')} style={theStyle.background}>
 <View style ={theStyle.center}>
   <BackButton/>
       <Text style={theStyle.bold}>Rides With You</Text>

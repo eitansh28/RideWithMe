@@ -13,17 +13,15 @@ const YouRidesRowDisplay = ({UseRides}) => {
    
     return (  
     <View style = {{flex : 1,paddingBottom:10}}>    
-        <View style = {{flex:0.5,backgroundColor:'#d0c7b7',borderRadius:10}}>
-            <View style={{flexDirection:'row',justifyContent:'space-between'}}>
-            <Text style ={{fontSize:20}}>date: {UseRides.date}</Text>
-        </View>
-        <Text style={[styles.User,{marginBottom:10}]}>destination : {UseRides.destination}   </Text>
-        <Text style={[styles.User,{marginBottom:10}]}>origin : {UseRides.origin} </Text>
+        <View style = {{flex:0.5,backgroundColor:'white',borderRadius:10}}>
+        <Text style={[styles.User,{marginBottom:10}]}>date : {UseRides.date}   </Text>
+        <Text style={[styles.User,{marginBottom:10}]}>origin : {UseRides.originName} </Text>
+        <Text style={[styles.User,{marginBottom:10}]}>destination : {UseRides.destinationName}   </Text>
         <Text style = {[styles.User,{paddingBottom:4}]} >price : {UseRides.price}</Text>
         <Text style = {[styles.User,{paddingBottom:4}]} >seats : {UseRides.seats}</Text>
         <Button 
           title="driver"
-          color={'blue'}
+          color={'purple'}
           onPress={move_to_driver_details}
         />
       </View>

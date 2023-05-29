@@ -7,7 +7,7 @@ import { Picker } from "@react-native-picker/picker";
 import ImagePicker from "react-native-image-crop-picker";
 import { IP } from '../components/constants';
 import BackButton from "../components/BackButton";
-
+import me1Image from '../components/me1.jpg';
 
 
 
@@ -20,10 +20,10 @@ const ProfileScreen = ({ user }) => {
   const [age, setAge] = useState("19");
   const [gender, setGender] = useState("Male");
   const [email, setEmail] = useState("yarin@gmail.com");
-  const [photoURL,setPhotoURL] = useState('https://www.shutterstock.com/image-photo/cool-grandma-showing-peace-sign-260nw-583662652.jpg');
+  const [photoURL,setPhotoURL] = useState("https://www.pexels.com/collections/country-roads-dqyjhhs/");
   const [showModal,setShowModal] = useState(false);
   const [phone, setPhone] = useState("");
-//   const [image, setImage] = useState(currentUser.photoURL);
+  // const [image, setImage] = useState(currentUser.photoURL);
 
   const { width, height } = Dimensions.get('window');
   const pictureWidth = width;
@@ -42,10 +42,14 @@ const ProfileScreen = ({ user }) => {
           body: JSON.stringify({ id: currentUser.uid })});
 
         const user_details = await res.json();
+        const id = user_details.user_details.id;
         console.log(user_details.user_details);
         setName(user_details.user_details.name);
         setAge(user_details.user_details.age);
         setGender(user_details.user_details.gender);
+        setPhone(user_details.user_details.phone);
+        // setEmail(id.email);
+        setPhotoURL(require('../components/me1.jpg'));
         // setPhotoURL(user_details.user_details.photoURL);
       } catch (error) {
         console.log("im error ", error);
@@ -62,31 +66,49 @@ const ProfileScreen = ({ user }) => {
     //     setPhotoURL(doc.data().photoURL);
     // })
   // },[]);
+  const saveChange = async () => {
+    if (name && age){
+      try {
+        const res = await fetch('http://192.168.1.125:1000/updateUser', { 
+          method: "POST", 
+          headers: { Accept: "application/json", "Content-Type": "application/json" },
+          body: JSON.stringify({
+            id: currentUser.uid,
+            name: name,
+            age: age, 
+            gender: gender,
+            phone: phone,
+            // photoURL: url,
+          })});
+        } catch (e) {
+          console.error("Error adding document: ", e);
+        }
+    }
+  }
+  // const saveChanges = async () => {
+  //   // Save changes to the Firestore database
 
-  const saveChanges = async () => {
-    // Save changes to the Firestore database
-
-    if (name && age && image) {
-        uploadImageToStorage(image, `${currentUser.uid}`);
+  //   if (name && age) {
+  //       // uploadImageToStorage(image, `${currentUser.uid}`);
   
-        const ref = firebase.storage().ref(`${currentUser.uid}`);
-        const url = await ref.getDownloadURL();
+  //       const ref = firebase.storage().ref(`${currentUser.uid}`);
+  //       const url = await ref.getDownloadURL();
 
-    firestore().collection('users').doc(userId).update({
-      id : currentUser.uid,
-      name: name,
-      age: age,
-      gender: gender,
-      email: email,
-      photoURL: url,
-    }, { merge: true })
-      .then(() => {
-        console.log('User data updated.');
-      })
-      .catch((error) => {
-        console.error('Error updating user data:', error);
-      });
-  }};
+  //   firestore().collection('users').doc(userId).update({
+  //     id : currentUser.uid,
+  //     name: name,
+  //     age: age,
+  //     gender: gender,
+  //     email: email,
+  //     // photoURL: url,
+  //   }, { merge: true })
+  //     .then(() => {
+  //       console.log('User data updated.');
+  //     })
+  //     .catch((error) => {
+  //       console.error('Error updating user data:', error);
+  //     });
+  // }};
 
   const uploadImage = () => {
     ImagePicker.openPicker({
@@ -117,10 +139,10 @@ const ProfileScreen = ({ user }) => {
   return (
     <View style={styles.container}>
       <BackButton/>
-      <ImageBackground source={{ uri:'https://images.pexels.com/photos/1590549/pexels-photo-1590549.jpeg?auto=compress&cs=tinysrgb&w=600' }} style={styles.backgroundImage}>
+      <ImageBackground source={require('../components/pic6.jpg')} style={styles.backgroundImage}>
         <View style={styles.card}>
           <View style={[styles.photoContainer, { width: pictureWidth, height: pictureHeight,paddingTop:50 }]}>
-            <Image source={{ uri: photoURL }} style={styles.profilePicture} />
+            <Image source={require('../components/me1.jpg')} style={styles.profilePicture} />
             <TouchableOpacity  onPress={()=>setShowModal(true)}>
                 <Image 
                 source={{uri:'https://as2.ftcdn.net/v2/jpg/05/44/29/99/1000_F_544299988_zMBMn7clJywwQJ3Bb4jAhywvuQgdPkmA.jpg'}}
@@ -132,37 +154,37 @@ const ProfileScreen = ({ user }) => {
             transparent = {true}
             visible = {showModal}
             >
-        <View style={{backgroundColor:'white',opacity:0.8,marginTop:'10%'}}>
+        <View style={{backgroundColor:'lightblue',opacity:0.8,marginTop:'10%'}}>
           <View style={styles.detailsRow}>
-            <Text style={styles.detailsLabel}>Edit-Name:</Text>
             <TextInput style={styles.detailsValue} value={name} onChangeText={setName} />
-            
+            <Text style={styles.detailsLabel}>Edit-Name:</Text>
             </View>
             <View style={styles.detailsRow}>
-              <Text style={styles.detailsLabel}>Edit-Age:</Text>
               <TextInput style={styles.detailsValue} value={age} onChangeText={setAge} />
+              <Text style={styles.detailsLabel}>Edit-Age:</Text>
             </View>
             <View style={styles.detailsRow}>
-              <Text style={styles.detailsLabel}>Edit-Gender:</Text>
+              
               <TextInput style={styles.detailsValue} value={gender} onChangeText={setGender} />
+              <Text style={styles.detailsLabel}>Edit-Gender:</Text>
             </View>
             <View style={styles.detailsRow}>
-              <Text style={styles.detailsLabel}>Edit-Mail:</Text>
               <TextInput style={styles.detailsValue} value={email} onChangeText={setEmail} />
+              <Text style={styles.detailsLabel}>Edit-Mail:</Text>
             </View>
             <View style={styles.detailsRow}>
-              <Text style={styles.detailsLabel}>Edit-phone:</Text>
               <TextInput style={styles.detailsValue} value={phone} onChangeText={setPhone} />
+              <Text style={styles.detailsLabel}>Edit-phone:</Text>
             </View>
             <View style={{flexDirection:'row',alignContent:'space-between',justifyContent:'space-evenly'}}>
-              <TouchableOpacity style={styles.saveButton} onPress={saveChanges}>
-                <Text style={{color:'red',fontSize:18}}>Save Changes</Text>
+              <TouchableOpacity style={styles.saveButton} onPress={saveChange}>
+                <Text style={{color:'green',fontSize:18}}>Save Changes</Text>
               </TouchableOpacity>
               <TouchableOpacity style={styles.saveButton} onPress={()=>setShowModal(false)}>
                 <Text style={{color:'red',fontSize:18}}>Back</Text>
               </TouchableOpacity>
               <TouchableOpacity style={styles.saveButton} onPress={()=>(uploadImage)}>
-                <Text style={{color:'red',fontSize:18}}>Update Picture</Text>
+                <Text style={{color:'blue',fontSize:18}}>Update Picture</Text>
               </TouchableOpacity>
             </View>
             </View>
@@ -189,12 +211,16 @@ const ProfileScreen = ({ user }) => {
     container: {
       flex: 1,
     },
+    rowContainer: {
+      flexDirection: 'row',
+      alignItems: 'center',
+    },
     backgroundImage: {
       flex: 1,
       resizeMode: 'cover',
     },
     card: {
-      backgroundColor: 'rgba(255, 255, 255, 0.8)',
+      backgroundColor: 'rgba(255, 240, 240, 0.8)',
       marginHorizontal: '0%',
       marginVertical: '0%',
       borderRadius: 10,
@@ -226,14 +252,16 @@ const ProfileScreen = ({ user }) => {
     detailsRow: {
       flexDirection: 'row',
       marginBottom: '2%',
+      alignItems: 'center',
     
     },
     detailsLabel: {
       flex: 1,
       fontWeight: 'bold',
-      fontSize:22,
+      textAlign: 'center',
+      fontSize:20,
     },
-        input: {
+    input: {
       margin: 10,
       borderBottomColor: "lightgray",
       borderBottomWidth: 1,

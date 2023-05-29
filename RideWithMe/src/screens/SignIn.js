@@ -1,8 +1,8 @@
 import React, {useState, useEffect} from "react";
-import {View, Text, StyleSheet, Button ,Alert, TextInput, ImageBackground} from 'react-native';
+import {View, Text, StyleSheet, Button ,Alert, TextInput, ImageBackground, TouchableOpacity} from 'react-native';
 import auth, { firebase} from "@react-native-firebase/auth";
 import firestore from '@react-native-firebase/firestore';
-
+import { IP } from "../components/constants";
   const SignIn = ({navigation}) => {
 
     const [email, setEmail] = useState("");
@@ -51,7 +51,37 @@ import firestore from '@react-native-firebase/firestore';
       }
     }
     
-  
+    // function enter() {
+    //   console.log("press login");
+    //   if (email && pass) {
+    //     fetch('http://192.168.1.125:1000/SignIn', {
+    //       method: 'POST',
+    //       headers: {
+    //         'Content-Type': 'application/json',
+    //       },
+    //       body: JSON.stringify({ email: email, password: pass }),
+    //     })
+    //     .then((response) => response.json())
+    //     .then((data) => {
+    //       if (data.success) {
+    //         const { user } = data;
+    //         const userId = user.uid;
+    //         let name = user.email;
+    //         navigation.navigate({name:'Home', params:{username: name}});
+    //       } else {
+    //         console.log(data.message);
+    //         alert(data.message);
+    //       }
+    //     })
+    //     .catch((error) => {
+    //       console.error(error);
+    //     });
+    //   }
+    //   else {
+    //     alert("you must fill all the tabs!");
+    //   }
+    // }
+    
     function enter() {
       if (email && pass) {
         auth()
@@ -61,11 +91,14 @@ import firestore from '@react-native-firebase/firestore';
           const { currentUser } = firebase.auth();
           console.log(currentUser);
           const userId = currentUser.uid;
-          let name = currentUser.email
-          // firestore().collection('users').doc(userId).get().then((doc) => {
-          //   let name = doc.data().email;
-            navigation.navigate({name:'Home', params:{username: name}});
-          // })
+          // let name = currentUser.email
+          firestore().collection('users').doc(userId).get().then((doc) => {
+            let name = doc.data().name;
+            navigation.navigate('Home', {
+              screen : 'Home',       
+              params : {username: name},
+            });
+          })
         })
         .catch((error) => {
           if (error.code === "auth/email-already-in-use") {
@@ -92,7 +125,7 @@ import firestore from '@react-native-firebase/firestore';
     }
 
     return(
-    <ImageBackground source={require('../components/pic2.jpg')} style={styles.background}>
+    <ImageBackground source={require('../components/pic5.jpg')} style={styles.background}>
     <View style={styles.center}>
       <Login/>
       <TextInput
@@ -101,17 +134,20 @@ import firestore from '@react-native-firebase/firestore';
         value={email}
         onChangeText={setEmail}
       />
+      <View style={styles.separator_small}></View>
       <TextInput
         style={styles.input}
         placeholder="Enter desired password"
         value={pass}
         onChangeText={setPass}
-      />         
-      <Button
-        title="Sign in"
-        onPress={enter}
-      />
-      <Text>First time here?</Text>
+      />    
+      <View style={styles.separator}></View>
+      <TouchableOpacity onPress={enter} style={styles.roundButton}>
+          <Text style={styles.buttonText} color={'green'}>Sign in</Text>
+        </TouchableOpacity>
+      <View style={styles.separator}></View>
+      <Text style={styles.text}>First time here?</Text>
+      <View style={styles.separator_small}></View>
       <Button 
         title="sign up"
         onPress={check}
@@ -134,14 +170,41 @@ const styles = StyleSheet.create({
       alignItems: 'center',
       justifyContent: 'center',
     },
+    separator: {
+      marginTop: 30,
+      // marginBottom: 20,
+    },
+    separator_small: {
+      marginTop: 10,
+      // marginBottom: 20,
+    },
     input: {
-      backgroundColor: 'pink',
+      backgroundColor: 'white',
       width: "90%",
       fontSize: 20,
       padding: 8,
       borderColor: "blue",
       borderWidth: 0.2,
-      borderRadius: 10,
+      borderRadius: 20,
+    },
+    text: {
+      fontFamily: 'KaushanScript-Regular',
+      // color: 'white',
+      fontWeight: 'bold',
+      fontSize: 20,
+      textAlign: 'center',
+    },
+    buttonText: {
+      color: 'white', 
+      fontSize: 15,
+      fontWeight: 'bold',
+    },
+    roundButton: {
+      borderRadius: 40,
+      backgroundColor: 'green',
+      padding: 10,
+      marginVertical: 10,
+      alignItems: 'center',
     },
   });
 

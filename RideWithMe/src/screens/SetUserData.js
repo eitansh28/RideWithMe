@@ -9,13 +9,14 @@ import {
     LogBox,
     Button,
   } from "react-native";
-  import React, { useState } from "react";
+  import React, { Component, useState } from "react";
   import { Picker } from "@react-native-picker/picker";
   import ImagePicker from "react-native-image-crop-picker";
   import { firebase } from "@react-native-firebase/auth";
   import firestore from "@react-native-firebase/firestore";
   import storage from "@react-native-firebase/storage";
-  
+  import pic10 from '../components/pic10.jpg';
+
   LogBox.ignoreAllLogs();
   
   const SetUserData = ({ navigation }) => {
@@ -25,7 +26,7 @@ import {
     const [gender, setGender] = useState("MALE");
     const [smoker, setSmoker] = useState("NO");
     const [allergies, setAllergies] = useState("");
-    const [image, setImage] = useState(currentUser.photoURL);
+    const [image, setImage] = useState("https://www.pexels.com/collections/country-roads-dqyjhhs/");
     const [phone, setPhone] = useState("");
   
     const uploadImageToStorage = (path, imageName) => { 
@@ -41,7 +42,7 @@ import {
     };
   
     const save = async () => {
-      alert("wwwwww")
+      alert("wwwwww");
       if (name && age) {
         // uploadImageToStorage(image, `${currentUser.uid}`);
   
@@ -51,31 +52,6 @@ import {
         if (isNaN(intAge)) {
             alert("age must be an integer!");
         }
-        // else {   
-        //     if (intAge >= 18) {
-        //         try {
-        //           const res = await fetch('http://192.168.56.1:1000/addUser', { 
-        //             method: "POST", 
-        //             headers: { Accept: "application/json", "Content-Type": "application/json" },
-        //             body: JSON.stringify({
-        //               id: currentUser.uid,
-        //               name: name,
-        //               age: age, 
-        //               gender: gender,
-        //               photoURL: url,
-        //               allergies: allergies,
-        //               smoker: smoker
-        //             })});
-        //           } catch (e) {
-        //             console.error("Error adding document: ", e);
-        //           }
-        //           alert("We got your data successfully :)");
-        //           navigation.navigate({name:'Home', params:{username: name}});
-        //     }
-        //     else {
-        //         alert("age must be 18 or above!");
-        //     }
-        // }
       else {   
           if (intAge >= 18) {
               try {
@@ -130,7 +106,7 @@ import {
         <Image
           style={theStyle.images}
           source={{
-            uri: image,
+            pic10
           }}
         ></Image>
         <Button 
