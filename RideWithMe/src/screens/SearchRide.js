@@ -4,13 +4,15 @@ import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplet
 import DateTimePickerModal from "react-native-modal-datetime-picker";
 import { Linking } from 'react-native';
 import BackButton from "../components/BackButton";
-// import { IP } from "../components/constants";
+import { IP } from "../components/constants";
 import SearchResults from "./SearchResults";
 
   const SearchRide = ({navigation}) => {
 
     const [from, setFrom] = useState("");
     const [to, setTo] = useState("");
+    const [originName, setOriginName] = useState('defualt');
+    const [destinationName, setDestinationName] = useState('defualt');
     const [departureTime, setDepartureTime] = useState(null);
     const [isDepartureTimePickerVisible, setDepartureTimePickerVisibility] = useState(false);
     const [desiredArrivalTime, setDesiredArrivalTime] = useState(null);
@@ -22,7 +24,8 @@ import SearchResults from "./SearchResults";
         if (details.geometry && details.geometry.location) {
             // Extract latitude and longitude from the data parameter
             const { lat, lng } = details.geometry.location;
-    
+            
+            setOriginName(data.description);
             // Set the location state
             setFrom({ latitude: lat, longitude: lng });
         }
@@ -33,7 +36,7 @@ import SearchResults from "./SearchResults";
         if (details.geometry && details.geometry.location) {
             // Extract latitude and longitude from the data parameter
             const { lat, lng } = details.geometry.location;
-    
+            setDestinationName(data.description);
             // Set the location state
             setTo({ latitude: lat, longitude: lng });
         }
@@ -64,16 +67,18 @@ import SearchResults from "./SearchResults";
     const search = async () => {
         console.log("search ride pressed");
         //navigation.navigate('SearchResults');
-        if (departureTime && from && to ){
+        if (departureTime && from ){
             try{
-                const res =  await fetch(("http://192.168.1.125:1000/searchRide"),{
+                const res =  await fetch(("http://"+IP+":1000/searchRide"),{
                     method : 'POST',
                     headers: {Accept: "application/json",
                     "Content-Type": "application/json" 
                   },
                   body: JSON.stringify({
                     origin:from,
+                    originName:originName,              
                     destination: to,
+                    destinationName:destinationName,
                     departureTime: departureTime
                    })});
 

@@ -34,7 +34,7 @@ const ProfileScreen = ({ user }) => {
     // alert("hhh");
     const getUserDetails = async () => {
       try {
-        const res = await fetch("http://192.168.1.125:1000/getUserDetails", {
+        const res = await fetch("http://"+IP+":1000/getUserDetails", {
           method: "POST", 
           headers: { Accept: "application/json",
            "Content-Type": "application/json" 

@@ -9,16 +9,16 @@ import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplet
 import { Keyboard } from 'react-native'
 import { SafeAreaView } from "react-native-safe-area-context";
 import { ScrollView } from "react-native-gesture-handler";
-// import { IP } from '../components/constants.js';
+import { IP } from '../components/constants.js';
 import BackButton from "../components/BackButton";
 
   const PostRide = ({navigation}) => {
   const { currentUser } = firebase.auth();
   const [user_name, SetUser_name] = useState();
   const [origin, setOrigin] = useState('defualt');
+  const [originName, setOriginName] = useState('defualt');
   const [destination, setDestination] = useState('defualt');
-  const [origin1, setOrigin1] = useState('defualt');
-  const [destination1, setDestination1] = useState('defualt');
+  const [destinationName, setDestinationName] = useState('defualt');
   const [date, setDate] = useState(new Date());
   const [price, setPrice] = useState('');
   const [phone, setPhone] = useState('');
@@ -39,7 +39,7 @@ import BackButton from "../components/BackButton";
   useEffect(() => {
     const getUserDetails = async () => {
       try {
-        const res = await fetch("http://192.168.1.125:1000/getUserDetails", {
+        const res = await fetch("http://192.168.1.42:1000/getUserDetails", {
           method: "POST", 
           headers: { Accept: "application/json",
            "Content-Type": "application/json" 
@@ -64,7 +64,7 @@ import BackButton from "../components/BackButton";
     if (destination && price && seats){
       try {
         alert("hhhhhhhhhhhhhhhh")
-        const res = await fetch("http://192.168.1.125:1000/postRide",{
+        const res = await fetch("http://192.168.1.42:1000/postRide",{
           method: 'POST',
           headers: {Accept: "application/json",
           "Content-Type": "application/json" 
@@ -73,12 +73,13 @@ import BackButton from "../components/BackButton";
                               driver_name: user_name,
                               origin: origin,
                               dest: destination,
-                              // origin_name: origin1,
-                              // dest_name: destination1,
+                              originName:originName,
+                              destinationName:destinationName,
                               price: price,
                               phone: phone,
                               seats: seats,
-                              date: departureTime })});
+                              date: departureTime
+                             })});
         } catch (e) {
         console.error("Error adding document: ", e);
       }
@@ -116,6 +117,7 @@ import BackButton from "../components/BackButton";
     // Extract latitude and longitude from the data parameter
     const { lat, lng } = details.geometry.location;
 
+    setOriginName(data.description);
     // Set the location state
     setOrigin({ latitude: lat, longitude: lng });
 
@@ -129,7 +131,7 @@ const handleToLocation = (data, details = null) => {
   if (details.geometry && details.geometry.location) {
       // Extract latitude and longitude from the data parameter
       const { lat, lng } = details.geometry.location;
-
+      setDestinationName(data.description);
       // Set the location state
       setDestination({ latitude: lat, longitude: lng });
       // getAddressFromLatLong(lat, lng).then(address => setDestination1(address));

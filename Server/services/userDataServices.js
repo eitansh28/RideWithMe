@@ -29,8 +29,10 @@ const { auth2 } = require('firebase-admin/auth');
 
 
 
+
+
+
 const getUser = async (req,res,next)=>{
-    console.log('im here');
     const users = db.collection('users');
     try{
         let u_id = req.body.id || "";
