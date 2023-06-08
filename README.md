@@ -1,5 +1,8 @@
 # RideWithMe
 
+![image](https://github.com/Matan-Shimon/RideWithMe/assets/63747865/8644fdab-edd2-4dba-b9b4-7bb12681c397)
+
+
 ## Table of Contents
 - [Introduction](#introduction)
 - [Features](#features)
@@ -65,10 +68,15 @@ npm install
 
 4. Browse through the list of available rides that match your search criteria. Each ride listing includes essential details such as the driver's profile, the starting point, the destination, the departure time, and any associated costs.
 
-6. Review the ride details, driver's ratings, and any additional information provided by the driver.
+5. Review the ride details, driver's ratings, and any additional information provided by the driver.
 
-7. Once you find a suitable ride, click on the "Ask To Join" button to send a ride request to the driver. Optionally, you can use the in-app messaging system to communicate with the driver and discuss any specific requirements or details.
+6. Once you find a suitable ride, click on the "Ask To Join" button to send a ride request to the driver. Optionally, you can use the in-app messaging system to communicate with the driver and discuss any specific requirements or details.
 
-8. Wait for the driver's response to your ride request. The driver will confirm or decline your request based on their availability and preferences.
+7. Wait for the driver's response to your ride request. The driver will confirm or decline your request based on their availability and preferences.
 
-9. If your ride request is accepted, you will see it inside "Joined Rides".
+8. If your ride request is accepted, you will see it inside "Joined Rides".
+
+<p align="center">
+  <img src="https://github.com/Matan-Shimon/RideWithMe/assets/63747865/6a2993ff-8f4a-4b80-bb43-6de3928d4e86" alt="Image Description">
+</p>
+
