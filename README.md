@@ -18,7 +18,7 @@ RideWithMe offers the following key features:
 
 1. **Publish and Search Rides**: Passengers can easily publish their ride requests, specifying their starting point, destination, and preferred time. Drivers can search for available rides and choose the ones that align with their route.
 
-2. **Fastest Route Optimization**: RideWithMe algorithmically determines the fastest route for passengers by considering available drivers along the way. This ensures efficient and timely ridesharing experiences for both drivers and passengers.
+2. **Fastest Routes Optimization**: RideWithMe algorithmically determines the fastest route for passengers by considering available drivers along the way. This ensures efficient and timely ridesharing experiences for both drivers and passengers. The app utilizes Yen's algorithm, a well-known algorithm for finding the K shortest paths in a graph, to calculate the fastest routes that optimize travel time and minimize detours.
 
 3. **Multi-Driver Rides**: RideWithMe allows passengers to request rides that involve multiple drivers. This feature helps optimize routes and increases the likelihood of finding suitable drivers, enhancing the convenience of the app.
 
