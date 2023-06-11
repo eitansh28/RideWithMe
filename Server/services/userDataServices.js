@@ -46,11 +46,14 @@ const getUser = async (req,res,next)=>{
 const addUser = async (req,res,next) =>{
     try{
         let id = req.body.id || "";
+        if (id === "") {
+            throw new Error("Invalid ID");
+        }
         let name = req.body.name || "";
         let age = req.body.age || "";
         let gender = req.body.gender || "";
         let phone = req.body.phone || "";
-        // let photoURL = req.body.photoURL || "";
+        let photoURL = req.body.photoURL || "";
         let allergies = req.body.allergies || "";
         let smoker = req.body.smoker || "";
 
@@ -60,14 +63,15 @@ const addUser = async (req,res,next) =>{
             age: age,
             gender: gender,
             phone: phone,
-            // photoURL:photoURL,
+            photoURL:photoURL,
             allergies:allergies,
             smoker:smoker,
         })
 
-
+        res.status(200).json({ message: 'user insert details successfully' });
     }catch(err){
-        console.log('Error addUser details: ', err)
+        console.log('Error addUser details: ', err);
+        res.status(200).json({ message: 'user insert details failed' });
     }
 };
 
@@ -80,14 +84,14 @@ const updateUser = async (req,res,next) =>{
         let age = req.body.age || "";
         let gender = req.body.gender || "";
         let phone = req.body.phone || "";
-        // let photoURL = req.body.photoURL || "";
+        let photoURL = req.body.photoURL || "";
         await db.collection('users').doc(id).set({
             id: id,
             name:name,
             age: age,
             gender: gender,
             phone: phone,
-            // photoURL:photoURL,
+            photoURL:photoURL,
         })
     }catch(err){
         console.log('Error updateUser details: ', err)
@@ -142,7 +146,8 @@ const SignUp = async (req,res,next) =>{
         password
         });
         console.log('User account created:', userRecord.toJSON());
-        return res.status(201).send({ message: 'User account created' });
+        console.log('User account created:', userRecord.toJSON().uid);
+        return res.status(201).send({ message: 'User account created', id: userRecord.toJSON().uid });
     } catch (error) {
         console.error('Error creating user:', error);
         if (error.code === 'auth/email-already-exists') {
@@ -158,5 +163,5 @@ module.exports = {
     addUser, 
     updateUser,
     SignIn, 
-    SignUp
+    SignUp,
 };

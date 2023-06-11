@@ -10,6 +10,8 @@ const {
     approveRequest, 
     rejectRequest,
     getPassengers,
+    deleteRide,
+    leaveRide,
     getRidesWithYou } = require("../services/rideServices");
 const router = express.Router();
 
@@ -23,6 +25,8 @@ router.post("/rejectRequest", rejectRequest);
 router.post("/getAskedToJoin", getAskedToJoin);
 router.post("/getPassengers", getPassengers);
 router.post("/getRidesWithYou", getRidesWithYou);
+router.post("/deleteRide", deleteRide);
+router.post("/leaveRide", leaveRide);
 
 
 module.exports = router;

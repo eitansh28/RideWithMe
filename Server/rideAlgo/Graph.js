@@ -1,9 +1,11 @@
 
 const PriorityQueue = require('priorityqueuejs');
- 
+const walk = 5;
+
 class Vertex {
-    constructor(id,locationName,lng,lat,type,time) {
+    constructor(id,idd,locationName,lng,lat,type,time) {
       this.id = id;
+      this.idd = idd;
       this.lng =lng;
       this.lat = lat;
       this.type = type
@@ -14,10 +16,12 @@ class Vertex {
   }
 
   class Edge {
-    constructor(weight,type) {
+    constructor(weight,type,dest, price, driver_name) {
       this.weight = weight;
       this.type =type;
-
+      this.dest = dest;
+      this.price = price;
+      this.driver_name = driver_name;
     }
   }
 class Graph{
@@ -27,8 +31,8 @@ constructor(){
     this.edges = new Map();
 }
 
-addVertex(id,locationName,lng,lat,type,time){
-    this.vertices[id] = new Vertex(id,locationName,lng,lat,type,time);
+addVertex(id,idd,locationName,lng,lat,type,time){
+    this.vertices[id] = new Vertex(id,idd,locationName,lng,lat,type,time);
     this.edges.set(id,new Map());
     
 }
@@ -42,22 +46,22 @@ addAllCloseVertex(vertex){
     if (edge.type != 'ride')break;
     for(let key2 in this.vertices){
     const vertex2 = this.vertices[key2];
-    if (vertex2.type == 'dest' && (vertex2.id==vertex.id || vertex2.id==neighbor.vertex.id))continue;
+    if (vertex2.type != 'org' || (vertex2.id==vertex.id || vertex2.id==neighbor.vertex.id))continue;
      const dist = this.calculateDistance(neighbor.vertex,vertex2);
     const date1 = new Date(neighbor.vertex.time);
     const date2 = new Date(vertex2.time);
     const diffInMs = Math.abs(date1 - date2); 
     const diffInMinutes = diffInMs / (1000 * 60);
-    if(dist<=1&&diffInMinutes<=10){
-      this.addEdge(neighbor.vertex,vertex2,dist,'onfoot');
+    if(dist<=walk && diffInMinutes<=60){
+      this.addEdge(neighbor.vertex,vertex2,dist,'onfoot',"","");
     } 
   }
   }
 }
 
-addEdge(vertex1, vertex2, weight,type) {
+addEdge(vertex1, vertex2, weight,type,price,driver_name) {
     const map = this.edges.get(vertex1.id);
-    map.set(vertex2.id, new Edge(weight,type));
+    map.set(vertex2.id, new Edge(weight,type,vertex2.locationName,price,driver_name));
   }
 getEdge(vertex1, vertex2){
   return this.edges.get(vertex1.id).get(vertex2.id);
@@ -71,9 +75,9 @@ getEdge(vertex1, vertex2){
     }
     return neighbors;
   }
-   dijkstra(start, end, k,time) {
-   
-    let edge_to_remove = this.preDijkstra(start,end,time);
+   dijkstra(start, end, k,time, numSeats) {
+    let paths = [];
+    let edge_to_remove = this.preDijkstra(start,end,time,numSeats);
     const distance = {};
     const distpath = {};
     const visited = {};
@@ -82,28 +86,29 @@ getEdge(vertex1, vertex2){
   
     for (const vertexId in this.vertices) {
       distance[vertexId] = Infinity;
-
     }
     distance[start.id] = 0;
     distpath[start.id] = 0;
   
-    pq.enq({ vertex: start, distance: 0,distancepath:0 });
+    pq.enq({ vertex: start, distance: 0, distancepath:0 });
   
     while (!pq.isEmpty()) {
       const { vertex, distance: distToVertex, distancepath:pathLenght } = pq.deq();
-
       if (visited[vertex.id]) continue;
       visited[vertex.id] = true;
       if (vertex == end && pathLenght <= k) {
         const resultPath =  this.buildPath(path, start, end);
-        this.postDijkstra(start,end,edge_to_remove);
-        return resultPath;
+        paths.push(resultPath);
+        for (const vertex in resultPath) {
+          distance[resultPath[vertex].vertex.id] = Infinity;
+          visited[resultPath[vertex].vertex.id] = false;
+        }
       }
   
       for (const { vertex: neighbor, edge } of this.getNeighbors(vertex)) {
-      
         const distToNeighbor = distToVertex + edge.weight;
-        if (distToNeighbor < distance[neighbor.id] && (pathLenght<k || (pathLenght==k && neighbor==end) ))  {
+        if (neighbor.type=='org' && neighbor.freeSeats<numSeats) continue;
+        if (distToNeighbor < distance[neighbor.id] &&(pathLenght<k || (pathLenght==k && neighbor==end) ))  {
           distance[neighbor.id] = distToNeighbor;
           distpath[neighbor.id] =  pathLenght+1;
           const neighborLenght = distpath[neighbor.id]
@@ -113,7 +118,7 @@ getEdge(vertex1, vertex2){
       }
     }
     this.postDijkstra(start,end,edge_to_remove);
-    return null;
+    return paths;
   }
   
    buildPath(path, start, end) {
@@ -124,12 +129,10 @@ getEdge(vertex1, vertex2){
       result.unshift({ vertex, edge });
       curr = vertex;
     }
-
     result.push({vertex: end})
-
     return result;
   }
-  preDijkstra(start,end,time){
+  preDijkstra(start,end,time,numSeats){
     let vertex_to_remove = []
     const startdate = new Date(start.time);
     const enddate = new Date(end.time);
@@ -140,16 +143,18 @@ getEdge(vertex1, vertex2){
       const diffInMs = Math.abs(startdate - vertexdate); // difference in milliseconds
       const diffInMinutes = diffInMs / (1000 * 60); // difference in minutes
       const distorg = this.calculateDistance(start,vertex);
-      if (vertex.type=='org' && distorg<=1 && diffInMinutes<10 ){
-        this.addEdge(start,vertex,distorg,'onfoot');
+      if (vertex.type=='org' && distorg<=walk && diffInMinutes<60 ){
+        if(vertex.freeSeats>=numSeats){
+          this.addEdge(start,vertex,distorg,'onfoot',"","");
+        } 
       }
       const distdest = this.calculateDistance(vertex,end);
       const diffInMsend = Math.abs(enddate - vertexdate); // difference in milliseconds
       const diffInMinutesend = diffInMsend / (1000 * 60); // difference in minutes
       
       //dont include the date diff in end vertex;
-      if (vertex.type=='dest' && distdest<=1){
-        this.addEdge(vertex,end,distdest,'onfoot');
+      if (vertex.type=='dest' && distdest<=walk){
+        this.addEdge(vertex,end,distdest,'onfoot',"","");
         vertex_to_remove.push(vertex);
       }
     }
