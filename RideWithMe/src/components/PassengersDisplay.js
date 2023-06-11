@@ -16,11 +16,15 @@ const PassengersDisplay = ({user, travelDocId}) => {
 
     return (  
     <View style = {{flex : 1,paddingBottom:10}}>    
-        <View style = {{flex:0.5,backgroundColor:'#d0c7b7',borderRadius:10}}>
-            <View style={{flexDirection:'row',justifyContent:'space-between'}}>
-            <Button title= {"Name: "+user.user_name} color={'blue'} onPress={move_to_user_details}/>
-        </View>
-        <Text style={[styles.User,{marginBottom:10}]}>from : {user.from_where}</Text>
+        <View style = {{flex:0.5,backgroundColor:'white',borderRadius:10}}>
+        <Text style={[styles.User,{marginBottom:10}]}> from : {user.from_where}</Text>
+        {user.pass_num > 1  && (<Text style={[styles.User,{marginBottom:10}]}> num of passengers : {user.pass_num}</Text>)}
+            {/* <View style={{flexDirection:'row',justifyContent:'space-between'}}> */}
+            <TouchableOpacity onPress={move_to_user_details} style={styles.roundButton}>
+              <Text style={styles.buttonText} color={'green'}>{"Name: "+user.user_name}</Text>
+            </TouchableOpacity>
+        {/* </View> */}
+        
       </View>
     </View>
   )
@@ -29,6 +33,22 @@ const PassengersDisplay = ({user, travelDocId}) => {
 const styles = StyleSheet.create({
     User:{
         fontSize:20,
+        textAlign: 'center'
+    },
+    buttonText: {
+      color: 'white', 
+      fontSize: 18,
+      fontWeight: 'bold',
+      // alignItems: 'center',
+      // justifyContent: 'center',
+    },
+    roundButton: {
+      borderRadius: 40,
+      backgroundColor: 'blue',
+      padding: 10,
+      marginVertical: 5,
+      alignItems: 'center',
+      justifyContent: 'center',
     },
         button: {
           alignItems: 'center',

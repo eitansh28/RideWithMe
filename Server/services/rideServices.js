@@ -16,15 +16,21 @@ const buildGrapgh = async () =>{
         const destdoc = JSON.parse(doc.data().destination);
         const orgName = doc.data().originName;
         const destName = doc.data().destinationName;
-        console.log(orgName,destName);
+        const price = doc.data().price;
+        const idd = doc.id; 
+        const driver_name = doc.data().driver_name;
+        // console.log(orgName,destName);
         const id1 = uuidv4();
         const id2 = uuidv4();
+        const freeSeats = doc.data().seats;
         //should calc the wieght using HERE API some trouble to sign up the get the API key
-        myGraph.addVertex(id1,orgName,orgdoc.longitude,orgdoc.latitude,'org',doc.data().date);
-        myGraph.addVertex(id2,destName,destdoc.longitude,destdoc.latitude,'dest',doc.data().date);
+        myGraph.addVertex(id1,idd,orgName,orgdoc.longitude,orgdoc.latitude,'org',doc.data().date);
+        vertex = myGraph.getVertexbyId(id1);
+        vertex.freeSeats = freeSeats;
+        myGraph.addVertex(id2,idd,destName,destdoc.longitude,destdoc.latitude,'dest',doc.data().date);
         const weight = myGraph.calculateDistance(myGraph.getVertexbyId(id1),myGraph.getVertexbyId(id2));
-        console.log(weight,"dsadas");
-        myGraph.addEdge(myGraph.getVertexbyId(id1),myGraph.getVertexbyId(id2),weight,'ride');
+        // console.log(weight,"dsadas");
+        myGraph.addEdge(myGraph.getVertexbyId(id1),myGraph.getVertexbyId(id2),weight,'ride',price,driver_name);
       
       })
       for(let key in myGraph.vertices){
@@ -71,8 +77,8 @@ const postRide = async (req,res,next) => {
         });
       const id1 = uuidv4();
       const id2 = uuidv4();
-      myGraph.addVertex(id1,originName,origin.longitude,origin.latitude,'org',departureTime);
-      myGraph.addVertex(id2,destinationName,destination.longitude,destination.latitude,'dest',departureTime);
+      myGraph.addVertex(id1,1,originName,origin.longitude,origin.latitude,'org',departureTime);
+      myGraph.addVertex(id2,1,destinationName,destination.longitude,destination.latitude,'dest',departureTime);
       //agian should called some func to calc the real drive wieght
       const weight = myGraph.calculateDistance(myGraph.getVertexbyId(id1),myGraph.getVertexbyId(id2));
       myGraph.addEdge(myGraph.getVertexbyId(id1),myGraph.getVertexbyId(id2),weight,'ride');
@@ -93,22 +99,24 @@ const postRide = async (req,res,next) => {
 }
 
 const searchRide = async (req,res,next) => {
+    console.log("hhhh");
     try {
       let origin = req.body.origin || "";
       let originName = req.body.originName || "";
-      let dest   =   req.body.destination || "";
-      let destName   =   req.body.destinationName || "";
+      let dest  =  req.body.destination || "";
+      let destName  =  req.body.destinationName || "";
+      let how_many = req.body.passengersNum || "";
       //should bring time drim client
       let time = req.body.departureTime;
       console.log(originName,destName,time)
       const id1 = uuidv4();
       const id2 = uuidv4();
-      myGraph.addVertex(id1,originName,origin.longitude,origin.latitude,'start_point',time);
-      myGraph.addVertex(id2,destName,dest.longitude,dest.latitude,'end_point',time);
-      const shortest_path = myGraph.dijkstra(myGraph.getVertexbyId(id1),myGraph.getVertexbyId(id2),7,time);
+      myGraph.addVertex(id1,1,originName,origin.longitude,origin.latitude,'start_point',time);
+      myGraph.addVertex(id2,1,destName,dest.longitude,dest.latitude,'end_point',time);
+      const shortest_paths = myGraph.dijkstra(myGraph.getVertexbyId(id1),myGraph.getVertexbyId(id2),7,time,how_many);
 
-      console.log(shortest_path)
-      // res.send({shortest_path})
+      console.log(shortest_paths)
+      res.send({shortest_paths})
  
     }catch(e){
       console.error("Error",e);
@@ -121,7 +129,7 @@ if (build_graph == false){
 }
 
 const getRidesWithMe = async (req,res,next) => {
-    console.log("RidesWithMe is ready");
+    // console.log("RidesWithMe is ready");
     let db = firebase.firestore();
     try{
         let u_id = req.body.id || "";
@@ -133,7 +141,7 @@ const getRidesWithMe = async (req,res,next) => {
         // Return the data object
         return data;
         });
-        console.log(rides_with_me);
+        // console.log(rides_with_me);
         res.send({rides_with_me})
     } catch(e) {
         console.error("Error getting user rides: ", e);
@@ -150,12 +158,13 @@ const askToJoin = async (req,res,next) => {
         let user_id = req.body.user_id || "";
         let user_name = req.body.user_name || "";
         let from_where = req.body.from_where || "";
+        let pass_num = req.body.pass_num || "";
 
         const maindocRef = db.collection('travels').doc(doc_id);
         const maindocSnapshot = await maindocRef.get();
         const seats = maindocSnapshot.data().seats;
 
-        if (seats > 0) {
+        if (seats >= pass_num) {
             // check if the user has already been answered
             const docRef1 = await db.collection('travels').doc(doc_id).collection('answered');
             const querySnapshot1 = await docRef1.where('user_id', '==', user_id).get();       
@@ -196,7 +205,8 @@ const askToJoin = async (req,res,next) => {
                     .doc(doc_id).collection('asked_to_join').add({
                         user_id: `${user_id}`,
                         user_name: `${user_name}`,
-                        from_where: `${from_where}`
+                        from_where: `${from_where}`,
+                        pass_num: `${pass_num}`,
                     });
                     console.log(`Document added`);
                     send = "Your request has been made";
@@ -227,6 +237,25 @@ const ridesRequests = async (req, res, next) => {
             // Return the data object
             return data;
         });
+    // try {
+    //     const u_id = req.body.id || "";
+    //     const db = firebase.firestore();
+        
+    //     const ridesRequestsQuery = await db.collection('travels').where("driver_id", "==", u_id).get();
+        
+    //     const rides_requests = await Promise.all(ridesRequestsQuery.docs.map(async (doc) => {
+    //       const askedToJoinRef = doc.ref.collection('asked_to_join');
+    //       const askedToJoinSnapshot = await askedToJoinRef.get();
+    //       const askedToJoinSize = askedToJoinSnapshot.size;
+    //       if (askedToJoinSize > 1) {
+    //         console.log(askedToJoinSize);
+    //         const data = doc.data();
+    //         data.doc_id = doc.id;
+    //         return data;
+    //       }
+          
+    //     //   return null;
+    //     }));
         const rides_requests_data = await Promise.all(rides_requests);
         console.log(rides_requests_data);
         res.send({rides_requests_data});
@@ -267,10 +296,11 @@ const getAskedToJoin = async (req, res, next) => {
         let user_id = req.body.user_id || "";
         let user_name = req.body.user_name || "";
         let from_where = req.body.from_where || "";
+        let pass_num = req.body.pass_num || "";
         const travel = await db.collection('travels').doc(travel_doc_id).get();
         // 1. decrease seats by one
         await travel.ref.update({
-            seats: travel.data().seats - 1 // decrease seats by one
+            seats: travel.data().seats - pass_num // decrease seats by one
         });
         // 2. delete this asked_to_join document
         await db.collection('travels').doc(travel_doc_id).collection('asked_to_join')
@@ -280,7 +310,8 @@ const getAskedToJoin = async (req, res, next) => {
         .add({
             user_id: user_id,
             user_name: user_name,
-            from_where: from_where
+            from_where: from_where,
+            pass_num: pass_num
         });
         // 3. add the user to the answered collection
         await db.collection('travels').doc(travel_doc_id).collection('answered')
@@ -337,7 +368,7 @@ const getAskedToJoin = async (req, res, next) => {
 };
 
 const getRidesWithYou = async (req, res, next) => {
-    console.log('rides with you ready!');
+    // console.log('rides with you ready!');
     let db = firebase.firestore();
     let u_id = req.body.id || "";
     console.log(u_id);
@@ -352,7 +383,7 @@ const getRidesWithYou = async (req, res, next) => {
                 rides.push(ride);
             }
         }));
-        console.log(rides);
+        // console.log(rides);
         res.send({rides});
     } catch (error) {
         console.error("Error getting documents: ", error);
@@ -360,6 +391,92 @@ const getRidesWithYou = async (req, res, next) => {
     }
 };
 
+const deleteRide = async (req, res, next) => {
+    console.log("delete ride is ready!");
+  
+    const rideId = req.body.ride_id || '';
+    try {
+      const db = firebase.firestore();
+  
+      // Delete the document directly using the ride_id as the document ID
+      await db.collection('travels').doc(rideId).delete();
+        
+      res.status(200).json({ message: 'Ride deleted successfully' });
+    } catch (error) {
+      console.error('Error deleting ride:', error);
+      res.status(500).json({ message: 'Failed to delete ride' });
+    }
+};
+
+const leaveRide = async (req, res, next) => {
+    console.log('leave ride is ready!');
+  
+    const db = firebase.firestore();
+    const rideId = req.body.ride_id || '';
+    const userId = req.body.user_id || '';
+  
+    // Get the reference to the "passengers" collection
+    const passengersCollectionRef = db.collection('travels').doc(rideId).collection('passengers');
+
+    // Query the documents with matching "user_id" field
+    const query = passengersCollectionRef.where("user_id", "==", userId);
+
+    // Delete the documents
+    query.get().then((querySnapshot) => {
+        querySnapshot.forEach((doc) => {
+            const seats = parseInt(doc.data().pass_num); // Get the value of the "seats" field
+            const rideRef = db.collection('travels').doc(rideId); // Reference to the original "rideId" document
+
+            // Update the "seats" field of the original document
+            rideRef.update({
+            seats: firebase.firestore.FieldValue.increment(seats)
+            }).then(() => {
+            // Document updated successfully
+            console.log("Seats updated");
+            }).catch((error) => {
+            console.error("Error updating seats: ", error);
+            });
+
+            // Delete the passenger document
+            doc.ref.delete();
+        });
+    }).catch((error) => {
+        console.error("Error deleting documents: ", error);
+    });
+};
+
+
+const deleteExpiredRecords = async () => {
+    try {
+      let db = firebase.firestore();
+      const currentDate = new Date();
+    //   console.log(currentDate.getUTCDate());
+      const snapshot = await db.collection('travels');
+      const all_travels = await snapshot.get();
+      console.log(all_travels.date);
+      all_travels.forEach((doc) => {
+        console.log('Document ID:', doc.id);
+        console.log('Document Data:', doc.data().date);
+        const rideDate = new Date(doc.data().date);
+        if (rideDate > currentDate){
+            db.collection('travels').doc(doc.id).delete();
+        }
+      });
+    } catch (error) {
+      console.error('Error deleting expired records:', error);
+    }
+  };
+  
+  const runScheduledTask = () => {
+    const interval = setInterval(async () => {
+      await deleteExpiredRecords();
+      // Stop the interval after a certain number of iterations or based on your desired logic
+      // clearInterval(interval);
+    }, 24 * 60 * 60 * 1000); // Run once a day (adjust the interval as needed)
+  };
+  
+  runScheduledTask();
+//   deleteExpiredRecords();
   
 
 module.exports = {
@@ -372,5 +489,7 @@ module.exports = {
     approveRequest, 
     rejectRequest,
     getPassengers,
-    getRidesWithYou
+    getRidesWithYou,
+    leaveRide,
+    deleteRide
 };

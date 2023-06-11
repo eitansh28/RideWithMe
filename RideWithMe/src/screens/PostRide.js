@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { View, Button, Text, TextInput, StyleSheet, ImageBackground,KeyboardAvoidingView,TouchableWithoutFeedback }from "react-native";
+import { View, Button, Text, TextInput, StyleSheet, ImageBackground, TouchableOpacity,KeyboardAvoidingView,TouchableWithoutFeedback }from "react-native";
 import { Picker } from "@react-native-picker/picker";
 import DateTimePickerModal from "react-native-modal-datetime-picker";
 import { firebase } from "@react-native-firebase/auth";
@@ -39,7 +39,7 @@ import BackButton from "../components/BackButton";
   useEffect(() => {
     const getUserDetails = async () => {
       try {
-        const res = await fetch("http://192.168.1.42:1000/getUserDetails", {
+        const res = await fetch("http://"+IP+":1000/getUserDetails", {
           method: "POST", 
           headers: { Accept: "application/json",
            "Content-Type": "application/json" 
@@ -63,8 +63,7 @@ import BackButton from "../components/BackButton";
     
     if (destination && price && seats){
       try {
-        alert("hhhhhhhhhhhhhhhh")
-        const res = await fetch("http://192.168.1.42:1000/postRide",{
+        const res = await fetch("http://"+IP+":1000/postRide",{
           method: 'POST',
           headers: {Accept: "application/json",
           "Content-Type": "application/json" 
@@ -146,8 +145,10 @@ const handleToLocation = (data, details = null) => {
     <BackButton/>    
     <View style ={theStyle.center}>
       <Text style={theStyle.bold}>Travel details</Text>
+      <View style={theStyle.separator}></View>
       <GooglePlacesAutocomplete
           styles={theStyle.location}
+          listViewDisplayed='auto'
           fetchDetails = {true}
           placeholder='Origin'
           onPress={handleFromLocation}
@@ -180,8 +181,8 @@ const handleToLocation = (data, details = null) => {
             onChangeText={setSeats}
           />
           <View style={theStyle.separator}></View>
-          <Text>Departure Time: {departureTime ? departureTime.toString() : 'Not set'}</Text>
-            <Button title="Select Departure Time" onPress={() => setDepartureTimePickerVisibility(true)} />
+          <Text style={{justifyContent: 'center', textAlign: 'center'}}>Departure Time: {departureTime ? departureTime.toString() : 'Not set'}</Text>
+            <Button color= 'steelblue' title= {departureTime ? departureTime.toString() :"Select Departure Time"} onPress={() => setDepartureTimePickerVisibility(true)} />
             <DateTimePickerModal
                 isVisible={isDepartureTimePickerVisible}
                 mode="datetime"
@@ -189,11 +190,9 @@ const handleToLocation = (data, details = null) => {
                 onCancel={handleDepartureTimeCancel}
             />
           <View style={theStyle.separator}></View>
-          <Button 
-            title="post"
-            color={'green'}
-            onPress={save}
-           />
+          <TouchableOpacity onPress={save} style={theStyle.roundButton}>
+          <Text style={theStyle.buttonText} color={'green'}>Post</Text>
+        </TouchableOpacity>
       </View>
        </ImageBackground> 
   )
@@ -213,6 +212,18 @@ const theStyle = StyleSheet.create({
     // alignItems: 'center',
     
   },
+  buttonText: {
+    color: 'white', 
+    fontSize: 20,
+    fontWeight: 'bold',
+  },
+  roundButton: {
+    borderRadius: 30,
+    backgroundColor: 'forestgreen',
+    padding: 10,
+    marginVertical: 10,
+    alignItems: 'center',
+  },
   bold: {
     textAlign: 'center',
     justifyContent: 'center',
@@ -230,6 +241,8 @@ const theStyle = StyleSheet.create({
         backgroundColor: 'rgba(0,0,0,0)',
         borderTopWidth: 0,
         borderBottomWidth:0,
+        marginBottom: 90,
+        marginTop: 50,
       },
       textInput: {
         marginLeft: 0,
@@ -237,6 +250,7 @@ const theStyle = StyleSheet.create({
         height: 38,
         color: '#5d5d5d',
         fontSize: 16,
+        
       },
       predefinedPlacesDescription: {
         color: '#1faadb',
@@ -262,6 +276,8 @@ const theStyle = StyleSheet.create({
     margin: 10,
     borderBottomColor: "lightgray",
     borderBottomWidth: 1,
+    fontWeight: 'bold',
+    fontSize: 16,
   },
   button: {
     backgroundColor: "green",

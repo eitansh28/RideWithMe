@@ -58,10 +58,11 @@ import { Linking } from 'react-native';
   };
 
   return (
-    <ImageBackground source={require('../components/pic3.jpg')} style={styles.background}>
+    <ImageBackground source={require('../components/pic9.jpg')} style={styles.background}>
+      <BackButton/>
     <View style ={styles.center}>
-        <BackButton/>
         <Text style={styles.bold}>User Details</Text>
+        <View style={styles.separator}></View>
         <View style={styles.photoContainer}></View>
         <Image source={{ uri: photoURL }} style={styles.profilePicture} />
           <View style={styles.detailsContainer}>
@@ -77,8 +78,8 @@ import { Linking } from 'react-native';
               </View>
               <View style={styles.detailsRow}></View>
             </View>
-            <Text style={styles.detailsLabel}>contact</Text>
-            <View style={{ flexDirection: 'row' , justifyContent: 'space-between' }}>
+            {/* <Text style={styles.detailsLabel}>contact</Text> */}
+            <View style={{ flexDirection: 'row' , justifyContent: 'flex-start' }}>
             <TouchableOpacity onPress={onPressWhatsApp}>
           <Ionicons name="logo-whatsapp" size={60} color="#25D366" />
         </TouchableOpacity>
@@ -112,9 +113,9 @@ const styles = StyleSheet.create({
         height: '8%',
     },
     center: {
-        flex: 1,
-        // justifyContent: 'center',
-        // alignItems: 'center',
+        // flex: 1,
+        justifyContent: 'flex-end',
+        alignItems: 'center',
         
     },
     bold: {
@@ -148,8 +149,8 @@ const styles = StyleSheet.create({
       marginBottom: 25,
     },
     photoContainer: {
-      justifyContent: 'flex-end',
-      alignItems: 'flex-end',
+      // justifyContent: 'flex-end',
+      // alignItems: 'center',
       overflow: 'hidden',
     },
     profilePicture: {
@@ -170,6 +171,7 @@ const styles = StyleSheet.create({
     detailsRow: {
       flexDirection: 'row',
       marginBottom: '2%',
+      // alignItems: 'center'
     
     },
     detailsLabel: {

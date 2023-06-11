@@ -23,7 +23,7 @@ import RidesRequestDisplay from "../components/RidesRequestDisplay";
   useEffect(() => {
     const getRidesRequests = async () => {
       try {
-        const res = await fetch("http://192.168.1.125:1000/ridesRequests", {
+        const res = await fetch("http://"+IP+":1000/ridesRequests", {
           method: "POST", 
           headers: { Accept: "application/json",
            "Content-Type": "application/json" 
@@ -41,10 +41,10 @@ import RidesRequestDisplay from "../components/RidesRequestDisplay";
   }, [currentUser.uid]);
 
   return (
-   <ImageBackground source={require('../components/pic3.jpg')} style={theStyle.background}>
+   <ImageBackground source={require('../components/pic4.jpg')} style={theStyle.background}>
     <View style ={theStyle.center}>
       <BackButton/>
-      <Text style={theStyle.bold}>RidesRequest</Text>
+      <Text style={theStyle.bold}>Pending requests</Text>
       <View style={theStyle.separator}></View>
       <FlatList
            data={rides_requests}
