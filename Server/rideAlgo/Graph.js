@@ -6,10 +6,9 @@ class Vertex {
       this.id = id;
       this.lng =lng;
       this.lat = lat;
-      this.type = type
+      this.type = type;
       this.time = time;
       this.locationName = locationName;
-
     }
   }
 
@@ -39,10 +38,10 @@ addAllCloseVertex(vertex){
   const neighbors = this.getNeighbors(vertex);
   for (const neighbor of neighbors) {
     let edge = this.getEdge(vertex,neighbor.vertex);
-    if (edge.type != 'ride')break;
+    if (edge.type != 'ride')continue;
     for(let key2 in this.vertices){
     const vertex2 = this.vertices[key2];
-    if (vertex2.type == 'dest' && (vertex2.id==vertex.id || vertex2.id==neighbor.vertex.id))continue;
+    if (vertex2.type != 'org' || (vertex2.id==vertex.id || vertex2.id==neighbor.vertex.id))continue;
      const dist = this.calculateDistance(neighbor.vertex,vertex2);
     const date1 = new Date(neighbor.vertex.time);
     const date2 = new Date(vertex2.time);
@@ -61,6 +60,7 @@ addEdge(vertex1, vertex2, weight,type) {
   }
 getEdge(vertex1, vertex2){
   return this.edges.get(vertex1.id).get(vertex2.id);
+
 }
 
   getNeighbors(vertex) {
@@ -71,13 +71,21 @@ getEdge(vertex1, vertex2){
     }
     return neighbors;
   }
-   dijkstra(start, end, k,time) {
-   
-    let edge_to_remove = this.preDijkstra(start,end,time);
+
+   print_graph(){
+    for (const key in this.vertices){
+      console.log(this.vertices[key],this.edges.get(key));
+    }
+   }
+   dijkstra(start, end, k,time,numSeats) {
+    let first = false;
+    let paths = []
+    let edge_to_remove = this.preDijkstra(start,end,time,numSeats);
     const distance = {};
     const distpath = {};
     const visited = {};
     const path = {};
+    this.print_graph();
     const pq = new PriorityQueue((a, b) => a.distance - b.distance);
   
     for (const vertexId in this.vertices) {
@@ -90,20 +98,34 @@ getEdge(vertex1, vertex2){
     pq.enq({ vertex: start, distance: 0,distancepath:0 });
   
     while (!pq.isEmpty()) {
+      
       const { vertex, distance: distToVertex, distancepath:pathLenght } = pq.deq();
-
+      console.log(vertex.type,vertex.locationName,vertex.id,distance[end.id])
+      // console.log(vertex);
       if (visited[vertex.id]) continue;
       visited[vertex.id] = true;
       if (vertex == end && pathLenght <= k) {
+        
+        // console.log(path)
+        // console.log(path[end.id])
         const resultPath =  this.buildPath(path, start, end);
-        this.postDijkstra(start,end,edge_to_remove);
-        return resultPath;
+        paths.push(resultPath)
+        console.log("herherer")
+        distance[end.id] = Infinity
+        // console.log(resultPath)
+        for (const vertex in resultPath) {
+          // visited[vertex.id] = false;
+          // console.log(resultPath[vertex].vertex.id,'dsadsadas')
+          distance[resultPath[vertex].vertex.id] = Infinity;
+          visited[resultPath[vertex].vertex.id] = false;
+        }
       }
   
       for (const { vertex: neighbor, edge } of this.getNeighbors(vertex)) {
-      
+        // console.log(neighbor)
         const distToNeighbor = distToVertex + edge.weight;
-        if (distToNeighbor < distance[neighbor.id] && (pathLenght<k || (pathLenght==k && neighbor==end) ))  {
+        // if (neighbor.type=='org' && neighbor.freeSeats<numSeats)continue;
+        if (distToNeighbor < distance[neighbor.id] && (pathLenght<k || (pathLenght==k && neighbor==end)) )  {
           distance[neighbor.id] = distToNeighbor;
           distpath[neighbor.id] =  pathLenght+1;
           const neighborLenght = distpath[neighbor.id]
@@ -113,23 +135,27 @@ getEdge(vertex1, vertex2){
       }
     }
     this.postDijkstra(start,end,edge_to_remove);
-    return null;
+    return paths;
   }
   
    buildPath(path, start, end) {
     const result = [];
     let curr = end;
+    // console.log(curr.id)
+    // console.log(end.id)
+    // console.log(path[end.id])
     while (curr !== start) {
+      
       const { vertex, edge } = path[curr.id];
       result.unshift({ vertex, edge });
       curr = vertex;
     }
-
+  
     result.push({vertex: end})
-
+    // console.log(result)
     return result;
   }
-  preDijkstra(start,end,time){
+  preDijkstra(start,end,time,numSeats){
     let vertex_to_remove = []
     const startdate = new Date(start.time);
     const enddate = new Date(end.time);
@@ -140,8 +166,13 @@ getEdge(vertex1, vertex2){
       const diffInMs = Math.abs(startdate - vertexdate); // difference in milliseconds
       const diffInMinutes = diffInMs / (1000 * 60); // difference in minutes
       const distorg = this.calculateDistance(start,vertex);
+      
       if (vertex.type=='org' && distorg<=1 && diffInMinutes<10 ){
+        // console.log(vertex.freeSeats,numSeats,"herer")
+        if(vertex.freeSeats>=numSeats){
+       
         this.addEdge(start,vertex,distorg,'onfoot');
+        }
       }
       const distdest = this.calculateDistance(vertex,end);
       const diffInMsend = Math.abs(enddate - vertexdate); // difference in milliseconds
@@ -149,7 +180,10 @@ getEdge(vertex1, vertex2){
       
       //dont include the date diff in end vertex;
       if (vertex.type=='dest' && distdest<=1){
+        // console.log(vertex)
+        // console.log("dsad\n")
         this.addEdge(vertex,end,distdest,'onfoot');
+        
         vertex_to_remove.push(vertex);
       }
     }

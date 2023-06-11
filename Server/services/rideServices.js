@@ -1,5 +1,3 @@
-
-
 const { json } = require('express');
 const firebase = require('../db/firestore')
 const Graph = require('../rideAlgo/Graph')
@@ -16,15 +14,20 @@ const buildGrapgh = async () =>{
         const destdoc = JSON.parse(doc.data().destination);
         const orgName = doc.data().originName;
         const destName = doc.data().destinationName;
-        console.log(orgName,destName);
         const id1 = uuidv4();
         const id2 = uuidv4();
+        const id = doc.id
+        const freeSeats = doc.data().seats
         //should calc the wieght using HERE API some trouble to sign up the get the API key
-        myGraph.addVertex(id1,orgName,orgdoc.longitude,orgdoc.latitude,'org',doc.data().date);
+        myGraph.addVertex(id,orgName,orgdoc.longitude,orgdoc.latitude,'org',doc.data().date);
+        vertex = myGraph.getVertexbyId(id)
+        vertex.freeSeats = freeSeats
         myGraph.addVertex(id2,destName,destdoc.longitude,destdoc.latitude,'dest',doc.data().date);
-        const weight = myGraph.calculateDistance(myGraph.getVertexbyId(id1),myGraph.getVertexbyId(id2));
+        console.log(vertex,myGraph.getVertexbyId(id2))
+        const weight = myGraph.calculateDistance(myGraph.getVertexbyId(id),myGraph.getVertexbyId(id2));
         console.log(weight,"dsadas");
-        myGraph.addEdge(myGraph.getVertexbyId(id1),myGraph.getVertexbyId(id2),weight,'ride');
+        myGraph.addEdge(myGraph.getVertexbyId(id),myGraph.getVertexbyId(id2),weight,'ride');
+
       
       })
       for(let key in myGraph.vertices){
@@ -98,16 +101,21 @@ const searchRide = async (req,res,next) => {
       let originName = req.body.originName || "";
       let dest   =   req.body.destination || "";
       let destName   =   req.body.destinationName || "";
+
       //should bring time drim client
       let time = req.body.departureTime;
-      console.log(originName,destName,time)
+      let how_many =  req.body.passengersNum
+    //   console.log(originName,destName,time,how_many)
       const id1 = uuidv4();
       const id2 = uuidv4();
       myGraph.addVertex(id1,originName,origin.longitude,origin.latitude,'start_point',time);
       myGraph.addVertex(id2,destName,dest.longitude,dest.latitude,'end_point',time);
-      const shortest_path = myGraph.dijkstra(myGraph.getVertexbyId(id1),myGraph.getVertexbyId(id2),7,time);
+      const shortest_path = myGraph.dijkstra(myGraph.getVertexbyId(id1),myGraph.getVertexbyId(id2),200,time,how_many);
 
-      console.log(shortest_path)
+    console.log(shortest_path[0])
+    console.log('-------------------------')
+    console.log(shortest_path[1])
+    //  console.log(shortest_path[0])
       // res.send({shortest_path})
  
     }catch(e){
