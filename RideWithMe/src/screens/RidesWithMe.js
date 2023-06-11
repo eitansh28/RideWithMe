@@ -22,7 +22,7 @@ const RidesWithMe = ({navigation}) => {
   useEffect(() => {
     const getRidesWithMe = async () => {
       try {
-        const res = await fetch("http://192.168.1.125:1000/getRidesWithMe", {
+        const res = await fetch("http://"+IP+":1000/getRidesWithMe", {
           method: "POST", 
           headers: { Accept: "application/json",
            "Content-Type": "application/json" 
@@ -30,14 +30,14 @@ const RidesWithMe = ({navigation}) => {
           body: JSON.stringify({ id: currentUser.uid })});
 
         const user_rides = await res.json();
-        console.log(user_rides.rides_with_me);
+        // console.log(user_rides.rides_with_me);
         SetRides_with_me(user_rides.rides_with_me);
       } catch (error) {
         console.log("im error ", error);
       }
     };
       getRidesWithMe();
-  }, [currentUser.uid]);
+  }, [currentUser.uid, rides_with_me]);
 
   return (
   <ImageBackground source={require('../components/pic4.jpg')} style={theStyle.background}>

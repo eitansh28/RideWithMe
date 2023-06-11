@@ -10,17 +10,20 @@ import {
     Button,
   } from "react-native";
   import React, { Component, useState } from "react";
+  import { useRoute } from '@react-navigation/native';
   import { Picker } from "@react-native-picker/picker";
   import ImagePicker from "react-native-image-crop-picker";
   import { firebase } from "@react-native-firebase/auth";
   import firestore from "@react-native-firebase/firestore";
   import storage from "@react-native-firebase/storage";
+  import { IP } from '../components/constants';
   import pic10 from '../components/pic10.jpg';
 
   LogBox.ignoreAllLogs();
   
-  const SetUserData = ({ navigation }) => {
-    const { currentUser } = firebase.auth();
+  const SetUserData = ({navigation}) => {
+    const {params} = useRoute();
+    const user_id = params.params.user_id;
     const [name, setName] = useState("");
     const [age, setAge] = useState("");
     const [gender, setGender] = useState("MALE");
@@ -28,26 +31,23 @@ import {
     const [allergies, setAllergies] = useState("");
     const [image, setImage] = useState("https://www.pexels.com/collections/country-roads-dqyjhhs/");
     const [phone, setPhone] = useState("");
+    const [photoURL,setPhotoURL] = useState("https://www.pexels.com/collections/country-roads-dqyjhhs/");
   
-    const uploadImageToStorage = (path, imageName) => { 
-      let reference = storage().ref(imageName);
-      let task = reference.putFile(path);
+    // const uploadImageToStorage = (path, imageName) => { 
+    //   let reference = storage().ref(imageName);
+    //   let task = reference.putFile(path);
   
-      task
-        .then(() => {
-          // 4
-          console.log("Image uploaded to the bucket!");
-        })
-        .catch((e) => console.error("uploading image error => ", e));
-    };
+    //   task
+    //     .then(() => {
+    //       // 4
+    //       console.log("Image uploaded to the bucket!");
+    //     })
+    //     .catch((e) => console.error("uploading image error => ", e));
+    // };
   
     const save = async () => {
       alert("wwwwww");
       if (name && age) {
-        // uploadImageToStorage(image, `${currentUser.uid}`);
-  
-        // const ref = firebase.storage().ref(`${currentUser.uid}`);
-        // const url = await ref.getDownloadURL();
         const intAge = parseInt(age, 10);
         if (isNaN(intAge)) {
             alert("age must be an integer!");
@@ -55,24 +55,29 @@ import {
       else {   
           if (intAge >= 18) {
               try {
-                const res = await fetch('http://192.168.1.125:1000/addUser', { 
+                const res = await fetch("http://"+IP+":1000/addUser", { 
                   method: "POST", 
                   headers: { Accept: "application/json", "Content-Type": "application/json" },
                   body: JSON.stringify({
-                    id: currentUser.uid,
+                    id: user_id,
                     name: name,
                     age: age, 
                     gender: gender,
                     phone: phone,
-                    // photoURL: url,
+                    photoURL: photoURL,
                     allergies: allergies,
                     smoker: smoker
                   })});
+                  const answer = await res.json();
                 } catch (e) {
                   console.error("Error adding document: ", e);
                 }
+                
                 alert("We got your data successfully :)");
-                navigation.navigate({name:'Home', params:{username: name}});
+                navigation.navigate('Home', {
+                  screen : 'Home',       
+                  params : {username: name, id: user_id},
+                });
           }
           else {
               alert("age must be 18 or above!");
@@ -94,9 +99,10 @@ import {
     }).then((image) => {
       path = image.path;
       setImage(image.path);
-      currentUser.updateProfile({
-        photoURL: image.path,
-      });
+      setPhotoURL(image.path);
+      // currentUser.updateProfile({
+      //   photoURL: image.path,
+      // });
     });
   };
 
@@ -105,9 +111,7 @@ import {
       <ScrollView style={theStyle.container}>
         <Image
           style={theStyle.images}
-          source={{
-            pic10
-          }}
+          source={{ uri: photoURL }}  
         ></Image>
         <Button 
           title="Upload Image"

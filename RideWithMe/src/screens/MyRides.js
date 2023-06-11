@@ -39,7 +39,7 @@ import BackButton from "../components/BackButton";
         </TouchableOpacity>
            <View style={theStyle.separator}></View>
            <TouchableOpacity onPress={move_to_rides_with_you} style={theStyle.roundButton}>
-          <Text style={theStyle.buttonText}>my rides as passenger</Text>
+          <Text style={theStyle.buttonText}>Joined Rides</Text>
         </TouchableOpacity>
            <View style={theStyle.separator}></View>
            <TouchableOpacity onPress={move_to_rides_request} style={theStyle.roundButton}>

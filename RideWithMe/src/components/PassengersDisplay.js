@@ -17,7 +17,8 @@ const PassengersDisplay = ({user, travelDocId}) => {
     return (  
     <View style = {{flex : 1,paddingBottom:10}}>    
         <View style = {{flex:0.5,backgroundColor:'white',borderRadius:10}}>
-        <Text style={[styles.User,{marginBottom:10}]}>from : {user.from_where}</Text>
+        <Text style={[styles.User,{marginBottom:10}]}> from : {user.from_where}</Text>
+        {user.pass_num > 1  && (<Text style={[styles.User,{marginBottom:10}]}> num of passengers : {user.pass_num}</Text>)}
             {/* <View style={{flexDirection:'row',justifyContent:'space-between'}}> */}
             <TouchableOpacity onPress={move_to_user_details} style={styles.roundButton}>
               <Text style={styles.buttonText} color={'green'}>{"Name: "+user.user_name}</Text>
@@ -32,6 +33,7 @@ const PassengersDisplay = ({user, travelDocId}) => {
 const styles = StyleSheet.create({
     User:{
         fontSize:20,
+        textAlign: 'center'
     },
     buttonText: {
       color: 'white', 

@@ -20,6 +20,7 @@ import MainPagesNev from './MainPagesNev';
 import AskedToJoin from '../screens/AskedToJoin';
 import UserDetails from '../screens/UserDetails';
 import Passengers from '../screens/Passengers';
+import Movetofullpath from '../screens/movetofullpath';
 
 const Stack = createNativeStackNavigator();
 
@@ -103,6 +104,10 @@ function MainContainer() {
             name="Passengers"
             options={{ headerShown: false}}
             component={Passengers} />
+            <Stack.Screen 
+            name="movetofullpath"
+            options={{ headerShown: false }} 
+            component={Movetofullpath}/>
         </Stack.Navigator>
     </NavigationContainer>
   )

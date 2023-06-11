@@ -39,7 +39,7 @@ import BackButton from "../components/BackButton";
   useEffect(() => {
     const getUserDetails = async () => {
       try {
-        const res = await fetch("http://192.168.1.42:1000/getUserDetails", {
+        const res = await fetch("http://"+IP+":1000/getUserDetails", {
           method: "POST", 
           headers: { Accept: "application/json",
            "Content-Type": "application/json" 
@@ -63,8 +63,7 @@ import BackButton from "../components/BackButton";
     
     if (destination && price && seats){
       try {
-        alert("hhhhhhhhhhhhhhhh")
-        const res = await fetch("http://192.168.1.42:1000/postRide",{
+        const res = await fetch("http://"+IP+":1000/postRide",{
           method: 'POST',
           headers: {Accept: "application/json",
           "Content-Type": "application/json" 

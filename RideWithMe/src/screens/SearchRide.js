@@ -15,6 +15,7 @@ import SearchResults from "./SearchResults";
     const [destinationName, setDestinationName] = useState('defualt');
     const [departureTime, setDepartureTime] = useState(null);
     const [isDepartureTimePickerVisible, setDepartureTimePickerVisibility] = useState(false);
+    const [howManyPassenger,setHowManyPassenger] = useState(-1);
     const [desiredArrivalTime, setDesiredArrivalTime] = useState(null);
     const [isDesiredArrivalTimePickerVisible, setDesiredArrivalTimePickerVisibility] = useState(false);
     
@@ -65,6 +66,7 @@ import SearchResults from "./SearchResults";
     }
 
     const search = async () => {
+        console.log(howManyPassenger);
         console.log("search ride pressed");
         //navigation.navigate('SearchResults');
         if (departureTime && from ){
@@ -79,14 +81,15 @@ import SearchResults from "./SearchResults";
                     originName:originName,              
                     destination: to,
                     destinationName:destinationName,
-                    departureTime: departureTime
+                    departureTime: departureTime,
+                    passengersNum: howManyPassenger
                    })});
-
+                   console.log("fff");
                    const ride_details = await res.json();
-                   //console.log(ride_details.match_rides[0]);
+                  //  console.log(ride_details.match_rides[0]);
                     navigation.navigate('SearchResults', {
                     screen : 'SearchResults',       
-                    params : {results: ride_details, user_location: from},
+                    params : {results: ride_details, user_location: originName, origin_name: originName},
                   });
                 }catch(e){
                     console.error("Error searching ride",e);
@@ -96,9 +99,8 @@ import SearchResults from "./SearchResults";
             }
         };
 
-    
-
     return(
+     
     <ImageBackground source={require('../components/pic3.jpg')} style={styles.background}>
       <BackButton/>
         <Text style={styles.bold}>Find your ride!</Text>
@@ -124,6 +126,19 @@ import SearchResults from "./SearchResults";
                     language: 'en',
                 }}
             />
+            <Text style={{fontSize:16}}>
+            Insert number of passenger:
+            </Text> 
+           <TextInput
+          
+        style={{fontSize:13,padding:4,backgroundColor: '#fff'}}
+        placeholder=""
+        keyboardType="numeric"
+        value={howManyPassenger}
+        onChangeText={(text) => setHowManyPassenger(text)}
+      />
+
+      <View style={styles.separator}></View>
             <Text>Departure Time: {departureTime ? departureTime.toString() : 'Not set'}</Text>
             <Button color = 'steelblue' title={departureTime ? departureTime.toString() :"Select Departure Time"} onPress={() => setDepartureTimePickerVisibility(true)} />
             <DateTimePickerModal
@@ -141,55 +156,6 @@ import SearchResults from "./SearchResults";
     )
 }
 
-// const styles = StyleSheet.create({
-//     background: {
-//       flex: 1,
-//       resizeMode: 'cover',
-//     //   justifyContent: 'center',
-//       alignItems: 'center',
-//     },
-//     center: {
-//       alignItems: 'center',
-//       justifyContent: 'center',
-//     },
-//     bold: {
-//         textAlign: 'center',
-//         justifyContent: 'center',
-//         alignItems: 'center',
-//         fontSize: 30,
-//         fontWeight: 'bold',
-//       },
-//     input: {
-//       backgroundColor: 'pink',
-//       width: "90%",
-//       fontSize: 15,
-//       padding: 8,
-//       borderColor: "blue",
-//       borderWidth: 0.2,
-//       borderRadius: 10,
-//     },
-//     location: {
-//         // container: {
-//         //     flex: 1,
-//         //   },
-//           textInputContainer: {
-//             width: '100%',
-//             backgroundColor: 'rgba(0,0,0,0)',
-//             borderTopWidth: 0,
-//             borderBottomWidth:0,
-//           },
-//           textInput: {
-//             marginLeft: 0,
-//             marginRight: 0,
-//             height: 38,
-//             color: '#5d5d5d',
-//             fontSize: 16,
-//           },
-//           predefinedPlacesDescription: {
-//             color: '#1faadb',
-//           },
-//     }
-//   });
 
 const styles = StyleSheet.create({
   background: {

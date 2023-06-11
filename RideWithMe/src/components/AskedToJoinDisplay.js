@@ -27,7 +27,8 @@ const AskedToJoinDisplay = ({user, travelDocId}) => {
             asked_doc_id: user.doc_id,
             user_id: user.user_id,
             user_name: user.user_name,
-            from_where: user.from_where
+            from_where: user.from_where,
+            pass_num: user.pass_num
            })});
       } catch (error) {
         console.log("im error ", error);
@@ -56,6 +57,7 @@ const AskedToJoinDisplay = ({user, travelDocId}) => {
     <View style = {{flex : 1,paddingBottom:10}}>    
         <View style = {{flex:0.5,backgroundColor:'white',borderRadius:10}}>
         <Text style={[styles.User,{marginBottom:10}]}>from : {user.from_where}</Text>
+        {user.pass_num > 1  && (<Text style={[styles.User,{marginBottom:10}]}>num of passengers : {user.pass_num}</Text>)}
         <View style={{flexDirection:'row',justifyContent:'space-between'}}>
         <TouchableOpacity onPress={move_to_user_details} style={styles.roundButtonblue}>
           <Text style={styles.buttonText} color={'green'}>passenger details</Text>
@@ -75,6 +77,7 @@ const AskedToJoinDisplay = ({user, travelDocId}) => {
 const styles = StyleSheet.create({
     User:{
         fontSize:20,
+        textAlign: 'center'
     },
     buttonText: {
       color: 'white', 

@@ -1,6 +1,7 @@
 import React, {useState, useEffect} from "react";
 import {View, Text, StyleSheet, Button ,Alert, TextInput, ImageBackground, TouchableOpacity} from 'react-native';
 import auth from "@react-native-firebase/auth";
+import { IP } from "../components/constants";
 
 const SignUp = ({navigation}) => {
   const [email, setEmail] = useState("");
@@ -31,7 +32,7 @@ const SignUp = ({navigation}) => {
   }
 
   const create = async () => {
-    const response = await fetch('http://192.168.1.125:1000/SignUp', {
+    const response = await fetch("http://"+IP+":1000/SignUp", {
       method: 'POST',
       body: JSON.stringify({ email, password }),
       headers: {
@@ -41,8 +42,14 @@ const SignUp = ({navigation}) => {
 
     const data = await response.json();
     console.log(data);
-    navigation.navigate("Set User Data");
-  
+    const id = data.id;
+    console.log(id);
+    if(data.message=="User account created"){
+      navigation.navigate('Set User Data', {
+        screen : 'Set User Data',       
+        params : {user_id: id},
+      });
+    }   
   };
   
 
@@ -105,6 +112,10 @@ const SignUp = ({navigation}) => {
         title="sign in"
         onPress={check}
       />
+      {/* <Button
+        title="sign in"
+        onPress={movetodetails}
+      /> */}
       </View>
       </ImageBackground>  
     )

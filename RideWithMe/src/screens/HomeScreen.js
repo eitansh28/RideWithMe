@@ -9,9 +9,8 @@ import { Linking } from 'react-native';
 const HomeScreen = ({navigation}) => {
   const {params} = useRoute();
   const name = params.username;
+  const id = params.id;
   
-
-
 
 
   function movetologin() {
@@ -21,7 +20,11 @@ const HomeScreen = ({navigation}) => {
     navigation.navigate("SignUp");
   }
   function moveToProfile(){
-    navigation.navigate("Profile");
+    navigation.navigate('Profile', {
+      screen : 'Profile',       
+      params : {id: id},
+    });
+    // navigation.navigate("Profile");
   }
   function move_to_search_ride(){
     navigation.navigate("SearchRide");
@@ -36,21 +39,6 @@ const HomeScreen = ({navigation}) => {
     navigation.navigate("MyRides");
   }
 
-
-  const phone = '0544510170'; // replace with the phone number of the recipient
-  const phoneNumber = '054-446-8216';
-
-  const openWhatsApp = () => {
-    Linking.openURL(`whatsapp://send?phone=${phoneNumber}`);
-  }
-
-  const makeCall = () => {
-    Linking.openURL(`tel:${phoneNumber}`);
-  }
-
-  const sms = () => {
-    Linking.openURL(`sms:${phoneNumber}`);
-  }
 
   const logout = () => {
     auth()

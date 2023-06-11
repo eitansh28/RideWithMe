@@ -7,7 +7,6 @@ import { IP } from "../components/constants";
 
     const [email, setEmail] = useState("");
     const [pass, setPass] = useState("");
-    let username ="";
     
     
     function Login() {
@@ -44,7 +43,7 @@ import { IP } from "../components/constants";
             let name = doc.data().name;
             navigation.navigate('Home', {
               screen : 'Home',       
-              params : {username: name},
+              params : {username: name, id: userId},
             });
           })
         }  
@@ -54,7 +53,7 @@ import { IP } from "../components/constants";
     // function enter() {
     //   console.log("press login");
     //   if (email && pass) {
-    //     fetch('http://192.168.1.125:1000/SignIn', {
+    //     fetch('http://"+IP+":1000/SignIn', {
     //       method: 'POST',
     //       headers: {
     //         'Content-Type': 'application/json',
@@ -83,6 +82,7 @@ import { IP } from "../components/constants";
     // }
     
     function enter() {
+
       if (email && pass) {
         auth()
         .signInWithEmailAndPassword(email, pass)
@@ -90,13 +90,13 @@ import { IP } from "../components/constants";
           console.log("User account signed in!");
           const { currentUser } = firebase.auth();
           console.log(currentUser);
-          const userId = currentUser.uid;
+          const user_id = currentUser.uid;
           // let name = currentUser.email
-          firestore().collection('users').doc(userId).get().then((doc) => {
+          firestore().collection('users').doc(user_id).get().then((doc) => {
             let name = doc.data().name;
             navigation.navigate('Home', {
               screen : 'Home',       
-              params : {username: name},
+              params : {username: name, id: user_id},
             });
           })
         })
