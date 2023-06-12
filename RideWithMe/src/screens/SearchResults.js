@@ -1,19 +1,13 @@
 import React, { useState } from "react";
-import { View, Button, Text, TextInput, StyleSheet, ImageBackground,KeyboardAvoidingView,TouchableWithoutFeedback, FlatList, Alert } from "react-native";
-import { firebase } from "@react-native-firebase/auth";
+import { View, Text, StyleSheet, ImageBackground, FlatList} from "react-native";
 import { useRoute } from '@react-navigation/native';
-import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplete';
-import { SafeAreaView } from "react-native-safe-area-context";
-import { ScrollView } from "react-native-gesture-handler";
 import BackButton from "../components/BackButton";
-import SearchRidesRowDisplay from "../components/SearchRidesRowDisplay";
-import allPaths from "../components/allPaths";
+import AllPaths from "../components/AllPaths";
 
   const SearchResults = ({navigation}) => {
-  const { currentUser } = firebase.auth();
+ 
   const {params} = useRoute();
   
-
   return (
    <ImageBackground source={require('../components/pic4.jpg')} style={theStyle.background}>
   <View style ={theStyle.center}>
@@ -24,7 +18,7 @@ import allPaths from "../components/allPaths";
         data= {params.params.results.shortest_paths}
         keyExtractor={(item, index)=> index.toString()}
         renderItem={({item}) => { 
-          return <allPaths UseRides={item} user_location={params.params.user_location}/>;
+          return <AllPaths UseRides={item} user_location={params.params.user_location}/>;
         }}
       />
       </View>
@@ -42,8 +36,6 @@ const theStyle = StyleSheet.create({
   },
   center: {
     flex: 1,
-    // justifyContent: 'center',
-    // alignItems: 'center',
     
   },
   bold: {
@@ -94,10 +86,8 @@ const theStyle = StyleSheet.create({
   button: {
     backgroundColor: "green",
     height: 25,
-    // justifyContent: "center",
     alignItems: "center",
     borderRadius: 20,
-    // margin: 10,
   },
   location: {
     container: {

@@ -4,14 +4,11 @@ import { NavigationContainer } from "@react-navigation/native";
 import StartScreen from "../screens/StartScreen";
 import SignUp from '../screens/SignUp';
 import SignIn from '../screens/SignIn';
-import HomeScreen from '../screens/HomeScreen';
 import SetUserData from '../screens/SetUserData';
 import ProfileScreen from '../screens/ProfileScreen';
 import SearchRide from '../screens/SearchRide';
 import SearchResults from '../screens/SearchResults';
 import PostRide from '../screens/PostRide';
-import PostGroupRide from '../screens/PostGroupRide';
-import Sa from '../screens/Sa';
 import MyRides from '../screens/MyRides';
 import RidesWithMe from '../screens/RidesWithMe';
 import RidesWithYou from '../screens/RidesWithYou';
@@ -64,14 +61,6 @@ function MainContainer() {
             name="PostRide" 
             options={{ headerShown: false }} 
             component={PostRide} />
-            <Stack.Screen 
-            name="PostGroupRide" 
-            options={{ headerShown: false }} 
-            component={PostGroupRide} />
-            <Stack.Screen 
-            name="Sa" 
-            options={{ headerShown: false }} 
-            component={Sa} />
             <Stack.Screen
             name="MyRides"
             options={{ headerShown: false}}

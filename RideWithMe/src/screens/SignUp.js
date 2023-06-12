@@ -1,6 +1,6 @@
 import React, {useState, useEffect} from "react";
 import {View, Text, StyleSheet, Button ,Alert, TextInput, ImageBackground, TouchableOpacity} from 'react-native';
-import auth from "@react-native-firebase/auth";
+import auth, { firebase} from "@react-native-firebase/auth";
 import { IP } from "../components/constants";
 
 const SignUp = ({navigation}) => {
@@ -41,43 +41,37 @@ const SignUp = ({navigation}) => {
     });
 
     const data = await response.json();
-    console.log(data);
     const id = data.id;
-    console.log(id);
     if(data.message=="User account created"){
-      navigation.navigate('Set User Data', {
-        screen : 'Set User Data',       
-        params : {user_id: id},
-      });
+      if (email && password) {
+        auth()
+        .signInWithEmailAndPassword(email, password)
+        .then(() => {
+          console.log("User account signed in!");
+          const { currentUser } = firebase.auth();
+          console.log(currentUser);
+            navigation.navigate('Set User Data', {
+              screen : 'Set User Data',       
+              params : {user_id: id},
+            });
+        })
+        .catch((error) => {
+          if (error.code === "auth/email-already-in-use") {
+            console.log("That email address is already in use!");
+          }
+  
+          else if (error.code === "auth/invalid-email") {
+            console.log("That email address is invalid!");
+          }
+          console.error(error);
+        });
+      }
+      else {
+        alert("you must fill all the tabs!");
+      }
     }   
   };
   
-
-  // function create() {
-  //   alert("mmmmmm")
-  //   if (email && pass) {
-  //     alert("bbbb")
-  //     setGo(true);
-  //   auth()
-  //     .createUserWithEmailAndPassword(email, pass)
-  //     .then(() => {
-  //       console.log("User account created & signed in!");
-  //     })
-  //     .catch((error) => {
-  //       if (error.code === "auth/email-already-in-use") {
-  //         console.log("That email address is already in use!");
-  //       }
-
-  //       if (error.code === "auth/invalid-email") {
-  //         console.log("That email address is invalid!");
-  //       }
-  //       console.error(error);
-  //     });
-  //   }
-  //   else {
-  //     alert("you must fill all the tabs!");
-  //   }
-  // }
 
   function check() {
     navigation.navigate("SignIn");
@@ -112,10 +106,6 @@ const SignUp = ({navigation}) => {
         title="sign in"
         onPress={check}
       />
-      {/* <Button
-        title="sign in"
-        onPress={movetodetails}
-      /> */}
       </View>
       </ImageBackground>  
     )
@@ -156,15 +146,12 @@ const styles = StyleSheet.create({
   },
   separator: {
     marginTop: 30,
-    // marginBottom: 20,
   },
   separator_small: {
     marginTop: 10,
-    // marginBottom: 20,
   },
   text: {
     fontFamily: 'KaushanScript-Regular',
-    // color: 'white',
     fontWeight: 'bold',
     fontSize: 20,
     textAlign: 'center',

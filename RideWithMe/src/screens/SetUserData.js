@@ -1,23 +1,10 @@
-import {
-    ScrollView,
-    Text,
-    StyleSheet,
-    SafeAreaView,
-    Pressable,
-    TextInput,
-    Image,
-    LogBox,
-    Button,
-  } from "react-native";
-  import React, { Component, useState } from "react";
+  import {ScrollView,Text,StyleSheet,SafeAreaView,TextInput,Image,LogBox,Button,} from "react-native";
+  import React, { useState } from "react";
   import { useRoute } from '@react-navigation/native';
   import { Picker } from "@react-native-picker/picker";
   import ImagePicker from "react-native-image-crop-picker";
-  import { firebase } from "@react-native-firebase/auth";
-  import firestore from "@react-native-firebase/firestore";
-  import storage from "@react-native-firebase/storage";
   import { IP } from '../components/constants';
-  import pic10 from '../components/pic10.jpg';
+  
 
   LogBox.ignoreAllLogs();
   
@@ -27,26 +14,11 @@ import {
     const [name, setName] = useState("");
     const [age, setAge] = useState("");
     const [gender, setGender] = useState("MALE");
-    const [smoker, setSmoker] = useState("NO");
-    const [allergies, setAllergies] = useState("");
-    const [image, setImage] = useState("https://www.pexels.com/collections/country-roads-dqyjhhs/");
     const [phone, setPhone] = useState("");
     const [photoURL,setPhotoURL] = useState("https://www.pexels.com/collections/country-roads-dqyjhhs/");
   
-    // const uploadImageToStorage = (path, imageName) => { 
-    //   let reference = storage().ref(imageName);
-    //   let task = reference.putFile(path);
-  
-    //   task
-    //     .then(() => {
-    //       // 4
-    //       console.log("Image uploaded to the bucket!");
-    //     })
-    //     .catch((e) => console.error("uploading image error => ", e));
-    // };
   
     const save = async () => {
-      alert("wwwwww");
       if (name && age) {
         const intAge = parseInt(age, 10);
         if (isNaN(intAge)) {
@@ -65,8 +37,6 @@ import {
                     gender: gender,
                     phone: phone,
                     photoURL: photoURL,
-                    allergies: allergies,
-                    smoker: smoker
                   })});
                   const answer = await res.json();
                 } catch (e) {
@@ -100,9 +70,6 @@ import {
       path = image.path;
       setImage(image.path);
       setPhotoURL(image.path);
-      // currentUser.updateProfile({
-      //   photoURL: image.path,
-      // });
     });
   };
 
@@ -144,21 +111,7 @@ import {
           value={phone}
           onChangeText={setPhone}
         />
-        <Text>Smoker?</Text>
-        <Picker
-          label="Smoker"
-          selectedValue={smoker}
-          onValueChange={(itemValue) => setSmoker(itemValue)}
-        >
-          <Picker.Item label="NO" value= {false} />
-          <Picker.Item label="YES" value= {true} />
-        </Picker>
-        <TextInput
-          style={theStyle.input}
-          placeholder="incase of allergies, please provide them"
-          value={allergies}
-          onChangeText={setAllergies}
-        />
+        
         <Button 
           title="save"
           onPress={save}

@@ -1,6 +1,5 @@
-import { Alert,View, Text, Image,StyleSheet,Modal, TouchableOpacity, Button, ScrollView, FlatList,Pressable } from 'react-native'
+import { Alert,View, Text, StyleSheet, Button} from 'react-native'
 import React, { useState } from 'react'
-import firestore from "@react-native-firebase/firestore";
 import { firebase } from "@react-native-firebase/auth";
 import { useNavigation } from '@react-navigation/native';
 import { IP } from "./constants";
@@ -46,7 +45,6 @@ const YouRidesRowDisplay = ({UseRides}) => {
         <Text style={[styles.User,{marginBottom:10}]}> origin : {UseRides.originName} </Text>
         <Text style={[styles.User,{marginBottom:10}]}> destination : {UseRides.destinationName}   </Text>
         <Text style = {[styles.User,{paddingBottom:4}]} > price : {UseRides.price}</Text>
-        {/* <Text style = {[styles.User,{paddingBottom:4}]} > seats : {UseRides.seats}</Text> */}
         <Button 
           title="driver"
           color={'purple'}

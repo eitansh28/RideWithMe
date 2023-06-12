@@ -65,8 +65,6 @@ const theStyle = StyleSheet.create({
   },
   center: {
     flex: 1,
-    // justifyContent: 'center',
-    // alignItems: 'center',
     
   },
   bold: {
@@ -104,7 +102,6 @@ const theStyle = StyleSheet.create({
   },
   root: {
     width: "100%",
-    // flex: 1,
     padding: 10,
   },
   container: {
@@ -118,10 +115,8 @@ const theStyle = StyleSheet.create({
   button: {
     backgroundColor: "green",
     height: 25,
-    // justifyContent: "center",
     alignItems: "center",
     borderRadius: 20,
-    // margin: 10,
   },
   location: {
     container: {

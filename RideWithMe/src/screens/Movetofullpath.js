@@ -1,7 +1,6 @@
-import { View, Text,StyleSheet,Keyboard, Button, FlatList } from 'react-native'
+import { View, StyleSheet, FlatList } from 'react-native'
 import React,{useState} from 'react'
 import { useRoute } from '@react-navigation/native';
-import { TextInput } from 'react-native-gesture-handler'
 import SearchRidesRowDisplay from "../components/SearchRidesRowDisplay";
 
 
@@ -9,7 +8,6 @@ const Movetofullpath = () => {
     const {params} = useRoute();
     const UseRides = params.params.UseRides;
     const user_location = params.params.user_location;
-    console.log(UseRides)
     return (
     <View style = {{flex : 1,paddingBottom:10}}>
         <FlatList

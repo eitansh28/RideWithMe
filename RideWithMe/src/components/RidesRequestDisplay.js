@@ -1,6 +1,5 @@
-import { View, Text, Image,StyleSheet,Modal, TouchableOpacity, Button, ScrollView, FlatList,Pressable } from 'react-native'
+import { View, Text, StyleSheet, TouchableOpacity } from 'react-native'
 import React, { useState } from 'react'
-import firestore from "@react-native-firebase/firestore";
 import { useNavigation } from '@react-navigation/native';
 
 const RidesRequestDisplay = ({UseRides}) => {
@@ -14,7 +13,6 @@ const RidesRequestDisplay = ({UseRides}) => {
     return (
         <View style = {{flex : 1,paddingBottom:10}}>    
             <View style = {{flex:0.5,backgroundColor:'white',borderRadius:10}}>
-                {/* <Text style={[styles.User,{marginBottom:10}]}> driver : {UseRides.driver_name}</Text> */}
                 <Text style={[styles.User,{marginBottom:10}]}> origin : {UseRides.originName} </Text>
                 <Text style={[styles.User,{marginBottom:10}]}> destination : {UseRides.destinationName}</Text>
                 <Text style={[styles.User,{marginBottom:10}]}> date : {UseRides.date}</Text>

@@ -3,6 +3,7 @@ import {View, Text, StyleSheet, Button ,Alert, TextInput, ImageBackground, Touch
 import auth, { firebase} from "@react-native-firebase/auth";
 import firestore from '@react-native-firebase/firestore';
 import { IP } from "../components/constants";
+
   const SignIn = ({navigation}) => {
 
     const [email, setEmail] = useState("");
@@ -50,36 +51,6 @@ import { IP } from "../components/constants";
       }
     }
     
-    // function enter() {
-    //   console.log("press login");
-    //   if (email && pass) {
-    //     fetch('http://"+IP+":1000/SignIn', {
-    //       method: 'POST',
-    //       headers: {
-    //         'Content-Type': 'application/json',
-    //       },
-    //       body: JSON.stringify({ email: email, password: pass }),
-    //     })
-    //     .then((response) => response.json())
-    //     .then((data) => {
-    //       if (data.success) {
-    //         const { user } = data;
-    //         const userId = user.uid;
-    //         let name = user.email;
-    //         navigation.navigate({name:'Home', params:{username: name}});
-    //       } else {
-    //         console.log(data.message);
-    //         alert(data.message);
-    //       }
-    //     })
-    //     .catch((error) => {
-    //       console.error(error);
-    //     });
-    //   }
-    //   else {
-    //     alert("you must fill all the tabs!");
-    //   }
-    // }
     
     function enter() {
 
@@ -89,9 +60,7 @@ import { IP } from "../components/constants";
         .then(() => {
           console.log("User account signed in!");
           const { currentUser } = firebase.auth();
-          console.log(currentUser);
           const user_id = currentUser.uid;
-          // let name = currentUser.email
           firestore().collection('users').doc(user_id).get().then((doc) => {
             let name = doc.data().name;
             navigation.navigate('Home', {
@@ -108,10 +77,6 @@ import { IP } from "../components/constants";
           else if (error.code === "auth/invalid-email") {
             console.log("That email address is invalid!");
           }
-          // else{
-            
-          // }
-  
           console.error(error);
         });
       }
@@ -172,11 +137,9 @@ const styles = StyleSheet.create({
     },
     separator: {
       marginTop: 30,
-      // marginBottom: 20,
     },
     separator_small: {
       marginTop: 10,
-      // marginBottom: 20,
     },
     input: {
       backgroundColor: 'white',
@@ -189,7 +152,6 @@ const styles = StyleSheet.create({
     },
     text: {
       fontFamily: 'KaushanScript-Regular',
-      // color: 'white',
       fontWeight: 'bold',
       fontSize: 20,
       textAlign: 'center',

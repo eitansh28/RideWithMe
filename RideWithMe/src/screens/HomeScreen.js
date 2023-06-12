@@ -2,9 +2,6 @@ import React,{useState} from 'react';
 import {StyleSheet,Button, Pressable, Text, View, ImageBackground, TouchableOpacity} from 'react-native';
 import auth from "@react-native-firebase/auth";
 import { useRoute } from '@react-navigation/native';
-import { firebase } from "@react-native-firebase/auth";
-import { getUserDetails } from '../components/getUserDetials';
-import { Linking } from 'react-native';
 
 const HomeScreen = ({navigation}) => {
   const {params} = useRoute();
@@ -24,7 +21,6 @@ const HomeScreen = ({navigation}) => {
       screen : 'Profile',       
       params : {id: id},
     });
-    // navigation.navigate("Profile");
   }
   function move_to_search_ride(){
     navigation.navigate("SearchRide");
@@ -60,7 +56,6 @@ const HomeScreen = ({navigation}) => {
        <TouchableOpacity onPress={moveToProfile} style={styles.roundButton}>
         <Text style={styles.buttonText}>Profile</Text>
         </TouchableOpacity>
-       {/* <Button title=" Profile  " onPress={moveToProfile} style={styles.roundButton}></Button> */}
        <View style={styles.separator1}></View>
        <TouchableOpacity onPress={move_to_search_ride} style={styles.roundButton}>
   <Text style={styles.buttonText}>Search Ride</Text>
@@ -70,10 +65,6 @@ const HomeScreen = ({navigation}) => {
           <Text style={styles.buttonText}>Post Ride</Text>
         </TouchableOpacity>
         <View style={styles.separator1}></View>
-        {/* <TouchableOpacity onPress={move_to_post_group_ride} style={styles.roundButton}>
-          <Text style={styles.buttonText}>Post Group Ride</Text>
-        </TouchableOpacity>
-        <View style={styles.separator1}></View> */}
         <TouchableOpacity onPress={move_to_my_rides} style={styles.roundButton}>
           <Text style={styles.buttonText}>My Rides</Text>
         </TouchableOpacity>
@@ -137,14 +128,10 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   separator: {
-    // width: 1,
-    // height: '8%',
     marginTop: 20,
     marginBottom: 25,
   },
   separator1: {
-    // width: 1,
-    // height: '8%',
     marginTop: 10,
     marginBottom: 10,
   },

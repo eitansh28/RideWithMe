@@ -1,21 +1,14 @@
 import React, { useState, useEffect } from "react";
-import { View, Button, Text, TextInput, TouchableOpacity, StyleSheet, ImageBackground,KeyboardAvoidingView,TouchableWithoutFeedback, Image, Dimensions } from "react-native";
-import { Picker } from "@react-native-picker/picker";
-import DateTimePickerModal from "react-native-modal-datetime-picker";
+import { View,  Text, TouchableOpacity, StyleSheet, ImageBackground, Image } from "react-native";
 import { firebase } from "@react-native-firebase/auth";
-import firestore from "@react-native-firebase/firestore";
 import { useRoute } from '@react-navigation/native';
-import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplete';
-import { Keyboard } from 'react-native'
-import { SafeAreaView } from "react-native-safe-area-context";
-import { ScrollView } from "react-native-gesture-handler";
 import BackButton from "../components/BackButton";
 import { IP } from "../components/constants";
 import Ionicons from "react-native-vector-icons/Ionicons";
 import { Linking } from 'react-native';
 
   const UserDetails = ({navigation}) => {
-  const { currentUser } = firebase.auth();
+  
   const {params} = useRoute();
   const [name, setName] = useState("");
   const [age, setAge] = useState("");
@@ -78,7 +71,6 @@ import { Linking } from 'react-native';
               </View>
               <View style={styles.detailsRow}></View>
             </View>
-            {/* <Text style={styles.detailsLabel}>contact</Text> */}
             <View style={{ flexDirection: 'row' , justifyContent: 'flex-start' }}>
             <TouchableOpacity onPress={onPressWhatsApp}>
           <Ionicons name="logo-whatsapp" size={60} color="#25D366" />
@@ -113,7 +105,6 @@ const styles = StyleSheet.create({
         height: '8%',
     },
     center: {
-        // flex: 1,
         justifyContent: 'flex-end',
         alignItems: 'center',
         
@@ -143,14 +134,10 @@ const styles = StyleSheet.create({
       opacity:0.9,
     },
     separator: {
-      // width: 1,
-      // height: '8%',
       marginTop: 20,
       marginBottom: 25,
     },
     photoContainer: {
-      // justifyContent: 'flex-end',
-      // alignItems: 'center',
       overflow: 'hidden',
     },
     profilePicture: {
@@ -171,7 +158,6 @@ const styles = StyleSheet.create({
     detailsRow: {
       flexDirection: 'row',
       marginBottom: '2%',
-      // alignItems: 'center'
     
     },
     detailsLabel: {

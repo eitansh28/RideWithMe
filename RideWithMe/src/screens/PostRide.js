@@ -1,40 +1,26 @@
 import React, { useEffect, useState } from "react";
 import { View, Button, Text, TextInput, StyleSheet, ImageBackground, TouchableOpacity,KeyboardAvoidingView,TouchableWithoutFeedback }from "react-native";
-import { Picker } from "@react-native-picker/picker";
 import DateTimePickerModal from "react-native-modal-datetime-picker";
 import { firebase } from "@react-native-firebase/auth";
-import firestore from "@react-native-firebase/firestore";
-import { useRoute } from '@react-navigation/native';
 import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplete';
-import { Keyboard } from 'react-native'
-import { SafeAreaView } from "react-native-safe-area-context";
-import { ScrollView } from "react-native-gesture-handler";
 import { IP } from '../components/constants.js';
 import BackButton from "../components/BackButton";
 
   const PostRide = ({navigation}) => {
+
   const { currentUser } = firebase.auth();
+
   const [user_name, SetUser_name] = useState();
   const [origin, setOrigin] = useState('defualt');
   const [originName, setOriginName] = useState('defualt');
   const [destination, setDestination] = useState('defualt');
   const [destinationName, setDestinationName] = useState('defualt');
-  const [date, setDate] = useState(new Date());
   const [price, setPrice] = useState('');
   const [phone, setPhone] = useState('');
   const [seats, setSeats] = useState('');
   const [departureTime, setDepartureTime] = useState(null);
   const [isDepartureTimePickerVisible, setDepartureTimePickerVisibility] = useState(false);
 
-  const {params} = useRoute();
-
-  // const { currentUser } = firebase.auth();
-  const userId = currentUser.id;
-  // const {phone} = userId.phone;
-  // let phone = "";
-  // firestore().collection('users').doc(userId).get().then((doc) => {
-  //   phone = doc.data().phone;
-  // })
 
   useEffect(() => {
     const getUserDetails = async () => {
@@ -48,7 +34,6 @@ import BackButton from "../components/BackButton";
 
         const user_details = await res.json();
         setPhone(user_details.user_details.phone);
-        console.log(user_details.user_details);
         SetUser_name(user_details.user_details.name);
       } catch (error) {
         console.log("im error ", error);
@@ -60,7 +45,6 @@ import BackButton from "../components/BackButton";
   
   const save = async () => {
     console.log(destination," ",price," ", seats);
-    
     if (destination && price && seats){
       try {
         const res = await fetch("http://"+IP+":1000/postRide",{
@@ -83,21 +67,13 @@ import BackButton from "../components/BackButton";
         console.error("Error adding document: ", e);
       }
       alert("The travel has been successfully added");
-      // navigation.navigate("Home");
     }
     else {
       alert("you must fill in all the fields!");
     }
   };
   
-  const onChange = (event, selectedDate) => {
-    const currentDate = selectedDate || date;
-    setDate(currentDate);
-  };
-
-  function chooseDate(){
-    navigation.navigate({name: "DatePicker", params: {date:date}});
-  }
+  
 
   const handleDepartureTimeConfirm = (date) => {
     console.log("Date selected: ", date);
