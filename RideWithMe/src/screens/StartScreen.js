@@ -1,5 +1,5 @@
 import React from 'react';
-import {StyleSheet,Button, Text, View, ImageBackground} from 'react-native';
+import {StyleSheet,Button, Text, View, ImageBackground, TouchableOpacity} from 'react-native';
 
 const StartScreen = ({navigation}) => {
 
@@ -13,16 +13,24 @@ const StartScreen = ({navigation}) => {
 
 
   return(
-    <ImageBackground source={require('../components/pic1.jpg')} style={styles.background}>
+    <ImageBackground source={require('../components/pic7.jpg')} style={styles.background}>
     <View style={styles.container}>
+    <View style={styles.separator}></View>
       <View style={styles.circle}>
         <Text style={styles.text}>Welcome to RideWithMe!</Text>
       </View>
-      <View style={styles.separator}></View>
+      <View style={styles.separator2}></View>
     <View style={styles.centered}>
-       <Button title=" Log in  " onPress={movetologin}></Button>
+    <TouchableOpacity onPress={movetologin} style={styles.roundButton}>
+          <Text style={styles.buttonText}>Log in</Text>
+        </TouchableOpacity>
+       {/* <Button title=" Log in  " onPress={movetologin}></Button> */}
+       </View>
       <View style={styles.separator}></View>
-      <Button title="Sign up" onPress={movetosignup}></Button>
+      <View style={styles.centered}>
+      <TouchableOpacity onPress={movetosignup} style={styles.roundButton}>
+          <Text style={styles.buttonText}>sign up</Text>
+        </TouchableOpacity>
       </View>
     </View>
     </ImageBackground>
@@ -35,9 +43,30 @@ const styles = StyleSheet.create({
     flex: 1,
     resizeMode: 'cover',
   },
+  buttonText: {
+    color: 'black', 
+    fontSize: 15,
+    fontWeight: 'bold',
+  },
+  roundButton: {
+    borderRadius: 40,
+    backgroundColor: 'lightgreen',
+    padding: 10,
+    marginVertical: 10,
+    alignItems: 'center',
+  },
   container: {
     flex: 1,
     alignItems: 'center',
+  },
+  button: {
+    backgroundColor: 'lightgreen',
+    borderRadius: 35,
+    paddingVertical: 10,
+    paddingHorizontal: 20,
+    fontSize: 30,
+    width: 200, // Adjust the width as needed
+    height: 60, // Adjust the height as needed
   },
   input: {
     width: "90%",
@@ -51,21 +80,30 @@ const styles = StyleSheet.create({
     width: 200,
     height: 200,
     borderRadius: 150,
-    backgroundColor: 'green',
+    backgroundColor: '#007FFF',
     justifyContent: 'center',
     alignItems: 'center',
   },
   text: {
+    fontFamily: 'KaushanScript-Regular',
     color: 'white',
     fontWeight: 'bold',
     fontSize: 30,
     textAlign: 'center',
   },
   centered: {
-    alignItems: 'center',
+    width: 100,
+
+    // alignItems: 'center',
+    borderRadius: 65,
+    overflow: 'hidden',
   },
   separator: {
     marginTop: 20,
+    marginBottom: 20,
+  },
+  separator2: {
+    marginTop: 200,
     marginBottom: 20,
   },
 });

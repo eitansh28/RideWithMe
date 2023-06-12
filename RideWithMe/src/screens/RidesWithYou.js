@@ -21,7 +21,7 @@ const RidesWithYou = ({navigation}) => {
   useEffect(() => {
     const getRidesWithYou = async () => {
       try {
-        const res = await fetch("http://192.168.1.125:1000/getRidesWithYou", {
+        const res = await fetch("http://"+IP+":1000/getRidesWithYou", {
           method: "POST", 
           headers: { Accept: "application/json",
            "Content-Type": "application/json" 
@@ -29,7 +29,7 @@ const RidesWithYou = ({navigation}) => {
           body: JSON.stringify({ id: currentUser.uid })});
 
         const user_rides = await res.json();
-        console.log(user_rides.rides);
+        // console.log(user_rides.rides);
         SetRides_with_you(user_rides.rides);
       } catch (error) {
         console.log("im error ", error);
@@ -39,10 +39,10 @@ const RidesWithYou = ({navigation}) => {
   }, [currentUser.uid]);
 
   return (
-   <ImageBackground source={require('../components/pic3.jpg')} style={theStyle.background}>
+   <ImageBackground source={require('../components/pic4.jpg')} style={theStyle.background}>
 <View style ={theStyle.center}>
   <BackButton/>
-      <Text style={theStyle.bold}>Rides With You</Text>
+      <Text style={theStyle.bold}>Joined Rides</Text>
           <View style={theStyle.separator}></View>
           <FlatList
             data={rides_with_you}

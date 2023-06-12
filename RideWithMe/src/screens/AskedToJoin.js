@@ -39,7 +39,7 @@ import { IP } from "../components/constants";
   }, [currentUser.uid, asked_to_join]);
 
   return (
-   <ImageBackground source={require('../components/pic3.jpg')} style={theStyle.background}>
+   <ImageBackground source={require('../components/pic4.jpg')} style={theStyle.background}>
 <View style ={theStyle.center}>
   <BackButton/>
       <Text style={theStyle.bold}>Asked To Join</Text>

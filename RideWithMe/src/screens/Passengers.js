@@ -23,7 +23,7 @@ const Passengers = ({navigation}) => {
   useEffect(() => {
     const getPassengers = async () => {
       try {
-        const res = await fetch("http://192.168.1.125:1000/getPassengers", {
+        const res = await fetch("http://"+IP+":1000/getPassengers", {
           method: "POST", 
           headers: { Accept: "application/json",
            "Content-Type": "application/json" 
@@ -40,7 +40,7 @@ const Passengers = ({navigation}) => {
   }, [currentUser.uid]);
 
   return (
-   <ImageBackground source={require('../components/pic3.jpg')} style={theStyle.background}>
+   <ImageBackground source={require('../components/pic4.jpg')} style={theStyle.background}>
 <View style ={theStyle.center}>
   <BackButton/>
       <Text style={theStyle.bold}>Passengers</Text>

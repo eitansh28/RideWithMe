@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { View, Button, Text, TextInput, StyleSheet, ImageBackground,KeyboardAvoidingView,TouchableWithoutFeedback } from "react-native";
+import { View, Button, Text, TextInput, StyleSheet, ImageBackground,KeyboardAvoidingView,TouchableWithoutFeedback ,TouchableOpacity} from "react-native";
 import { Picker } from "@react-native-picker/picker";
 import DateTimePickerModal from "react-native-modal-datetime-picker";
 import { firebase } from "@react-native-firebase/auth";
@@ -29,27 +29,22 @@ import BackButton from "../components/BackButton";
     }
 
   return (
-   <ImageBackground source={require('../components/pic3.jpg')} style={theStyle.background}>
-<View style ={theStyle.center}>
+   <ImageBackground source={require('../components/pic8.jpg')} style={theStyle.background}>
   <BackButton/>
+  <View style ={theStyle.center}>
       <Text style={theStyle.bold}>My Rides</Text>
           <View style={theStyle.separator}></View>
-          <Button 
-            title="Rides With Me"
-            color={'green'}
-            onPress={move_to_rides_with_me}
-           />
-           <Button 
-            title="Rides With You"
-            color={'green'}
-            onPress={move_to_rides_with_you}
-           />
-           <Button 
-            title="Rides Request"
-            color={'green'}
-            onPress={move_to_rides_request}
-           />
-     
+          <TouchableOpacity onPress={move_to_rides_with_me} style={theStyle.roundButton}>
+          <Text style={theStyle.buttonText}>my rides as driver</Text>
+        </TouchableOpacity>
+           <View style={theStyle.separator}></View>
+           <TouchableOpacity onPress={move_to_rides_with_you} style={theStyle.roundButton}>
+          <Text style={theStyle.buttonText}>Joined Rides</Text>
+        </TouchableOpacity>
+           <View style={theStyle.separator}></View>
+           <TouchableOpacity onPress={move_to_rides_request} style={theStyle.roundButton}>
+          <Text style={theStyle.buttonText}>Pending requests</Text>
+        </TouchableOpacity>
       </View>
        </ImageBackground>
    
@@ -66,7 +61,7 @@ const theStyle = StyleSheet.create({
   center: {
     flex: 1,
     // justifyContent: 'center',
-    // alignItems: 'center',
+    alignItems: 'center',
     
   },
   bold: {
@@ -75,6 +70,18 @@ const theStyle = StyleSheet.create({
     alignItems: 'center',
     fontSize: 30,
     fontWeight: 'bold',
+  },
+  buttonText: {
+    color: 'black', 
+    fontSize: 15,
+    fontWeight: 'bold',
+  },
+  roundButton: {
+    borderRadius: 40,
+    backgroundColor: 'lightblue',
+    padding: 8,
+    marginVertical: 10,
+    alignItems: 'center',
   },
   location: {
     container: {

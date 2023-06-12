@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from "react";
-import {ScrollView, View, Text, StyleSheet, Button ,Alert, TextInput, ImageBackground} from 'react-native';
+import {ScrollView, View, Text, StyleSheet, Button ,Alert, TextInput, ImageBackground, TouchableOpacity} from 'react-native';
 import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplete';
 import DateTimePickerModal from "react-native-modal-datetime-picker";
 import { Linking } from 'react-native';
@@ -69,6 +69,7 @@ import SearchResults from "./SearchResults";
     }
 
     const search = async () => {
+        console.log(howManyPassenger);
         console.log("search ride pressed");
         //navigation.navigate('SearchResults');
         if (departureTime && from && howManyPassenger>0 ){
@@ -86,12 +87,12 @@ import SearchResults from "./SearchResults";
                     departureTime: departureTime,
                     passengersNum: howManyPassenger
                    })});
-
+                   console.log("fff");
                    const ride_details = await res.json();
-                   //console.log(ride_details.match_rides[0]);
+                  //  console.log(ride_details.match_rides[0]);
                     navigation.navigate('SearchResults', {
                     screen : 'SearchResults',       
-                    params : {results: ride_details, user_location: from},
+                    params : {results: ride_details, user_location: originName, origin_name: originName},
                   });
                 }catch(e){
                     console.error("Error searching ride",e);
@@ -101,21 +102,17 @@ import SearchResults from "./SearchResults";
             }
         };
 
-    
-
     return(
+     
     <ImageBackground source={require('../components/pic3.jpg')} style={styles.background}>
-        <Text style={styles.bold}>ride search</Text>
+      <BackButton/>
+        <Text style={styles.bold}>Find your ride!</Text>
+        <View style={styles.separator}></View>
         <View style={styles.center}>
-            <BackButton/>
-            <Button
-                title="Search"
-                onPress={search}
-            />
             <GooglePlacesAutocomplete
                 styles={styles.location}
                 fetchDetails = {true}
-                placeholder='Search'
+                placeholder='Origin'
                 onPress={handleFromLocation}
                 query={{
                     key: 'AIzaSyA8T086PYyNfch449m9sfG5HFKwbBWnuo0',
@@ -125,98 +122,109 @@ import SearchResults from "./SearchResults";
             <GooglePlacesAutocomplete
                 styles={styles.location}
                 fetchDetails = {true}
-                placeholder='To'
+                placeholder='Destanation'
                 onPress={handleToLocation}
                 query={{
                     key: 'AIzaSyA8T086PYyNfch449m9sfG5HFKwbBWnuo0',
                     language: 'en',
                 }}
             />
-           <Text style={{fontSize:16}}>
-            Insert number of passenger in white box:
+            <Text style={{fontSize:16}}>
+            Insert number of passenger:
             </Text> 
            <TextInput
-
+          
         style={{fontSize:13,padding:4,backgroundColor: '#fff'}}
         placeholder=""
         keyboardType="numeric"
         value={howManyPassenger}
         onChangeText={(text) => setHowManyPassenger(text)}
       />
+
+      <View style={styles.separator}></View>
             <Text>Departure Time: {departureTime ? departureTime.toString() : 'Not set'}</Text>
-            <Button title="Select Departure Time" onPress={() => setDepartureTimePickerVisibility(true)} />
+            <Button color = 'steelblue' title={departureTime ? departureTime.toString() :"Select Departure Time"} onPress={() => setDepartureTimePickerVisibility(true)} />
             <DateTimePickerModal
-                
                 isVisible={isDepartureTimePickerVisible}
                 mode="datetime"
                 onConfirm={handleDepartureTimeConfirm}
                 onCancel={handleDepartureTimeCancel}
             />
-            {/* <Text>Desired Arrival Time: {desiredArrivalTime ? desiredArrivalTime.toString() : 'Not set'}</Text>
-            <Button title="Select Desired Arrival Time" onPress={() => setDesiredArrivalTimePickerVisibility(true)} />
-            <DateTimePickerModal
-                isVisible={isDesiredArrivalTimePickerVisible}
-                mode="datetime"
-                onConfirm={handleDesiredArrivalTimeConfirm}
-                onCancel={handleDesiredArrivalTimeCancel}
-            /> */}
-            <Button
-                title="Search"
-                onPress={search}
-            />
+            <View style={styles.separator}></View>
+            <TouchableOpacity onPress={search} style={styles.roundButton}>
+          <Text style={styles.buttonText} color={'green'}>Search</Text>
+        </TouchableOpacity>
         </View>
       </ImageBackground>
     )
 }
 
+
 const styles = StyleSheet.create({
-    background: {
-      flex: 1,
-      resizeMode: 'cover',
-    //   justifyContent: 'center',
-      alignItems: 'center',
-    },
-    center: {
-      alignItems: 'center',
+  background: {
+    flex: 1,
+    resizeMode: 'cover',
+    // justifyContent: 'center',
+    // alignItems: 'center',
+  },
+  center: {
+    flex: 1,
+    alignItems: 'center',
+    // justifyContent: 'center',
+  },
+  separator: {
+    // marginTop: 20,
+    marginBottom: 20,
+  },
+  buttonText: {
+    color: 'white', 
+    fontSize: 20,
+    fontWeight: 'bold',
+  },
+  roundButton: {
+    borderRadius: 30,
+    backgroundColor: 'forestgreen',
+    padding: 10,
+    marginVertical: 10,
+    alignItems: 'center',
+  },
+  bold: {
+      textAlign: 'center',
       justifyContent: 'center',
+      alignItems: 'center',
+      fontSize: 30,
+      fontWeight: 'bold',
     },
-    bold: {
-        textAlign: 'center',
-        justifyContent: 'center',
-        alignItems: 'center',
-        fontSize: 30,
-        fontWeight: 'bold',
-      },
-    input: {
-      backgroundColor: 'pink',
-      width: "90%",
-      fontSize: 15,
-      padding: 8,
-      borderColor: "blue",
-      borderWidth: 0.2,
-      borderRadius: 10,
-    },
-    location: {
-        // container: {
-        //     flex: 1,
-        //   },
-          textInputContainer: {
-            width: '100%',
-            backgroundColor: 'rgba(0,0,0,0)',
-            borderTopWidth: 0,
-            borderBottomWidth:0,
-          },
-          textInput: {
-            marginLeft: 0,
-            marginRight: 0,
-            height: 38,
-            color: '#5d5d5d',
-            fontSize: 16,
-          },
-          predefinedPlacesDescription: {
-            color: '#1faadb',
-          },
-    }
-  });
+  input: {
+    backgroundColor: 'pink',
+    width: "90%",
+    fontSize: 15,
+    padding: 8,
+    borderColor: "blue",
+    borderWidth: 0.2,
+    borderRadius: 10,
+  },
+  location: {
+      container: {
+          flex: 1,
+        },
+        textInputContainer: {
+          width: '100%',
+          backgroundColor: 'rgba(0,0,0,0)',
+          borderTopWidth: 0,
+          borderBottomWidth:0,
+        },
+        textInput: {
+          marginLeft: 0,
+          marginRight: 0,
+          height: 38,
+          color: '#5d5d5d',
+          fontSize: 16,
+        },
+        predefinedPlacesDescription: {
+          color: '#1faadb',
+        },
+  }
+});
 
   export default SearchRide

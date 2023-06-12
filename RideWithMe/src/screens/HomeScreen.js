@@ -1,5 +1,5 @@
 import React,{useState} from 'react';
-import {StyleSheet,Button, Pressable, Text, View, ImageBackground} from 'react-native';
+import {StyleSheet,Button, Pressable, Text, View, ImageBackground, TouchableOpacity} from 'react-native';
 import auth from "@react-native-firebase/auth";
 import { useRoute } from '@react-navigation/native';
 import { firebase } from "@react-native-firebase/auth";
@@ -9,9 +9,8 @@ import { Linking } from 'react-native';
 const HomeScreen = ({navigation}) => {
   const {params} = useRoute();
   const name = params.username;
+  const id = params.id;
   
-
-
 
 
   function movetologin() {
@@ -21,7 +20,11 @@ const HomeScreen = ({navigation}) => {
     navigation.navigate("SignUp");
   }
   function moveToProfile(){
-    navigation.navigate("Profile");
+    navigation.navigate('Profile', {
+      screen : 'Profile',       
+      params : {id: id},
+    });
+    // navigation.navigate("Profile");
   }
   function move_to_search_ride(){
     navigation.navigate("SearchRide");
@@ -37,21 +40,6 @@ const HomeScreen = ({navigation}) => {
   }
 
 
-  const phone = '0544510170'; // replace with the phone number of the recipient
-  const phoneNumber = '054-446-8216';
-
-  const openWhatsApp = () => {
-    Linking.openURL(`whatsapp://send?phone=${phoneNumber}`);
-  }
-
-  const makeCall = () => {
-    Linking.openURL(`tel:${phoneNumber}`);
-  }
-
-  const sms = () => {
-    Linking.openURL(`sms:${phoneNumber}`);
-  }
-
   const logout = () => {
     auth()
       .signOut()
@@ -62,24 +50,33 @@ const HomeScreen = ({navigation}) => {
 
   
   return(
-    <ImageBackground source={require('../components/pic1.jpg')} style={styles.background}>
+    <ImageBackground source={require('../components/pic7.jpg')} style={styles.background}>
     <View style={styles.container}>
+    <View style={styles.separator1}></View>
       <View style={styles.circle}>
-        <Text style={styles.text}> Welcome {name}</Text>
+        <Text style={styles.text}> Welcome {name}!</Text>
       </View>
-      <View style={styles.separator}></View>
-    <View style={styles.centered}>
-       <View style={styles.separator}>
-       <Button title=" Profile  " onPress={moveToProfile}></Button>
+      <View style={styles.separator}>
+       <TouchableOpacity onPress={moveToProfile} style={styles.roundButton}>
+        <Text style={styles.buttonText}>Profile</Text>
+        </TouchableOpacity>
+       {/* <Button title=" Profile  " onPress={moveToProfile} style={styles.roundButton}></Button> */}
        <View style={styles.separator1}></View>
-       <Button title=" Search Ride  " onPress={move_to_search_ride}></Button>
-       <View style={styles.separator1}></View>
-       <Button title=" post ride  " onPress={move_to_post_ride}></Button>
-       <View style={styles.separator1}></View>
-       <Button title=" post group ride  " onPress={move_to_post_group_ride}></Button>
-       <View style={styles.separator1}></View>
-       <Button title=" My Rides  " onPress={move_to_my_rides}></Button>
-       </View>
+       <TouchableOpacity onPress={move_to_search_ride} style={styles.roundButton}>
+  <Text style={styles.buttonText}>Search Ride</Text>
+        </TouchableOpacity>
+        <View style={styles.separator1}></View>
+        <TouchableOpacity onPress={move_to_post_ride} style={styles.roundButton}>
+          <Text style={styles.buttonText}>Post Ride</Text>
+        </TouchableOpacity>
+        <View style={styles.separator1}></View>
+        {/* <TouchableOpacity onPress={move_to_post_group_ride} style={styles.roundButton}>
+          <Text style={styles.buttonText}>Post Group Ride</Text>
+        </TouchableOpacity>
+        <View style={styles.separator1}></View> */}
+        <TouchableOpacity onPress={move_to_my_rides} style={styles.roundButton}>
+          <Text style={styles.buttonText}>My Rides</Text>
+        </TouchableOpacity>
       </View>
       <View style={{flex:0.9,justifyContent:'flex-end'}}>
        <Pressable style={{backgroundColor:'red',borderRadius:10, alignItems: 'center'}} onPress={logout}>
@@ -97,6 +94,18 @@ const styles = StyleSheet.create({
     flex: 1,
     resizeMode: 'cover',
   },
+  buttonText: {
+    color: 'black', 
+    fontSize: 13,
+    fontWeight: 'bold',
+  },
+  roundButton: {
+    borderRadius: 30,
+    backgroundColor: 'lightgreen', 
+    padding: 10,
+    marginVertical: 10,
+    alignItems: 'center',
+  },
   container: {
     flex: 1,
     alignItems: 'center',
@@ -113,15 +122,14 @@ const styles = StyleSheet.create({
     width: 200,
     height: 200,
     borderRadius: 150,
-
-    backgroundColor: 'green',
-    opacity:0.2,
+    backgroundColor: 'lightblue',
+    opacity:0.5,
     justifyContent: 'center',
     alignItems: 'center',
   },
   text: {
     color: 'black',
-    fontWeight: '800',
+    fontWeight: 'bold',
     fontSize: 30,
     textAlign: 'center',
   },
