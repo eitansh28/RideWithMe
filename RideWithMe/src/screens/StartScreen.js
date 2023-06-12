@@ -1,5 +1,5 @@
 import React from 'react';
-import {StyleSheet,Button, Text, View, ImageBackground, TouchableOpacity} from 'react-native';
+import {StyleSheet, Text, View, ImageBackground, TouchableOpacity} from 'react-native';
 
 const StartScreen = ({navigation}) => {
 
@@ -24,7 +24,6 @@ const StartScreen = ({navigation}) => {
     <TouchableOpacity onPress={movetologin} style={styles.roundButton}>
           <Text style={styles.buttonText}>Log in</Text>
         </TouchableOpacity>
-       {/* <Button title=" Log in  " onPress={movetologin}></Button> */}
        </View>
       <View style={styles.separator}></View>
       <View style={styles.centered}>
@@ -65,8 +64,8 @@ const styles = StyleSheet.create({
     paddingVertical: 10,
     paddingHorizontal: 20,
     fontSize: 30,
-    width: 200, // Adjust the width as needed
-    height: 60, // Adjust the height as needed
+    width: 200, 
+    height: 60, 
   },
   input: {
     width: "90%",
@@ -93,8 +92,6 @@ const styles = StyleSheet.create({
   },
   centered: {
     width: 100,
-
-    // alignItems: 'center',
     borderRadius: 65,
     overflow: 'hidden',
   },

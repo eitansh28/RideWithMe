@@ -1,4 +1,4 @@
-import {Text,View,StyleSheet,Button, Pressable, TouchableOpacity,Modal} from 'react-native';
+import {Text,View,StyleSheet, TouchableOpacity,Modal} from 'react-native';
 import Ionicons from "react-native-vector-icons/Ionicons";
 import { Linking } from 'react-native';
 
@@ -36,13 +36,9 @@ const ContactModal = (props) => {
     background: {
       flex: 1,
       resizeMode: 'cover',
-      // justifyContent: 'center',
-      // alignItems: 'center',
     },
     center: {
       flex: 1,
-      // justifyContent: 'center',
-      // alignItems: 'center',
       
     },
     bold: {
@@ -75,7 +71,6 @@ const ContactModal = (props) => {
         },
   },
     separator: {
-      // marginTop: 20,
       marginBottom: 20,
     },
     separator_more: {
@@ -84,7 +79,6 @@ const ContactModal = (props) => {
     },
     root: {
       width: "100%",
-      // flex: 1,
       padding: 10,
     },
     container: {
@@ -98,10 +92,8 @@ const ContactModal = (props) => {
     button: {
       backgroundColor: "green",
       height: 25,
-      // justifyContent: "center",
       alignItems: "center",
       borderRadius: 20,
-      // margin: 10,
     },
     location: {
       container: {

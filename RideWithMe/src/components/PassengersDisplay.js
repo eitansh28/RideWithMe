@@ -1,7 +1,5 @@
 import { View, Text, Image,StyleSheet,Modal, TouchableOpacity, Button, ScrollView, FlatList,Pressable } from 'react-native'
-import React, { useState } from 'react'
-import firestore from "@react-native-firebase/firestore";
-import { IP } from './constants';
+import React, { useState } from 'react';
 import { useNavigation } from '@react-navigation/native';
 
 const PassengersDisplay = ({user, travelDocId}) => {
@@ -11,7 +9,6 @@ const PassengersDisplay = ({user, travelDocId}) => {
 
     function move_to_user_details() {
       navigation.navigate('UserDetails', {params: user.user_id});
-      console.log("func has been called!");
     }
 
     return (  
@@ -19,12 +16,9 @@ const PassengersDisplay = ({user, travelDocId}) => {
         <View style = {{flex:0.5,backgroundColor:'white',borderRadius:10}}>
         <Text style={[styles.User,{marginBottom:10}]}> from : {user.from_where}</Text>
         {user.pass_num > 1  && (<Text style={[styles.User,{marginBottom:10}]}> num of passengers : {user.pass_num}</Text>)}
-            {/* <View style={{flexDirection:'row',justifyContent:'space-between'}}> */}
             <TouchableOpacity onPress={move_to_user_details} style={styles.roundButton}>
               <Text style={styles.buttonText} color={'green'}>{"Name: "+user.user_name}</Text>
-            </TouchableOpacity>
-        {/* </View> */}
-        
+            </TouchableOpacity> 
       </View>
     </View>
   )
@@ -39,8 +33,6 @@ const styles = StyleSheet.create({
       color: 'white', 
       fontSize: 18,
       fontWeight: 'bold',
-      // alignItems: 'center',
-      // justifyContent: 'center',
     },
     roundButton: {
       borderRadius: 40,

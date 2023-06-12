@@ -1,23 +1,19 @@
-import { View, Text, Image,StyleSheet,Modal, TouchableOpacity, Button, ScrollView, FlatList,Pressable } from 'react-native'
+import { View, Text, StyleSheet, TouchableOpacity } from 'react-native'
 import React, { useState } from 'react'
-import firestore from "@react-native-firebase/firestore";
 import { IP } from './constants';
 import { useNavigation } from '@react-navigation/native';
 
 const AskedToJoinDisplay = ({user, travelDocId}) => {
   const navigation = useNavigation();
-    // console.log("im inside here!")
-    // console.log(user);
 
     function move_to_user_details() {
       navigation.navigate('UserDetails', {params: user.user_id});
-      console.log("func has been called!");
     }
 
     const approve_user = async () => {
       console.log("approve has been clicked!");
       try {
-        const res = await fetch("http://192.168.1.125:1000/approveRequest", {
+        const res = await fetch("http://"+IP+":1000/approveRequest", {
           method: "POST", 
           headers: { Accept: "application/json",
            "Content-Type": "application/json" 

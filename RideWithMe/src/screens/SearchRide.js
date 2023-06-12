@@ -1,11 +1,9 @@
 import React, {useState, useEffect} from "react";
-import {ScrollView, View, Text, StyleSheet, Button ,Alert, TextInput, ImageBackground, TouchableOpacity} from 'react-native';
+import {View, Text, StyleSheet, Button , TextInput, ImageBackground, TouchableOpacity} from 'react-native';
 import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplete';
 import DateTimePickerModal from "react-native-modal-datetime-picker";
-import { Linking } from 'react-native';
 import BackButton from "../components/BackButton";
 import { IP } from "../components/constants";
-import SearchResults from "./SearchResults";
 
   const SearchRide = ({navigation}) => {
 
@@ -16,8 +14,6 @@ import SearchResults from "./SearchResults";
     const [departureTime, setDepartureTime] = useState(null);
     const [isDepartureTimePickerVisible, setDepartureTimePickerVisibility] = useState(false);
     const [howManyPassenger,setHowManyPassenger] = useState(-1);
-    const [desiredArrivalTime, setDesiredArrivalTime] = useState(null);
-    const [isDesiredArrivalTimePickerVisible, setDesiredArrivalTimePickerVisibility] = useState(false);
     
 
     const handleFromLocation = (data, details = null) => {
@@ -54,21 +50,9 @@ import SearchResults from "./SearchResults";
         setDepartureTimePickerVisibility(false);
     }
 
-    const handleDesiredArrivalTimeConfirm = (date) => {
-        console.log("Date selected: ", date);
-        setDesiredArrivalTime(date);
-        setDesiredArrivalTimePickerVisibility(false);
-    }
-    
-    const handleDesiredArrivalTimeCancel = () => {
-        console.log("Date selection cancelled.");
-        setDesiredArrivalTimePickerVisibility(false);
-    }
 
     const search = async () => {
-        console.log(howManyPassenger);
         console.log("search ride pressed");
-        //navigation.navigate('SearchResults');
         if (departureTime && from ){
             try{
                 const res =  await fetch(("http://"+IP+":1000/searchRide"),{
@@ -84,9 +68,7 @@ import SearchResults from "./SearchResults";
                     departureTime: departureTime,
                     passengersNum: howManyPassenger
                    })});
-                   console.log("fff");
                    const ride_details = await res.json();
-                  //  console.log(ride_details.match_rides[0]);
                     navigation.navigate('SearchResults', {
                     screen : 'SearchResults',       
                     params : {results: ride_details, user_location: originName, origin_name: originName},
@@ -161,16 +143,12 @@ const styles = StyleSheet.create({
   background: {
     flex: 1,
     resizeMode: 'cover',
-    // justifyContent: 'center',
-    // alignItems: 'center',
   },
   center: {
     flex: 1,
     alignItems: 'center',
-    // justifyContent: 'center',
   },
   separator: {
-    // marginTop: 20,
     marginBottom: 20,
   },
   buttonText: {

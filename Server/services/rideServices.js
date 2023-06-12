@@ -19,7 +19,6 @@ const buildGrapgh = async () =>{
         const price = doc.data().price;
         const idd = doc.id; 
         const driver_name = doc.data().driver_name;
-        // console.log(orgName,destName);
         const id1 = uuidv4();
         const id2 = uuidv4();
         const freeSeats = doc.data().seats;
@@ -29,9 +28,15 @@ const buildGrapgh = async () =>{
         vertex.freeSeats = freeSeats;
         myGraph.addVertex(id2,idd,destName,destdoc.longitude,destdoc.latitude,'dest',doc.data().date);
         const weight = myGraph.calculateDistance(myGraph.getVertexbyId(id1),myGraph.getVertexbyId(id2));
-        // console.log(weight,"dsadas");
+
+        const update_date = new Date(myGraph.getVertexbyId(id1).time);
+        update_date.setMinutes(update_date.getMinutes() + (weight/1.33)); //80 km in hour
+        
+        myGraph.getVertexbyId(id2).time = update_date.toLocaleDateString();
+
         myGraph.addEdge(myGraph.getVertexbyId(id1),myGraph.getVertexbyId(id2),weight,'ride',price,driver_name);
-      
+        // console.log(myGraph.getVertexbyId(id2));
+        console.log(update_date);
       })
       for(let key in myGraph.vertices){
         const vertex = myGraph.vertices[key];
@@ -52,9 +57,6 @@ const postRide = async (req,res,next) => {
         let driver_name = req.body.driver_name || "";
         let origin = req.body.origin || "";
         let originName = req.body.originName || "";
-        console.log(origin);
-        console.log(origin.latitude);
-        // let string_origin = "latitude: "+origin.latitude+", longtitude: "+origin.longtitude;
         let destination = req.body.dest || "";
         let destinationName = req.body.destinationName || "";
         let price = req.body.price || "";
@@ -99,7 +101,7 @@ const postRide = async (req,res,next) => {
 }
 
 const searchRide = async (req,res,next) => {
-    console.log("hhhh");
+    console.log("search ride!");
     try {
       let origin = req.body.origin || "";
       let originName = req.body.originName || "";
@@ -108,14 +110,12 @@ const searchRide = async (req,res,next) => {
       let how_many = req.body.passengersNum || "";
       //should bring time drim client
       let time = req.body.departureTime;
-      console.log(originName,destName,time)
       const id1 = uuidv4();
       const id2 = uuidv4();
       myGraph.addVertex(id1,1,originName,origin.longitude,origin.latitude,'start_point',time);
       myGraph.addVertex(id2,1,destName,dest.longitude,dest.latitude,'end_point',time);
       const shortest_paths = myGraph.dijkstra(myGraph.getVertexbyId(id1),myGraph.getVertexbyId(id2),7,time,how_many);
 
-      console.log(shortest_paths)
       res.send({shortest_paths})
  
     }catch(e){
@@ -224,45 +224,45 @@ const askToJoin = async (req,res,next) => {
     }
 }
   
+
 const ridesRequests = async (req, res, next) => {
     console.log('rides requests ready!');
     let db = firebase.firestore();
-    try{
-        let u_id = req.body.id || "";
-        const rides_requests = (await db.collection('travels').where("driver_id", "==", u_id).get()).docs.map(async (doc) => {
-             // Extract the data from the Firestore document
-            const data = doc.data();
-            // Add the doc.id to the data object
-            data.doc_id = doc.id;
-            // Return the data object
-            return data;
-        });
-    // try {
-    //     const u_id = req.body.id || "";
-    //     const db = firebase.firestore();
+    try {
+      let u_id = req.body.id || "";
+      const ridesRequestsQuery = await db
+        .collection('travels')
+        .where('driver_id', '==', u_id)
+        .get();
+  
+      const ridesRequestsData = [];
+  
+      // Iterate through the queried documents
+      for (const doc of ridesRequestsQuery.docs) {
+        const rideDocRef = db
+          .collection('travels')
+          .doc(doc.id)
+          .collection('asked_to_join');
         
-    //     const ridesRequestsQuery = await db.collection('travels').where("driver_id", "==", u_id).get();
-        
-    //     const rides_requests = await Promise.all(ridesRequestsQuery.docs.map(async (doc) => {
-    //       const askedToJoinRef = doc.ref.collection('asked_to_join');
-    //       const askedToJoinSnapshot = await askedToJoinRef.get();
-    //       const askedToJoinSize = askedToJoinSnapshot.size;
-    //       if (askedToJoinSize > 1) {
-    //         console.log(askedToJoinSize);
-    //         const data = doc.data();
-    //         data.doc_id = doc.id;
-    //         return data;
-    //       }
-          
-    //     //   return null;
-    //     }));
-        const rides_requests_data = await Promise.all(rides_requests);
-        console.log(rides_requests_data);
-        res.send({rides_requests_data});
-    } catch(e) {
-        console.error("Error getting user rides: ", e);
+        // Get the documents count in the "asked_to_join" sub-collection
+        const subCollectionSnapshot = await rideDocRef.get();
+        const subCollectionSize = subCollectionSnapshot.size;
+  
+        if (subCollectionSize > 1) {
+          // Extract the data from the Firestore document
+          const data = doc.data();
+          // Add the doc.id to the data object
+          data.doc_id = doc.id;
+          // Return the data object
+          ridesRequestsData.push(data);
+        }
+      }
+  
+      res.send({ rides_requests_data: ridesRequestsData });
+    } catch (e) {
+      console.error("Error getting user rides: ", e);
     }
-};
+  };
 
 const getAskedToJoin = async (req, res, next) => {
     let db = firebase.firestore();
@@ -368,7 +368,7 @@ const getAskedToJoin = async (req, res, next) => {
 };
 
 const getRidesWithYou = async (req, res, next) => {
-    // console.log('rides with you ready!');
+    console.log('rides with you ready!');
     let db = firebase.firestore();
     let u_id = req.body.id || "";
     console.log(u_id);

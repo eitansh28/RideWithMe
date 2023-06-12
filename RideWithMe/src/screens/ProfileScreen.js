@@ -1,22 +1,16 @@
 import React, { useEffect, useState } from 'react';
-import { View, Text, StyleSheet, ImageBackground, Image, Dimensions, TextInput,TouchableOpacity,SafeAreaView, Modal } from 'react-native';
+import { View, Text, StyleSheet, ImageBackground, Image, Dimensions, TextInput,TouchableOpacity, Modal } from 'react-native';
 import { firebase } from "@react-native-firebase/auth";
-import firestore from "@react-native-firebase/firestore";
-import storage from "@react-native-firebase/storage";
-import { Picker } from "@react-native-picker/picker";
 import ImagePicker from "react-native-image-crop-picker";
 import { IP } from '../components/constants';
 import BackButton from "../components/BackButton";
-import me1Image from '../components/me1.jpg';
-import { useRoute } from '@react-navigation/native';
 
 
 const ProfileScreen = ({ user }) => {
   
   const { currentUser } = firebase.auth();
   const userId = currentUser.uid;
-  // const {params} = useRoute();
-  // const userId = params.id;
+  
   const [name, setName] = useState("Yarin");
   const [age, setAge] = useState("19");
   const [gender, setGender] = useState("Male");
@@ -32,8 +26,6 @@ const ProfileScreen = ({ user }) => {
   const pictureHeight = height * 0.4;
 
   useEffect(() => {
-    console.log(photoURL);
-    // alert("hhh");
     const getUserDetails = async () => {
       try {
         const res = await fetch("http://"+IP+":1000/getUserDetails", {
@@ -44,14 +36,10 @@ const ProfileScreen = ({ user }) => {
           body: JSON.stringify({ id: userId })});
 
         const user_details = await res.json();
-        const id = user_details.user_details.id;
-        console.log(user_details.user_details);
         setName(user_details.user_details.name);
         setAge(user_details.user_details.age);
         setGender(user_details.user_details.gender);
         setPhone(user_details.user_details.phone);
-        // setEmail(currentUser.uid.email);
-        // setPhotoURL(require('../components/me1.jpg'));
         setPhotoURL(user_details.user_details.photoURL);
         setImage(user_details.user_details.photoURL);
       } catch (error) {
@@ -81,33 +69,8 @@ const ProfileScreen = ({ user }) => {
         }
     }
   }
-  // const saveChanges = async () => {
-  //   // Save changes to the Firestore database
-
-  //   if (name && age) {
-  //       // uploadImageToStorage(image, `${currentUser.uid}`);
-  
-  //       const ref = firebase.storage().ref(`${currentUser.uid}`);
-  //       const url = await ref.getDownloadURL();
-
-  //   firestore().collection('users').doc(userId).update({
-  //     id : currentUser.uid,
-  //     name: name,
-  //     age: age,
-  //     gender: gender,
-  //     email: email,
-  //     // photoURL: url,
-  //   }, { merge: true })
-  //     .then(() => {
-  //       console.log('User data updated.');
-  //     })
-  //     .catch((error) => {
-  //       console.error('Error updating user data:', error);
-  //     });
-  // }};
 
   const uploadImage = () => {
-    console.log("ll");
     ImagePicker.openPicker({
       width: 300,
       height: 300,
@@ -122,17 +85,6 @@ const ProfileScreen = ({ user }) => {
     });
   };
 
-  const uploadImageToStorage = (path, imageName) => {
-    let reference = storage().ref(imageName);
-    let task = reference.putFile(path);
-
-    task
-      .then(() => {
-        // 4
-        console.log("Image uploaded to the bucket!");
-      })
-      .catch((e) => console.error("uploading image error => ", e));
-  }
 
   return (
     <View style={styles.container}>
@@ -166,10 +118,6 @@ const ProfileScreen = ({ user }) => {
               <TextInput style={styles.detailsValue} value={gender} onChangeText={setGender} />
               <Text style={styles.detailsLabel}>Edit-Gender:</Text>
             </View>
-            {/* <View style={styles.detailsRow}>
-              <TextInput style={styles.detailsValue} value={email} onChangeText={setEmail} />
-              <Text style={styles.detailsLabel}>Edit-Mail:</Text>
-            </View> */}
             <View style={styles.detailsRow}>
               <TextInput style={styles.detailsValue} value={phone} onChangeText={setPhone} />
               <Text style={styles.detailsLabel}>Edit-phone:</Text>
@@ -228,7 +176,6 @@ const ProfileScreen = ({ user }) => {
       opacity:0.9,
     },
     photoContainer: {
-      // flex: 1,
       justifyContent: 'flex-end',
       alignItems: 'flex-end',
       overflow: 'hidden',

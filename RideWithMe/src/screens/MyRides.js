@@ -1,19 +1,8 @@
 import React, { useState } from "react";
-import { View, Button, Text, TextInput, StyleSheet, ImageBackground,KeyboardAvoidingView,TouchableWithoutFeedback ,TouchableOpacity} from "react-native";
-import { Picker } from "@react-native-picker/picker";
-import DateTimePickerModal from "react-native-modal-datetime-picker";
-import { firebase } from "@react-native-firebase/auth";
-import firestore from "@react-native-firebase/firestore";
-import { useRoute } from '@react-navigation/native';
-import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplete';
-import { Keyboard } from 'react-native'
-import { SafeAreaView } from "react-native-safe-area-context";
-import { ScrollView } from "react-native-gesture-handler";
+import { View, Text, StyleSheet, ImageBackground ,TouchableOpacity} from "react-native";
 import BackButton from "../components/BackButton";
 
   const MyRides = ({navigation}) => {
-  const { currentUser } = firebase.auth();
-  const {params} = useRoute();
 
   
     function move_to_rides_with_me() {
@@ -60,7 +49,6 @@ const theStyle = StyleSheet.create({
   },
   center: {
     flex: 1,
-    // justifyContent: 'center',
     alignItems: 'center',
     
   },
@@ -111,7 +99,6 @@ const theStyle = StyleSheet.create({
   },
   root: {
     width: "100%",
-    // flex: 1,
     padding: 10,
   },
   container: {
@@ -125,10 +112,8 @@ const theStyle = StyleSheet.create({
   button: {
     backgroundColor: "green",
     height: 25,
-    // justifyContent: "center",
     alignItems: "center",
     borderRadius: 20,
-    // margin: 10,
   },
   location: {
     container: {

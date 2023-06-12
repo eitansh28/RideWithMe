@@ -5,14 +5,9 @@ import { firebase } from "@react-native-firebase/auth";
 import { IP } from './constants';
 
 const SearchRidesRowDisplay = ({UseRides, user_location}) => {
-    console.log("_______________",UseRides);
-    console.log("*******",user_location)
-    // console.log("_______________",user_location);
-    // console.log("_______________",UseRides);
     const { currentUser } = firebase.auth();
     let from_where = UseRides.vertex.locationName;
-    //console.log("user rides:")
-    //console.log(UseRides);
+    
     const [selectedOption, setSelectedOption] = useState('search');
     const [howManyPassenger,setHowManyPassenger] = useState(1);
     const handleOptionSelect = (option) => {
@@ -20,7 +15,7 @@ const SearchRidesRowDisplay = ({UseRides, user_location}) => {
       };
     const ask_to_join = async () => {
         if (selectedOption == "search") {
-            from_where = JSON.stringify(user_location);
+            from_where = JSON.stringify(UseRides.vertex.locationName);
         }
         console.log("from: "+ from_where);
         
@@ -34,7 +29,6 @@ const SearchRidesRowDisplay = ({UseRides, user_location}) => {
             body: JSON.stringify({ id: currentUser.uid })});
             const user_details = await res1.json();
             const user_name = user_details.user_details.name;
-            console.log(user_name);
             // ask to join
             const res = await fetch("http://"+IP+":1000/askToJoin",{
               method: 'POST',
@@ -49,8 +43,6 @@ const SearchRidesRowDisplay = ({UseRides, user_location}) => {
                 pass_num: howManyPassenger
             })});
             const to_alert = (await res.json()).send;
-            console.log(to_alert);
-            alert(to_alert);
             } catch (e) {
             console.error("Error adding document: ", e);
           }
@@ -58,20 +50,18 @@ const SearchRidesRowDisplay = ({UseRides, user_location}) => {
    
     return (  
     <View style = {{flex : 1,paddingBottom:10}}>    
-      {/* <View style = {{flex:0.5,backgroundColor:'#d0c7b7',borderRadius:10}}> */}
       {UseRides.edge && UseRides.vertex.locationName !== UseRides.edge?.dest && (
       <View style = {{flex:0.5,backgroundColor:'white',borderRadius:10}}>
       <Text style ={[styles.User,{marginBottom:10}]}> date: {UseRides.vertex.time}</Text>
       <Text style={[styles.User,{marginBottom:10}]}> origin : {UseRides.vertex.locationName} </Text>
       {UseRides.edge && (<Text style={[styles.User, { paddingBottom: 4 }]}> destination: {UseRides.edge?.dest}</Text>)}
       {UseRides.edge && UseRides.edge.type === 'onfoot' &&(<Text style={[styles.User, { paddingBottom: 4 }]}> 'ONFOOT'</Text>)}
-      {UseRides.edge && UseRides.edge.price != "" && (<Text style={[styles.User, { paddingBottom: 4 }]}> price: {UseRides.edge?.price}</Text>)}
+      {UseRides.edge && UseRides.edge.price != "" && (<Text style={[styles.User, { paddingBottom: 4 }]}> price: {UseRides.edge?.price} b {UseRides.edge?.weight}</Text>)}
       {UseRides.vertex.freeSeats && (<Text style={[styles.User, { paddingBottom: 4 }]}> seats: {UseRides.vertex.freeSeats}</Text>)}
       {UseRides.edge && UseRides.edge.driver_name != "" && (<Text style={[styles.User, { paddingBottom: 4 }]}> driver name: {UseRides.edge?.driver_name}</Text>)}
       {UseRides.edge && UseRides.edge.type !== 'onfoot' && (<>
       {user_location == UseRides.vertex.locationName && (<>
       {UseRides.vertex.freeSeats && (<Text style={{fontSize: 20, fontWeight: 'bold', marginBottom: 10}}> From where you want to be taken?</Text>)}
-      {/* {UseRides.edge && UseRides.edge.type !== 'onfoot' && (<> */}
       
       <ScrollView horizontal={true} showsHorizontalScrollIndicator={false}>
        <Text

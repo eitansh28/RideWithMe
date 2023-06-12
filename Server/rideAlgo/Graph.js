@@ -1,6 +1,6 @@
 
 const PriorityQueue = require('priorityqueuejs');
-const walk = 5;
+const walk = 2;
 
 class Vertex {
     constructor(id,idd,locationName,lng,lat,type,time) {
@@ -22,6 +22,7 @@ class Vertex {
       this.dest = dest;
       this.price = price;
       this.driver_name = driver_name;
+      console.log(price);
     }
   }
 class Graph{
