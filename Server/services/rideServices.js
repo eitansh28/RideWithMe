@@ -32,11 +32,10 @@ const buildGrapgh = async () =>{
         const update_date = new Date(myGraph.getVertexbyId(id1).time);
         update_date.setMinutes(update_date.getMinutes() + (weight/1.33)); //80 km in hour
         
-        myGraph.getVertexbyId(id2).time = update_date.toLocaleDateString();
+        myGraph.getVertexbyId(id2).time = update_date.toISOString();
 
         myGraph.addEdge(myGraph.getVertexbyId(id1),myGraph.getVertexbyId(id2),weight,'ride',price,driver_name);
-        // console.log(myGraph.getVertexbyId(id2));
-        console.log(update_date);
+        
       })
       for(let key in myGraph.vertices){
         const vertex = myGraph.vertices[key];
@@ -51,7 +50,6 @@ const buildGrapgh = async () =>{
 const postRide = async (req,res,next) => {
     console.log("post is ready");
     let db = firebase.firestore();
-
     try{
         let driver_id = req.body.driver_id || "";
         let driver_name = req.body.driver_name || "";
@@ -95,7 +93,7 @@ const postRide = async (req,res,next) => {
         await docRef.collection('answered').add({});
 
     }catch(e){
-        console.error("Error adding documentsssssssss: ", e);
+        console.error("Error adding documents: ", e);
     }
 
 }
@@ -371,7 +369,6 @@ const getRidesWithYou = async (req, res, next) => {
     console.log('rides with you ready!');
     let db = firebase.firestore();
     let u_id = req.body.id || "";
-    console.log(u_id);
     try {
         const mainSnapshot1 = await db.collection("travels").get();
         const rides = [];
@@ -383,7 +380,6 @@ const getRidesWithYou = async (req, res, next) => {
                 rides.push(ride);
             }
         }));
-        // console.log(rides);
         res.send({rides});
     } catch (error) {
         console.error("Error getting documents: ", error);
