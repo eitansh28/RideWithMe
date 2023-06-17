@@ -8,6 +8,7 @@
 - [Features](#features)
 - [Installation](#installation)
 - [Usage](#usage)
+- [Screenshots](#screenshots)
 
 ## Introduction
 
@@ -79,4 +80,19 @@ npm install
 <p align="center">
   <img src="https://github.com/Matan-Shimon/RideWithMe/assets/63747865/6a2993ff-8f4a-4b80-bb43-6de3928d4e86" alt="Image Description">
 </p>
+
+## Screenshots
+* Log In
+
+![image](https://github.com/Matan-Shimon/RideWithMe/assets/63747865/6a66985d-0bbd-4862-a565-55512f9a3fc9)
+
+* Home Page
+
+![image](https://github.com/Matan-Shimon/RideWithMe/assets/63747865/b5ef0eab-c652-49ee-9ab0-51bc9a7f7309)
+
+* Profile
+
+![image](https://github.com/Matan-Shimon/RideWithMe/assets/63747865/d268842f-70bd-45dc-bb42-c3052ff7f679)
+
+
 
