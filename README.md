@@ -84,15 +84,31 @@ npm install
 ## Screenshots
 * Log In
 
-![image](https://github.com/Matan-Shimon/RideWithMe/assets/63747865/6a66985d-0bbd-4862-a565-55512f9a3fc9)
+<img src="https://github.com/Matan-Shimon/RideWithMe/assets/63747865/6a66985d-0bbd-4862-a565-55512f9a3fc9" alt="Image" width="300" />
 
 * Home Page
 
-![image](https://github.com/Matan-Shimon/RideWithMe/assets/63747865/b5ef0eab-c652-49ee-9ab0-51bc9a7f7309)
+<img src="https://github.com/Matan-Shimon/RideWithMe/assets/63747865/b5ef0eab-c652-49ee-9ab0-51bc9a7f7309" alt="Image" width="300" />
 
 * Profile
 
-![image](https://github.com/Matan-Shimon/RideWithMe/assets/63747865/d268842f-70bd-45dc-bb42-c3052ff7f679)
+<img src="https://github.com/Matan-Shimon/RideWithMe/assets/63747865/d268842f-70bd-45dc-bb42-c3052ff7f679" alt="Image" width="300" />
+
+* Post Ride
+
+<img src="https://github.com/Matan-Shimon/RideWithMe/assets/63747865/68a11d18-bbab-49d2-86cb-2aa84b1a7599" alt="Image" width="300" />
+<img src="https://github.com/Matan-Shimon/RideWithMe/assets/63747865/63eb9e7a-b315-473b-b1d6-238e8d3bad7b" alt="Image 1" width="300" />
+<img src="https://github.com/Matan-Shimon/RideWithMe/assets/63747865/4e2c38ce-5b38-4fe6-a2e2-47de7d9f7081" alt="Image 2" width="300" />
+
+* Search Ride
+
+<img src="https://github.com/Matan-Shimon/RideWithMe/assets/63747865/e90e3b19-a7c3-45e4-8d78-8af75789ecd5" alt="Image 1" width="300" />
+<img src="https://github.com/Matan-Shimon/RideWithMe/assets/63747865/d5de5d4b-e506-4503-afcb-2fe81fa2efcd" alt="Image 2" width="300" />
+<img src="https://github.com/Matan-Shimon/RideWithMe/assets/63747865/550aafc5-bb70-4303-8fdc-0fd2d44c1d20" alt="Image 3" width="300" />
+
+* Search Results
 
 
+* My Rides
 
+<img src="https://github.com/Matan-Shimon/RideWithMe/assets/63747865/124d421f-1387-4bb6-92e6-3059175ad9ac" alt="Image 3" width="300" />
