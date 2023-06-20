@@ -35,11 +35,14 @@ git clone https://github.com/your-username/RideWithMe.git
 2. Install the required dependencies using package manager [npm](https://www.npmjs.com/):
 npm install
 3. Configure the database connection and app settings by updating the configuration files. Make sure to set the appropriate credentials and environment variables.
+4. Download android studio to your computer and configure some emulator for the client use. 
 
-4. Start the RideWithMe server:
+5. Start the RideWithMe server:
 * npm start
-* npx react-native run-android
-5. Access the RideWithMe app by opening your preferred web browser and navigating to `http://localhost:1000`.
+* Server will run on your local network in port 1000
+ 
+6. Start the RideWithMe client:
+* run npx react-native run-android in your terminal and wait for the emulator to start runnig.
 
 ## Usage
 
