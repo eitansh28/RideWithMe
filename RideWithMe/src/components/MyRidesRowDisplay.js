@@ -3,6 +3,7 @@ import React, { useState } from 'react'
 import firestore from "@react-native-firebase/firestore";
 import { useNavigation } from '@react-navigation/native';
 import { IP } from './constants'; 
+// import Sms from 'react-native-sms';
 
 const MyRidesRowDisplay = ({UseRides}) => {
   const navigation = useNavigation();
@@ -23,7 +24,7 @@ const MyRidesRowDisplay = ({UseRides}) => {
       body: JSON.stringify({ ride_id: UseRides.doc_id })});
       const answer = (await res.json()).send;
     } catch (e) {
-      console.error("Error adding document: ", e);
+      console.error("Error delete document: ", e);
     }
   }
 

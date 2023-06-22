@@ -1,4 +1,4 @@
-import { View, Text,TextInput, Image,StyleSheet,Modal, TouchableOpacity, Button, ScrollView, FlatList,Pressable } from 'react-native'
+import { View, Text,TextInput, Image,StyleSheet,Alert, Button, ScrollView } from 'react-native'
 import React, { useState } from 'react'
 import firestore from "@react-native-firebase/firestore";
 import { firebase } from "@react-native-firebase/auth";
@@ -43,6 +43,7 @@ const SearchRidesRowDisplay = ({UseRides, user_location}) => {
                 pass_num: howManyPassenger
             })});
             const to_alert = (await res.json()).send;
+            alert(JSON.stringify(to_alert));
             } catch (e) {
             console.error("Error adding document: ", e);
           }
