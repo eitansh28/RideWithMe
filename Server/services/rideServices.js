@@ -32,7 +32,7 @@ const buildGrapgh = async () =>{
         const update_date = new Date(myGraph.getVertexbyId(id1).time);
         update_date.setMinutes(update_date.getMinutes() + (weight/1.33)); //80 km in hour
         
-        myGraph.getVertexbyId(id2).time = update_date.toLocaleDateString();
+        myGraph.getVertexbyId(id2).time = update_date.toISOString();
 
         myGraph.addEdge(myGraph.getVertexbyId(id1),myGraph.getVertexbyId(id2),weight,'ride',price,driver_name);
         // console.log(myGraph.getVertexbyId(id2));
@@ -114,7 +114,7 @@ const searchRide = async (req,res,next) => {
       const id2 = uuidv4();
       myGraph.addVertex(id1,1,originName,origin.longitude,origin.latitude,'start_point',time);
       myGraph.addVertex(id2,1,destName,dest.longitude,dest.latitude,'end_point',time);
-      const shortest_paths = myGraph.dijkstra(myGraph.getVertexbyId(id1),myGraph.getVertexbyId(id2),7,time,how_many);
+      const shortest_paths = myGraph.dijkstra(myGraph.getVertexbyId(id1),myGraph.getVertexbyId(id2),6,time,how_many);
 
       res.send({shortest_paths})
  

@@ -44,7 +44,7 @@ addAllCloseVertex(vertex){
   const neighbors = this.getNeighbors(vertex);
   for (const neighbor of neighbors) {
     let edge = this.getEdge(vertex,neighbor.vertex);
-    if (edge.type != 'ride')break;
+    if (edge.type != 'ride')continue;
     for(let key2 in this.vertices){
     const vertex2 = this.vertices[key2];
     if (vertex2.type != 'org' || (vertex2.id==vertex.id || vertex2.id==neighbor.vertex.id))continue;
@@ -57,6 +57,11 @@ addAllCloseVertex(vertex){
       this.addEdge(neighbor.vertex,vertex2,dist,'onfoot',"","");
     } 
   }
+  }
+}
+printG(){
+  for(const key in  this.vertices){
+    console.log(this.vertices[key],this.edges.get(key))
   }
 }
 
@@ -84,6 +89,7 @@ getEdge(vertex1, vertex2){
     const visited = {};
     const path = {};
     const pq = new PriorityQueue((a, b) => a.distance - b.distance);
+    this.printG()
   
     for (const vertexId in this.vertices) {
       distance[vertexId] = Infinity;
