@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { View, Button, Text, TextInput, StyleSheet, ImageBackground, TouchableOpacity,KeyboardAvoidingView,TouchableWithoutFeedback }from "react-native";
+import { View, Button, Text, TextInput, StyleSheet, ImageBackground, TouchableOpacity}from "react-native";
 import DateTimePickerModal from "react-native-modal-datetime-picker";
 import { firebase } from "@react-native-firebase/auth";
 import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplete';
@@ -7,7 +7,6 @@ import { IP } from '../components/constants.js';
 import BackButton from "../components/BackButton";
 
   const PostRide = ({navigation}) => {
-
   const { currentUser } = firebase.auth();
 
   const [user_name, SetUser_name] = useState();
@@ -15,12 +14,39 @@ import BackButton from "../components/BackButton";
   const [originName, setOriginName] = useState('defualt');
   const [destination, setDestination] = useState('defualt');
   const [destinationName, setDestinationName] = useState('defualt');
+  const [date, setDate] = useState(new Date());
   const [price, setPrice] = useState('');
   const [phone, setPhone] = useState('');
   const [seats, setSeats] = useState('');
   const [departureTime, setDepartureTime] = useState(null);
   const [isDepartureTimePickerVisible, setDepartureTimePickerVisibility] = useState(false);
+  const [displayedInfo, setDisplayedInfo] = useState('origin');
+  
+  const userId = currentUser.id;
+  
+  function increment_check_input() {
+    setDisplayedInfo(prevInfo => {
+      if (prevInfo === 'origin') {
+        return 'destination';
+      } else if (prevInfo === 'destination') {
+        return 'rest';
+      } else {
+        return prevInfo;
+      }
+    });
+  }
 
+  function back() {
+    setDisplayedInfo(prevInfo => {
+      if (prevInfo === 'rest') {
+        return 'destination';
+      } else if (prevInfo === 'destination') {
+        return 'origin';
+      } else {
+        return prevInfo;
+      }
+    });
+  }
 
   useEffect(() => {
     const getUserDetails = async () => {
@@ -44,8 +70,7 @@ import BackButton from "../components/BackButton";
   
   
   const save = async () => {
-    console.log(destination," ",price," ", seats);
-    if (destination && price && seats){
+    if (origin && destination && price && seats){
       try {
         const res = await fetch("http://"+IP+":1000/postRide",{
           method: 'POST',
@@ -63,16 +88,31 @@ import BackButton from "../components/BackButton";
                               seats: seats,
                               date: departureTime
                              })});
+                             const name = user_name;
+                             alert("The travel has been successfully added");
+                              navigation.navigate('Home', {
+                                screen : 'Home',       
+                                params : {username: name, id: userId},
+                              });
+
+                             console.log("im here")
+                             setOrigin('');
+                             setOriginName('');
+                             setDestination('');
+                             setDestinationName('');
+                             setPrice('');
+                             setSeats('');
+                             setDepartureTime(null);
+                             setDisplayedInfo('origin');
         } catch (e) {
         console.error("Error adding document: ", e);
       }
-      alert("The travel has been successfully added");
     }
     else {
       alert("you must fill in all the fields!");
     }
+
   };
-  
   
 
   const handleDepartureTimeConfirm = (date) => {
@@ -116,34 +156,61 @@ const handleToLocation = (data, details = null) => {
   const googlemapkey = 'AIzaSyA8T086PYyNfch449m9sfG5HFKwbBWnuo0';
 
   
+
   return (
-   <ImageBackground source={require('../components/pic3.jpg')} style={theStyle.background}>
-    <BackButton/>    
-    <View style ={theStyle.center}>
-      <Text style={theStyle.bold}>Travel details</Text>
-      <View style={theStyle.separator}></View>
-      <GooglePlacesAutocomplete
-          styles={theStyle.location}
-          listViewDisplayed='auto'
-          fetchDetails = {true}
-          placeholder='Origin'
-          onPress={handleFromLocation}
-          query={{
-              key: 'AIzaSyA8T086PYyNfch449m9sfG5HFKwbBWnuo0',
-              language: 'en',
-          }}
-      />
-      <GooglePlacesAutocomplete
-          styles={theStyle.location}
-          fetchDetails = {true}
-          placeholder='Destanation'
-          onPress={handleToLocation}
-          query={{
-              key: 'AIzaSyA8T086PYyNfch449m9sfG5HFKwbBWnuo0',
-              language: 'en',
-          }}
-      />
-          <TextInput
+    <ImageBackground source={require('../components/pic11.jpg')} style={theStyle.background}>
+      <BackButton/>
+      <View style={theStyle.center}>
+        {displayedInfo === 'origin' && (
+          <>
+            <Text style={theStyle.bold}>Please insert the desired Origin</Text>
+            <View style={theStyle.separator}></View>
+            <GooglePlacesAutocomplete
+              styles={theStyle.location}
+              listViewDisplayed='auto'
+              fetchDetails = {true}
+              placeholder='Origin'
+              onPress={handleFromLocation}
+              query={{
+                  key: 'AIzaSyA8T086PYyNfch449m9sfG5HFKwbBWnuo0',
+                  language: 'en',
+              }}
+            />
+            {/* <TouchableOpacity onPress={back} style={theStyle.roundButton1}>
+              <Text style={theStyle.buttonText1} color={'green'}>back</Text>
+            </TouchableOpacity> */}
+            <TouchableOpacity onPress={increment_check_input} style={theStyle.roundButton}>
+              <Text style={theStyle.buttonText} color={'green'}>Next</Text>
+            </TouchableOpacity>
+          </>
+        )}
+
+        {displayedInfo === 'destination' && (
+          <>
+            <Text style={theStyle.bold}>Please insert the desired Destination</Text>
+            <View style={theStyle.separator}></View>
+            <GooglePlacesAutocomplete
+              styles={theStyle.location}
+              fetchDetails = {true}
+              placeholder='Destination'
+              onPress={handleToLocation}
+              query={{
+                  key: 'AIzaSyA8T086PYyNfch449m9sfG5HFKwbBWnuo0',
+                  language: 'en',
+              }}
+            />
+            <TouchableOpacity onPress={back} style={theStyle.roundButton1}>
+              <Text style={theStyle.buttonText1} color={'green'}>back</Text>
+            </TouchableOpacity>
+            <TouchableOpacity onPress={increment_check_input} style={theStyle.roundButton}>
+              <Text style={theStyle.buttonText} color={'green'}>Next</Text>
+            </TouchableOpacity>
+          </>
+        )}
+
+        {displayedInfo === 'rest' && (
+          <>
+            <TextInput
             style={theStyle.input}
             placeholder="Price"
             value={price}
@@ -158,20 +225,25 @@ const handleToLocation = (data, details = null) => {
           />
           <View style={theStyle.separator}></View>
           <Text style={{justifyContent: 'center', textAlign: 'center'}}>Departure Time: {departureTime ? departureTime.toString() : 'Not set'}</Text>
-            <Button color= 'steelblue' title= {departureTime ? departureTime.toString() :"Select Departure Time"} onPress={() => setDepartureTimePickerVisibility(true)} />
+            <Button color= 'purple' title= {departureTime ? departureTime.toString() :"Select Departure Time"} onPress={() => setDepartureTimePickerVisibility(true)} />
             <DateTimePickerModal
                 isVisible={isDepartureTimePickerVisible}
                 mode="datetime"
                 onConfirm={handleDepartureTimeConfirm}
                 onCancel={handleDepartureTimeCancel}
             />
-          <View style={theStyle.separator}></View>
+          <View style={theStyle.separator_more}></View>
+          <TouchableOpacity onPress={back} style={theStyle.roundButton1}>
+              <Text style={theStyle.buttonText1} color={'green'}>back</Text>
+            </TouchableOpacity>
           <TouchableOpacity onPress={save} style={theStyle.roundButton}>
           <Text style={theStyle.buttonText} color={'green'}>Post</Text>
-        </TouchableOpacity>
+          </TouchableOpacity>
+          </>
+        )}
       </View>
-       </ImageBackground> 
-  )
+    </ImageBackground>
+  );
 };
 
 
@@ -179,14 +251,10 @@ const theStyle = StyleSheet.create({
   background: {
     flex: 1,
     resizeMode: 'cover',
-    // justifyContent: 'center',
-    // alignItems: 'center',
   },
   center: {
     flex: 1,
-    // justifyContent: 'center',
-    // alignItems: 'center',
-    
+    alignItems: 'center',
   },
   buttonText: {
     color: 'white', 
@@ -200,6 +268,18 @@ const theStyle = StyleSheet.create({
     marginVertical: 10,
     alignItems: 'center',
   },
+  roundButton1: {
+    borderRadius: 30,
+    backgroundColor: 'lightblue',
+    padding: 10,
+    marginVertical: 10,
+    alignItems: 'center',
+  },
+  buttonText1: {
+    color: 'black', 
+    fontSize: 20,
+    fontWeight: 'bold',
+  },
   bold: {
     textAlign: 'center',
     justifyContent: 'center',
@@ -210,7 +290,11 @@ const theStyle = StyleSheet.create({
   location: {
     container: {
         flex: 1,
-        postion:'relative'
+        postion:'relative',
+        alignItems: 'center',
+        textAlign: 'center',
+        justifyContent: 'center',
+        
       },
       textInputContainer: {
         width: '100%',
@@ -219,6 +303,9 @@ const theStyle = StyleSheet.create({
         borderBottomWidth:0,
         marginBottom: 90,
         marginTop: 50,
+        alignItems: 'center',
+        textAlign: 'center',
+        justifyContent: 'center',
       },
       textInput: {
         marginLeft: 0,
@@ -226,6 +313,9 @@ const theStyle = StyleSheet.create({
         height: 38,
         color: '#5d5d5d',
         fontSize: 16,
+        alignItems: 'center',
+        textAlign: 'center',
+        justifyContent: 'center',
         
       },
       predefinedPlacesDescription: {
@@ -233,7 +323,6 @@ const theStyle = StyleSheet.create({
       },
 },
   separator: {
-    // marginTop: 20,
     marginBottom: 20,
   },
   separator_more: {
@@ -242,26 +331,24 @@ const theStyle = StyleSheet.create({
   },
   root: {
     width: "100%",
-    // flex: 1,
     padding: 10,
   },
   container: {
     padding: 10,
   },
   input: {
+    // color: "white",
     margin: 10,
     borderBottomColor: "lightgray",
-    borderBottomWidth: 1,
+    borderBottomWidth: 2,
     fontWeight: 'bold',
-    fontSize: 16,
+    fontSize: 14,
   },
   button: {
     backgroundColor: "green",
     height: 25,
-    // justifyContent: "center",
     alignItems: "center",
     borderRadius: 20,
-    // margin: 10,
   },
   location: {
     container: {

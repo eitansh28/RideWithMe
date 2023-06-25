@@ -1,4 +1,4 @@
-import { View, Text,TextInput, Image,StyleSheet,Modal, TouchableOpacity, Button, ScrollView, FlatList,Pressable } from 'react-native'
+import { View, Text,TextInput, Image,StyleSheet,Alert, Button, ScrollView } from 'react-native'
 import React, { useState } from 'react'
 import firestore from "@react-native-firebase/firestore";
 import { firebase } from "@react-native-firebase/auth";
@@ -43,6 +43,7 @@ const SearchRidesRowDisplay = ({UseRides, user_location}) => {
                 pass_num: howManyPassenger
             })});
             const to_alert = (await res.json()).send;
+            alert(JSON.stringify(to_alert));
             } catch (e) {
             console.error("Error adding document: ", e);
           }
@@ -56,7 +57,7 @@ const SearchRidesRowDisplay = ({UseRides, user_location}) => {
       <Text style={[styles.User,{marginBottom:10}]}> origin : {UseRides.vertex.locationName} </Text>
       {UseRides.edge && (<Text style={[styles.User, { paddingBottom: 4 }]}> destination: {UseRides.edge?.dest}</Text>)}
       {UseRides.edge && UseRides.edge.type === 'onfoot' &&(<Text style={[styles.User, { paddingBottom: 4 }]}> 'ONFOOT'</Text>)}
-      {UseRides.edge && UseRides.edge.price != "" && (<Text style={[styles.User, { paddingBottom: 4 }]}> price: {UseRides.edge?.price} b {UseRides.edge?.weight}</Text>)}
+      {UseRides.edge && UseRides.edge.price != "" && (<Text style={[styles.User, { paddingBottom: 4 }]}> price: {UseRides.edge?.price}</Text>)}
       {UseRides.vertex.freeSeats && (<Text style={[styles.User, { paddingBottom: 4 }]}> seats: {UseRides.vertex.freeSeats}</Text>)}
       {UseRides.edge && UseRides.edge.driver_name != "" && (<Text style={[styles.User, { paddingBottom: 4 }]}> driver name: {UseRides.edge?.driver_name}</Text>)}
       {UseRides.edge && UseRides.edge.type !== 'onfoot' && (<>

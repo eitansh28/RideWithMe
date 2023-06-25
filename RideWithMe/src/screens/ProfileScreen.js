@@ -11,9 +11,9 @@ const ProfileScreen = ({ user }) => {
   const { currentUser } = firebase.auth();
   const userId = currentUser.uid;
   
-  const [name, setName] = useState("Yarin");
-  const [age, setAge] = useState("19");
-  const [gender, setGender] = useState("Male");
+  const [name, setName] = useState("");
+  const [age, setAge] = useState("");
+  const [gender, setGender] = useState("");
   const [email, setEmail] = useState("yarin@gmail.com");
   const [photoURL,setPhotoURL] = useState("https://www.pexels.com/collections/country-roads-dqyjhhs/");
   const [showModal,setShowModal] = useState(false);

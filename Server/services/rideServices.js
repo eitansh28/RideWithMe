@@ -35,8 +35,7 @@ const buildGrapgh = async () =>{
         myGraph.getVertexbyId(id2).time = update_date.toISOString();
 
         myGraph.addEdge(myGraph.getVertexbyId(id1),myGraph.getVertexbyId(id2),weight,'ride',price,driver_name);
-        // console.log(myGraph.getVertexbyId(id2));
-        console.log(update_date);
+        
       })
       for(let key in myGraph.vertices){
         const vertex = myGraph.vertices[key];
@@ -51,7 +50,7 @@ const buildGrapgh = async () =>{
 const postRide = async (req,res,next) => {
     console.log("post is ready");
     let db = firebase.firestore();
-
+    let send = "";
     try{
         let driver_id = req.body.driver_id || "";
         let driver_name = req.body.driver_name || "";
@@ -77,15 +76,15 @@ const postRide = async (req,res,next) => {
             phone: `${phone}`,
             date: `${departureTime}`
         });
-      const id1 = uuidv4();
-      const id2 = uuidv4();
-      myGraph.addVertex(id1,1,originName,origin.longitude,origin.latitude,'org',departureTime);
-      myGraph.addVertex(id2,1,destinationName,destination.longitude,destination.latitude,'dest',departureTime);
-      //agian should called some func to calc the real drive wieght
-      const weight = myGraph.calculateDistance(myGraph.getVertexbyId(id1),myGraph.getVertexbyId(id2));
-      myGraph.addEdge(myGraph.getVertexbyId(id1),myGraph.getVertexbyId(id2),weight,'ride');
-      myGraph.addAllCloseVertex(myGraph.getVertexbyId(id1));
-      myGraph.addAllCloseVertex(myGraph.getVertexbyId(id2));
+    //   const id1 = uuidv4();
+    //   const id2 = uuidv4();
+    //   myGraph.addVertex(id1,1,originName,origin.longitude,origin.latitude,'org',departureTime);
+    //   myGraph.addVertex(id2,1,destinationName,destination.longitude,destination.latitude,'dest',departureTime);
+    //   //agian should called some func to calc the real drive wieght
+    //   const weight = myGraph.calculateDistance(myGraph.getVertexbyId(id1),myGraph.getVertexbyId(id2));
+    //   myGraph.addEdge(myGraph.getVertexbyId(id1),myGraph.getVertexbyId(id2),weight,'ride');
+    //   myGraph.addAllCloseVertex(myGraph.getVertexbyId(id1));
+    //   myGraph.addAllCloseVertex(myGraph.getVertexbyId(id2));
       
         // Create asked_to_join subcollection
         await docRef.collection('asked_to_join').add({});
@@ -94,8 +93,9 @@ const postRide = async (req,res,next) => {
         // Create answered subcollection
         await docRef.collection('answered').add({});
 
+        res.send({send});
     }catch(e){
-        console.error("Error adding documentsssssssss: ", e);
+        console.error("Error adding documents: ", e);
     }
 
 }
@@ -129,7 +129,6 @@ if (build_graph == false){
 }
 
 const getRidesWithMe = async (req,res,next) => {
-    // console.log("RidesWithMe is ready");
     let db = firebase.firestore();
     try{
         let u_id = req.body.id || "";
@@ -371,7 +370,6 @@ const getRidesWithYou = async (req, res, next) => {
     console.log('rides with you ready!');
     let db = firebase.firestore();
     let u_id = req.body.id || "";
-    console.log(u_id);
     try {
         const mainSnapshot1 = await db.collection("travels").get();
         const rides = [];
@@ -383,7 +381,6 @@ const getRidesWithYou = async (req, res, next) => {
                 rides.push(ride);
             }
         }));
-        // console.log(rides);
         res.send({rides});
     } catch (error) {
         console.error("Error getting documents: ", error);
@@ -453,12 +450,11 @@ const deleteExpiredRecords = async () => {
     //   console.log(currentDate.getUTCDate());
       const snapshot = await db.collection('travels');
       const all_travels = await snapshot.get();
-      console.log(all_travels.date);
       all_travels.forEach((doc) => {
-        console.log('Document ID:', doc.id);
-        console.log('Document Data:', doc.data().date);
+        // console.log('Document ID:', doc.id);
+        // console.log('Document Data:', doc.data().date);
         const rideDate = new Date(doc.data().date);
-        if (rideDate > currentDate){
+        if (rideDate < currentDate){
             db.collection('travels').doc(doc.id).delete();
         }
       });
@@ -470,13 +466,11 @@ const deleteExpiredRecords = async () => {
   const runScheduledTask = () => {
     const interval = setInterval(async () => {
       await deleteExpiredRecords();
-      // Stop the interval after a certain number of iterations or based on your desired logic
-      // clearInterval(interval);
-    }, 24 * 60 * 60 * 1000); // Run once a day (adjust the interval as needed)
+    }, 24 * 60 * 60 * 1000); // Run once a day ---- hour/min/sec/miliisec
   };
   
   runScheduledTask();
-//   deleteExpiredRecords();
+  deleteExpiredRecords();
   
 
 module.exports = {

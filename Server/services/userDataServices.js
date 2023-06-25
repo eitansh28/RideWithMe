@@ -15,6 +15,7 @@ const au = admin.auth();
 
 
 const getUser = async (req,res,next)=>{
+    console.log("get_user");
     const users = db.collection('users');
     try{
         let u_id = req.body.id || "";
@@ -55,7 +56,7 @@ const addUser = async (req,res,next) =>{
 
 
 const updateUser = async (req,res,next) =>{
-    console.log("kkkk");
+    console.log("update details");
     try{
         let id = req.body.id || "";
         let name = req.body.name || "";
@@ -98,7 +99,6 @@ const SignIn = async (req,res,next) =>{
 
 
 const SignUp = async (req,res,next) =>{
-    console.log("iiiiiiiiii");
     const { email, password } = req.body;
     console.log(email);
     console.log(password);
