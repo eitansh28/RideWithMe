@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { View, Text, StyleSheet, ImageBackground, FlatList} from "react-native";
 import { useRoute } from '@react-navigation/native';
 import BackButton from "../components/BackButton";
-import AllPaths from "../components/AllPaths";
+import AllPaths from "../components/allPaths";
 
   const SearchResults = ({navigation}) => {
  
