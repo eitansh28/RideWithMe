@@ -50,6 +50,7 @@ const buildGrapgh = async () =>{
 const postRide = async (req,res,next) => {
     console.log("post is ready");
     let db = firebase.firestore();
+    let send = "";
     try{
         let driver_id = req.body.driver_id || "";
         let driver_name = req.body.driver_name || "";
@@ -75,15 +76,15 @@ const postRide = async (req,res,next) => {
             phone: `${phone}`,
             date: `${departureTime}`
         });
-      const id1 = uuidv4();
-      const id2 = uuidv4();
-      myGraph.addVertex(id1,1,originName,origin.longitude,origin.latitude,'org',departureTime);
-      myGraph.addVertex(id2,1,destinationName,destination.longitude,destination.latitude,'dest',departureTime);
-      //agian should called some func to calc the real drive wieght
-      const weight = myGraph.calculateDistance(myGraph.getVertexbyId(id1),myGraph.getVertexbyId(id2));
-      myGraph.addEdge(myGraph.getVertexbyId(id1),myGraph.getVertexbyId(id2),weight,'ride');
-      myGraph.addAllCloseVertex(myGraph.getVertexbyId(id1));
-      myGraph.addAllCloseVertex(myGraph.getVertexbyId(id2));
+    //   const id1 = uuidv4();
+    //   const id2 = uuidv4();
+    //   myGraph.addVertex(id1,1,originName,origin.longitude,origin.latitude,'org',departureTime);
+    //   myGraph.addVertex(id2,1,destinationName,destination.longitude,destination.latitude,'dest',departureTime);
+    //   //agian should called some func to calc the real drive wieght
+    //   const weight = myGraph.calculateDistance(myGraph.getVertexbyId(id1),myGraph.getVertexbyId(id2));
+    //   myGraph.addEdge(myGraph.getVertexbyId(id1),myGraph.getVertexbyId(id2),weight,'ride');
+    //   myGraph.addAllCloseVertex(myGraph.getVertexbyId(id1));
+    //   myGraph.addAllCloseVertex(myGraph.getVertexbyId(id2));
       
         // Create asked_to_join subcollection
         await docRef.collection('asked_to_join').add({});
@@ -92,6 +93,7 @@ const postRide = async (req,res,next) => {
         // Create answered subcollection
         await docRef.collection('answered').add({});
 
+        res.send({send});
     }catch(e){
         console.error("Error adding documents: ", e);
     }
@@ -112,7 +114,7 @@ const searchRide = async (req,res,next) => {
       const id2 = uuidv4();
       myGraph.addVertex(id1,1,originName,origin.longitude,origin.latitude,'start_point',time);
       myGraph.addVertex(id2,1,destName,dest.longitude,dest.latitude,'end_point',time);
-      const shortest_paths = myGraph.dijkstra(myGraph.getVertexbyId(id1),myGraph.getVertexbyId(id2),7,time,how_many);
+      const shortest_paths = myGraph.dijkstra(myGraph.getVertexbyId(id1),myGraph.getVertexbyId(id2),6,time,how_many);
 
       res.send({shortest_paths})
  
@@ -127,7 +129,6 @@ if (build_graph == false){
 }
 
 const getRidesWithMe = async (req,res,next) => {
-    // console.log("RidesWithMe is ready");
     let db = firebase.firestore();
     try{
         let u_id = req.body.id || "";
@@ -388,21 +389,44 @@ const getRidesWithYou = async (req, res, next) => {
 };
 
 const deleteRide = async (req, res, next) => {
-    console.log("delete ride is ready!");
-  
-    const rideId = req.body.ride_id || '';
-    try {
-      const db = firebase.firestore();
-  
-      // Delete the document directly using the ride_id as the document ID
-      await db.collection('travels').doc(rideId).delete();
-        
-      res.status(200).json({ message: 'Ride deleted successfully' });
-    } catch (error) {
-      console.error('Error deleting ride:', error);
-      res.status(500).json({ message: 'Failed to delete ride' });
+  console.log("delete ride is ready!");
+
+  const rideId = req.body.ride_id || '';
+  const driverId = req.body.driver_id || '';
+  try {
+    const db = firebase.firestore();
+
+    // Get the passengers of the ride
+    const passengersCollection = await db
+      .collection('travels')
+      .doc(rideId)
+      .collection('passengers')
+      .get();
+
+    // Iterate through the passengers
+    for (const passengerDoc of passengersCollection.docs) {
+      const passengerData = passengerDoc.data();
+      const passengerId = passengerData.user_id;
+
+      // Skip the iteration if passengerId is empty
+      if (!passengerId) {
+        continue;
+      }
+
+      // Add a notification for each passenger
+      await addNotification({ body: { this_id: passengerId, other_id: driverId, message: " has decided to cancel the ride ", ride_id: rideId } });
     }
+
+    // Delete the document directly using the ride_id as the document ID
+    await db.collection('travels').doc(rideId).delete();
+    res.status(200).json({ message: 'Ride deleted successfully' });
+
+  } catch (error) {
+    console.error('Error deleting ride:', error);
+    res.status(500).json({ message: 'Failed to delete ride' });
+  }
 };
+
 
 const leaveRide = async (req, res, next) => {
     console.log('leave ride is ready!');
@@ -441,6 +465,301 @@ const leaveRide = async (req, res, next) => {
     });
 };
 
+const addNotification = async (req, res, next) => {
+  console.log('Add notification request received!');
+  let db = firebase.firestore();
+  try {
+    let this_id = req.body.this_id || "";
+    let other_id = req.body.other_id || "";
+    let other_name = await getUserName(other_id);
+    let notificationMessage = req.body.message || "";
+    let ride_id = req.body.ride_id || "";
+    let ride = await getRideDetails(ride_id);
+    let ride_details = ride.ride_details;
+    let timestamp = new Date(); // Add the current timestamp
+
+    // Get the user's document in the "Notifications" collection
+    const userNotificationsDoc = await db.collection('Notifications').doc(this_id).get();
+
+    // Check if the user's document exists
+    if (userNotificationsDoc.exists) {
+      // Add the new notification to the "notifications" subcollection with the timestamp
+      await userNotificationsDoc.ref.collection('notifications').add({
+        message: other_name + " " + notificationMessage + " " + ride_details,
+        timestamp: timestamp, // Add the timestamp field
+      });
+
+      // Increase the notification size
+      await increaseNotificationSize({ body: { user_id: this_id } });
+
+      res.send({ success: true });
+    } else {
+      res.send({ success: false, message: "User document not found" });
+    }
+  } catch (e) {
+    console.error("Error adding notification: ", e);
+    res.status(500).send("Server Error");
+  }
+};
+
+const getUserNotifications = async (req, res, next) => {
+  console.log('Get user notifications ready!');
+  let db = firebase.firestore();
+  try {
+    let u_id = req.body.id || "";
+
+    // Get the user's document in the "Notifications" collection
+    const userNotificationsDoc = await db.collection('Notifications').doc(u_id).get();
+
+    // Check if the user's document exists
+    if (userNotificationsDoc.exists) {
+      // Get the notifications collection within the user's document and sort by timestamp
+      const notificationsCollection = await userNotificationsDoc.ref.collection('notifications')
+        .orderBy("timestamp", "desc")
+        .get();
+
+      const notificationsData = [];
+
+      // Iterate through the notifications documents
+      for (const doc of notificationsCollection.docs) {
+        // Check if the notification is empty
+        if (!doc.exists) {
+          continue; // Skip empty notifications
+        }
+
+        // Extract the data from the Firestore document
+        const data = doc.data();
+        // Add the doc.id to the data object
+        data.doc_id = doc.id;
+        // Push the data object to the notificationsData array
+        notificationsData.push(data);
+      }
+
+      res.send({ notifications_data: notificationsData });
+    } else {
+      res.send({ notifications_data: [] }); // Return an empty array if the user's document doesn't exist
+    }
+  } catch (e) {
+    console.error("Error getting user notifications: ", e);
+    res.status(500).send("Server Error");
+  }
+};
+
+
+// const getUserNotifications = async (req, res, next) => {
+//   console.log('Get user notifications ready!');
+//   let db = firebase.firestore();
+//   try {
+//     let u_id = req.body.id || "";
+
+//     // Get the user's document in the "Notifications" collection
+//     const userNotificationsDoc = await db.collection('Notifications').doc(u_id).get();
+
+//     // Check if the user's document exists
+//     if (userNotificationsDoc.exists) {
+//       // Get the notifications collection within the user's document
+//       const notificationsCollection = await userNotificationsDoc.ref.collection('notifications').where("message", "!=", "").get();
+
+//       const notificationsData = [];
+
+//       // Iterate through the notifications documents
+//       for (const doc of notificationsCollection.docs) {
+//         // Extract the data from the Firestore document
+//         const data = doc.data();
+//         // Add the doc.id to the data object
+//         data.doc_id = doc.id;
+//         // Push the data object to the notificationsData array
+//         notificationsData.push(data);
+//       }
+
+//       res.send({ notifications_data: notificationsData });
+//     } else {
+//       res.send({ notifications_data: [] }); // Return an empty array if the user's document doesn't exist
+//     }
+//   } catch (e) {
+//     console.error("Error getting user notifications: ", e);
+//     res.status(500).send("Server Error");
+//   }
+// };
+
+
+
+
+
+
+
+
+
+//   const addNotification = async (req, res, next) => {
+//     console.log('Add notification request received!');
+//     let db = firebase.firestore();
+//     try {
+//       let this_id = req.body.this_id || "";
+//       let other_id = req.body.other_id || "";
+//       let other_name = await getUserName(other_id);
+//       let notificationMessage = req.body.message || "";
+//       let ride_id = req.body.ride_id || "";
+//       let ride = await getRideDetails(ride_id);
+//       let ride_details = ride.ride_details;
+  
+//       // Get the user's document in the "Notifications" collection
+//       const userNotificationsDoc = await db.collection('Notifications').doc(this_id).get();
+  
+//       // Check if the user's document exists
+//       if (userNotificationsDoc.exists) {
+
+//         console.log("im inside");
+//         // Add the new notification to the "notifications" subcollection
+//         await userNotificationsDoc.ref.collection('notifications').add({
+//           message: other_name + " " + notificationMessage + "" + ride_details
+//         });
+  
+//         // Increase the notification size
+//         await increaseNotificationSize({ body: { user_id: this_id } });
+
+//         res.send({ success: true });
+//       } else {
+//         res.send({ success: false, message: "User document not found" });
+//       }
+//     } catch (e) {
+//       console.error("Error adding notification: ", e);
+//       res.status(500).send("Server Error");
+//     }
+//   };
+  
+  const getUserName = async (u_id) => {
+    console.log('Get user info request received!');
+    let db = firebase.firestore();
+    try {
+      // Get the user's document in the "users" collection
+      const userDoc = await db.collection('users').doc(u_id).get();
+  
+      // Check if the user's document exists
+      if (userDoc.exists) {
+        // Retrieve the user's name from the document
+        const userName = userDoc.data().name;
+  
+        return userName;
+      } else {
+        throw new Error("User document not found");
+      }
+    } catch (e) {
+      console.error("Error getting user info: ", e);
+      throw e;
+    }
+  };
+  
+  const getRideDetails = async (rideId) => {
+    console.log('Get ride details request received!');
+    let db = firebase.firestore();
+    try {
+      // Get the travel document with the specified rideId in the "travels" collection
+      const travelDoc = await db.collection('travels').doc(rideId).get();
+  
+      // Check if the travel document exists
+      if (travelDoc.exists) {
+        // Retrieve the originName, destinationName, date, and driver_id fields from the document
+        const originName = travelDoc.data().originName;
+        const destinationName = travelDoc.data().destinationName;
+        const date = travelDoc.data().date;
+  
+        const rideDetails = `from ${originName} to ${destinationName} on ${date}`;
+        return { ride_details: rideDetails};
+      } else {
+        throw new Error("Travel document not found");
+      }
+    } catch (e) {
+      console.error("Error getting ride details: ", e);
+      throw e;
+    }
+  };
+  
+  
+  const getDriverId = async (req, res, next) => {
+    console.log('Get driver ID request received!');
+    let db = firebase.firestore();
+    try {
+      let docId = req.body.doc_id || "";
+      // Get the travel document with the specified doc_id in the "Travels" collection
+      const travelDoc = await db.collection('travels').doc(docId).get();
+  
+      // Check if the travel document exists
+      if (travelDoc.exists) {
+        // Retrieve the driver_id field from the document
+        const driverId = travelDoc.data().driver_id;
+  
+        res.send({ success: true, driver_id: driverId });
+      } else {
+        res.send({ success: false, message: "Travel document not found" });
+      }
+    } catch (e) {
+      console.error("Error getting driver ID: ", e);
+      res.status(500).send("Server Error");
+    }
+  };
+  
+
+
+  const getNotificationSize = async (req, res, next) => {
+    console.log("get notification size is ready!")
+    const userId = req.body.user_id || '';
+    try {
+      const db = firebase.firestore();
+      // Get the user's document in the "Notifications" collection
+      const userNotificationsDoc = await db.collection('Notifications').doc(userId).get();
+      // Check if the user's document exists
+      if (userNotificationsDoc.exists) {
+        // Retrieve the value of the 'notification_size' field
+        const notificationSize = userNotificationsDoc.data().notification_size;
+        
+        res.status(200).json({ notificationSize });
+      } else {
+        res.status(404).json({ message: 'User document not found' });
+      }
+    } catch (error) {
+      console.error('Error getting notification size:', error);
+      res.status(500).json({ message: 'Failed to get notification size' });
+    }
+  };
+  
+
+  const increaseNotificationSize = async (req, res, next) => {
+    const userId = req.body.user_id || '';
+    try {
+      const db = firebase.firestore();
+  
+      // Get the user's document in the "Notifications" collection
+      const userNotificationsDoc = db.collection('Notifications').doc(userId);
+  
+      // Atomically increment the 'notification_size' field by 1
+      await userNotificationsDoc.update({ notification_size: firebase.firestore.FieldValue.increment(1) });
+  
+      res.status(200).json({ message: 'Notification size increased successfully' });
+    } catch (error) {
+      console.error('Error increasing notification size:', error);
+      res.status(500).json({ message: 'Failed to increase notification size' });
+    }
+  };
+  
+const resetNotificationSize = async (req, res, next) => {
+  console.log("reset notifications size is ready!")
+  const userId = req.body.user_id || '';
+  try {
+    const db = firebase.firestore();
+
+    // Get the user's document in the "Notifications" collection
+    const userNotificationsDoc = db.collection('Notifications').doc(userId);
+
+    // Set the 'notification_size' field to 0
+    await userNotificationsDoc.update({ notification_size: 0 });
+
+    res.status(200).json({ message: 'Notification size reset successfully' });
+  } catch (error) {
+    console.error('Error resetting notification size:', error);
+    res.status(500).json({ message: 'Failed to reset notification size' });
+  }
+};
+
 
 const deleteExpiredRecords = async () => {
     try {
@@ -449,12 +768,11 @@ const deleteExpiredRecords = async () => {
     //   console.log(currentDate.getUTCDate());
       const snapshot = await db.collection('travels');
       const all_travels = await snapshot.get();
-      console.log(all_travels.date);
       all_travels.forEach((doc) => {
-        console.log('Document ID:', doc.id);
-        console.log('Document Data:', doc.data().date);
+        // console.log('Document ID:', doc.id);
+        // console.log('Document Data:', doc.data().date);
         const rideDate = new Date(doc.data().date);
-        if (rideDate > currentDate){
+        if (rideDate < currentDate){
             db.collection('travels').doc(doc.id).delete();
         }
       });
@@ -466,13 +784,11 @@ const deleteExpiredRecords = async () => {
   const runScheduledTask = () => {
     const interval = setInterval(async () => {
       await deleteExpiredRecords();
-      // Stop the interval after a certain number of iterations or based on your desired logic
-      // clearInterval(interval);
-    }, 24 * 60 * 60 * 1000); // Run once a day (adjust the interval as needed)
+    }, 24 * 60 * 60 * 1000); // Run once a day ---- hour/min/sec/miliisec
   };
   
   runScheduledTask();
-//   deleteExpiredRecords();
+  deleteExpiredRecords();
   
 
 module.exports = {
@@ -487,5 +803,13 @@ module.exports = {
     getPassengers,
     getRidesWithYou,
     leaveRide,
-    deleteRide
+    deleteRide,
+    getUserNotifications,
+    addNotification,
+    getUserName,
+    getRideDetails,
+    getDriverId,
+    getNotificationSize,
+    increaseNotificationSize,
+    resetNotificationSize
 };

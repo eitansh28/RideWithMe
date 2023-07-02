@@ -20,6 +20,7 @@
     "js-priority-queue": "^0.1.5",
     "nodemon": "^2.0.21",
     "priorityqueuejs": "^2.0.0",
+    "react-native-sms": "^1.11.0",
     "uuid": "^9.0.0"
   }
 }

@@ -1,14 +1,57 @@
-import React,{useState} from 'react';
+import React,{useState, useEffect} from 'react';
 import {StyleSheet,Button, Pressable, Text, View, ImageBackground, TouchableOpacity} from 'react-native';
 import auth from "@react-native-firebase/auth";
 import { useRoute } from '@react-navigation/native';
+import { IP } from '../components/constants';
 
 const HomeScreen = ({navigation}) => {
   const {params} = useRoute();
   const name = params.username;
   const id = params.id;
-  
+  console.log("id", id);
+  const [notification_size, SetNotification_size] = useState([]);
 
+  // useEffect(() => {
+  //   const getNotificationSize = async () => {
+  //     try {
+  //       const res = await fetch("http://"+IP+":1000/getNotificationSize", {
+  //         method: "POST", 
+  //         headers: { Accept: "application/json",
+  //          "Content-Type": "application/json" 
+  //         },
+  //         body: JSON.stringify({user_id: id})});
+
+  //       const notification_size_data = await res.json();
+  //       SetNotification_size(notification_size_data.notificationSize)
+  //     } catch (error) {
+  //       console.log("im error ", error);
+  //     }
+  //   };
+  //   getNotificationSize();
+  // }, [id, notification_size]);
+
+  const getNotificationSize = async () => {
+    try {
+      const res = await fetch("http://"+IP+":1000/getNotificationSize", {
+        method: "POST",
+        headers: { Accept: "application/json", "Content-Type": "application/json" },
+        body: JSON.stringify({ user_id: id })
+      });
+
+      const notification_size_data = await res.json();
+      SetNotification_size(notification_size_data.notificationSize);
+    } catch (error) {
+      console.log("im error ", error);
+    }
+  };
+
+  useEffect(() => {
+    const intervalId = setInterval(getNotificationSize, 5000); // Fetch every 5 seconds
+
+    return () => {
+      clearInterval(intervalId); // Clear interval on component unmount
+    };
+  }, [id]);
 
   function movetologin() {
     navigation.navigate("Login");
@@ -33,6 +76,9 @@ const HomeScreen = ({navigation}) => {
   }
   function move_to_my_rides(){
     navigation.navigate("MyRides");
+  }
+  function move_to_notifications(){
+    navigation.navigate("Notifications");
   }
 
 
@@ -67,6 +113,10 @@ const HomeScreen = ({navigation}) => {
         <View style={styles.separator1}></View>
         <TouchableOpacity onPress={move_to_my_rides} style={styles.roundButton}>
           <Text style={styles.buttonText}>My Rides</Text>
+        </TouchableOpacity>
+        <View style={styles.separator1}></View>
+        <TouchableOpacity onPress={move_to_notifications} style={styles.roundButton}>
+          <Text style={styles.buttonText}>Notifications : {notification_size}</Text>
         </TouchableOpacity>
       </View>
       <View style={{flex:0.9,justifyContent:'flex-end'}}>

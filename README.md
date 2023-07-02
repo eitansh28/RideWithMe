@@ -8,6 +8,7 @@
 - [Features](#features)
 - [Installation](#installation)
 - [Usage](#usage)
+- [Screenshots](#screenshots)
 
 ## Introduction
 
@@ -34,11 +35,14 @@ git clone https://github.com/your-username/RideWithMe.git
 2. Install the required dependencies using package manager [npm](https://www.npmjs.com/):
 npm install
 3. Configure the database connection and app settings by updating the configuration files. Make sure to set the appropriate credentials and environment variables.
+4. Download android studio to your computer and configure some emulator for the client use. 
 
-4. Start the RideWithMe server:
+5. Start the RideWithMe server:
 * npm start
-* npx react-native run-android
-5. Access the RideWithMe app by opening your preferred web browser and navigating to `http://localhost:1000`.
+* Server will run on your local network in port 1000
+ 
+6. Start the RideWithMe client:
+* run npx react-native run-android in your terminal and wait for the emulator to start runnig.
 
 ## Usage
 
@@ -80,3 +84,34 @@ npm install
   <img src="https://github.com/Matan-Shimon/RideWithMe/assets/63747865/6a2993ff-8f4a-4b80-bb43-6de3928d4e86" alt="Image Description">
 </p>
 
+## Screenshots
+* Log In
+
+<img src="https://github.com/Matan-Shimon/RideWithMe/assets/63747865/6a66985d-0bbd-4862-a565-55512f9a3fc9" alt="Image" width="300" />
+
+* Home Page
+
+<img src="https://github.com/Matan-Shimon/RideWithMe/assets/63747865/b5ef0eab-c652-49ee-9ab0-51bc9a7f7309" alt="Image" width="300" />
+
+* Profile
+
+<img src="https://github.com/Matan-Shimon/RideWithMe/assets/63747865/d268842f-70bd-45dc-bb42-c3052ff7f679" alt="Image" width="300" />
+
+* Post Ride
+
+<img src="https://github.com/Matan-Shimon/RideWithMe/assets/63747865/68a11d18-bbab-49d2-86cb-2aa84b1a7599" alt="Image" width="300" />
+<img src="https://github.com/Matan-Shimon/RideWithMe/assets/63747865/63eb9e7a-b315-473b-b1d6-238e8d3bad7b" alt="Image 1" width="300" />
+<img src="https://github.com/Matan-Shimon/RideWithMe/assets/63747865/4e2c38ce-5b38-4fe6-a2e2-47de7d9f7081" alt="Image 2" width="300" />
+
+* Search Ride
+
+<img src="https://github.com/Matan-Shimon/RideWithMe/assets/63747865/e90e3b19-a7c3-45e4-8d78-8af75789ecd5" alt="Image 1" width="300" />
+<img src="https://github.com/Matan-Shimon/RideWithMe/assets/63747865/d5de5d4b-e506-4503-afcb-2fe81fa2efcd" alt="Image 2" width="300" />
+<img src="https://github.com/Matan-Shimon/RideWithMe/assets/63747865/550aafc5-bb70-4303-8fdc-0fd2d44c1d20" alt="Image 3" width="300" />
+
+* Search Results
+
+
+* My Rides
+
+<img src="https://github.com/Matan-Shimon/RideWithMe/assets/63747865/124d421f-1387-4bb6-92e6-3059175ad9ac" alt="Image 3" width="300" />

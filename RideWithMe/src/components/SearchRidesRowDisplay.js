@@ -1,4 +1,4 @@
-import { View, Text,TextInput, Image,StyleSheet,Modal, TouchableOpacity, Button, ScrollView, FlatList,Pressable } from 'react-native'
+import { View, Text,TextInput, Image,StyleSheet,Alert, Button, ScrollView } from 'react-native'
 import React, { useState } from 'react'
 import firestore from "@react-native-firebase/firestore";
 import { firebase } from "@react-native-firebase/auth";
@@ -29,6 +29,7 @@ const SearchRidesRowDisplay = ({UseRides, user_location}) => {
             body: JSON.stringify({ id: currentUser.uid })});
             const user_details = await res1.json();
             const user_name = user_details.user_details.name;
+
             // ask to join
             const res = await fetch("http://"+IP+":1000/askToJoin",{
               method: 'POST',
@@ -43,6 +44,32 @@ const SearchRidesRowDisplay = ({UseRides, user_location}) => {
                 pass_num: howManyPassenger
             })});
             const to_alert = (await res.json()).send;
+            alert(JSON.stringify(to_alert));
+
+            // get driver's id for notification
+            const res4 = await fetch("http://"+IP+":1000/getDriverId", {
+              method: "POST", 
+              headers: { Accept: "application/json",
+              "Content-Type": "application/json" 
+              },
+              body: JSON.stringify({
+                doc_id: UseRides.vertex.idd 
+              })});
+              const this_id = (await res4.json()).driver_id;
+
+            // add to notifications
+            const res3 = await fetch("http://"+IP+":1000/addNotification", {
+              method: "POST", 
+              headers: { Accept: "application/json",
+              "Content-Type": "application/json" 
+              },
+              body: JSON.stringify({
+                this_id: this_id,
+                other_id: currentUser.uid,
+                message: "asked to join your ride ",
+                ride_id: UseRides.vertex.idd 
+              })});
+
             } catch (e) {
             console.error("Error adding document: ", e);
           }

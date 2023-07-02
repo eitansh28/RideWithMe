@@ -1,12 +1,15 @@
 import { Alert,View, Text, Image,StyleSheet,Modal, TouchableOpacity, Button, ScrollView, FlatList,Pressable } from 'react-native'
 import React, { useState } from 'react'
 import firestore from "@react-native-firebase/firestore";
+import { firebase } from "@react-native-firebase/auth";
 import { useNavigation } from '@react-navigation/native';
 import { IP } from './constants'; 
+// import Sms from 'react-native-sms';
 
 const MyRidesRowDisplay = ({UseRides}) => {
   const navigation = useNavigation();
-  
+  const { currentUser } = firebase.auth();
+
   function move_to_passengers() {
     const travel_doc_id = UseRides.doc_id;
     navigation.navigate('Passengers', {params: travel_doc_id});
@@ -20,10 +23,10 @@ const MyRidesRowDisplay = ({UseRides}) => {
       headers: { Accept: "application/json",
       "Content-Type": "application/json" 
       },
-      body: JSON.stringify({ ride_id: UseRides.doc_id })});
+      body: JSON.stringify({ ride_id: UseRides.doc_id, driver_id: currentUser.uid })});
       const answer = (await res.json()).send;
     } catch (e) {
-      console.error("Error adding document: ", e);
+      console.error("Error delete document: ", e);
     }
   }
 

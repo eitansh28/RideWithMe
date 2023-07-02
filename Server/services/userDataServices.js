@@ -15,6 +15,7 @@ const au = admin.auth();
 
 
 const getUser = async (req,res,next)=>{
+    console.log("get_user");
     const users = db.collection('users');
     try{
         let u_id = req.body.id || "";
@@ -25,37 +26,53 @@ const getUser = async (req,res,next)=>{
     }
 };
 
-const addUser = async (req,res,next) =>{
-    try{
-        let id = req.body.id || "";
-        if (id === "") {
-            throw new Error("Invalid ID");
-        }
-        let name = req.body.name || "";
-        let age = req.body.age || "";
-        let gender = req.body.gender || "";
-        let phone = req.body.phone || "";
-        let photoURL = req.body.photoURL || "";
-
-        await db.collection('users').doc(id).set({
-            id: id,
-            name:name,
-            age: age,
-            gender: gender,
-            phone: phone,
-            photoURL:photoURL,
-        })
-
-        res.status(200).json({ message: 'user insert details successfully' });
-    }catch(err){
-        console.log('Error addUser details: ', err);
-        res.status(200).json({ message: 'user insert details failed' });
+const addUser = async (req, res, next) => {
+    try {
+      let id = req.body.id || "";
+      if (id === "") {
+        throw new Error("Invalid ID");
+      }
+      let name = req.body.name || "";
+      let age = req.body.age || "";
+      let gender = req.body.gender || "";
+      let phone = req.body.phone || "";
+      let photoURL = req.body.photoURL || "";
+  
+      await db.collection("users").doc(id).set({
+        id: id,
+        name: name,
+        age: age,
+        gender: gender,
+        phone: phone,
+        photoURL: photoURL,
+      });
+  
+      // Create a document for notifications
+      await db.collection("Notifications").doc(id).set({
+        notification_size: 0,
+      });
+  
+      // Create a sub-collection named "notifications" inside the Notifications document
+      await db
+        .collection("Notifications")
+        .doc(id)
+        .collection("notifications")
+        .doc()
+        .set({
+          // Add any initial notification data here
+        });
+  
+      res.status(200).json({ message: "user insert details successfully" });
+    } catch (err) {
+      console.log("Error addUser details: ", err);
+      res.status(200).json({ message: "user insert details failed" });
     }
-};
+  };
+  
 
 
 const updateUser = async (req,res,next) =>{
-    console.log("kkkk");
+    console.log("update details");
     try{
         let id = req.body.id || "";
         let name = req.body.name || "";
@@ -98,7 +115,6 @@ const SignIn = async (req,res,next) =>{
 
 
 const SignUp = async (req,res,next) =>{
-    console.log("iiiiiiiiii");
     const { email, password } = req.body;
     console.log(email);
     console.log(password);

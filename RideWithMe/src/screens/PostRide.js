@@ -88,7 +88,7 @@ import BackButton from "../components/BackButton";
                               seats: seats,
                               date: departureTime
                              })});
-                            const name = user_name;
+                             const name = user_name;
                              alert("The travel has been successfully added");
                               navigation.navigate('Home', {
                                 screen : 'Home',       

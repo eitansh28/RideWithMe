@@ -27,7 +27,7 @@ const RidesWithYou = ({navigation}) => {
       }
     };
     getRidesWithYou();
-  }, [currentUser.uid]);
+  }, [currentUser.uid, rides_with_you]);
 
   return (
    <ImageBackground source={require('../components/pic4.jpg')} style={theStyle.background}>
