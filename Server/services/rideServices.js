@@ -1,5 +1,3 @@
-
-
 const { json } = require('express');
 const firebase = require('../db/firestore')
 const Graph = require('../rideAlgo/Graph')
