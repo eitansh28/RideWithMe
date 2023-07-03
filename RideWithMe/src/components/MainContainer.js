@@ -18,6 +18,7 @@ import AskedToJoin from '../screens/AskedToJoin';
 import UserDetails from '../screens/UserDetails';
 import Passengers from '../screens/Passengers';
 import Movetofullpath from '../screens/Movetofullpath';
+import Notifications from '../screens/Notifications';
 
 const Stack = createNativeStackNavigator();
 
@@ -97,6 +98,10 @@ function MainContainer() {
             name="movetofullpath"
             options={{ headerShown: false }} 
             component={Movetofullpath}/>
+            <Stack.Screen 
+            name="Notifications"
+            options={{ headerShown: false }} 
+            component={Notifications}/>
         </Stack.Navigator>
     </NavigationContainer>
   )

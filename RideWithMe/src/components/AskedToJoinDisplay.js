@@ -2,9 +2,11 @@ import { View, Text, StyleSheet, TouchableOpacity } from 'react-native'
 import React, { useState } from 'react'
 import { IP } from './constants';
 import { useNavigation } from '@react-navigation/native';
+import { firebase } from "@react-native-firebase/auth";
 
 const AskedToJoinDisplay = ({user, travelDocId}) => {
   const navigation = useNavigation();
+  const { currentUser } = firebase.auth();
 
     function move_to_user_details() {
       navigation.navigate('UserDetails', {params: user.user_id});
@@ -13,6 +15,19 @@ const AskedToJoinDisplay = ({user, travelDocId}) => {
     const approve_user = async () => {
       console.log("approve has been clicked!");
       try {
+           // add to notifications
+           const res3 = await fetch("http://"+IP+":1000/addNotification", {
+            method: "POST", 
+            headers: { Accept: "application/json",
+            "Content-Type": "application/json" 
+            },
+            body: JSON.stringify({
+              this_id: user.user_id,
+              other_id: currentUser.uid,
+              message: "approved your request to join the ride ",
+              ride_id: travelDocId
+            })});
+
         const res = await fetch("http://"+IP+":1000/approveRequest", {
           method: "POST", 
           headers: { Accept: "application/json",
@@ -26,6 +41,7 @@ const AskedToJoinDisplay = ({user, travelDocId}) => {
             from_where: user.from_where,
             pass_num: user.pass_num
            })});
+
       } catch (error) {
         console.log("im error ", error);
       }
@@ -34,6 +50,20 @@ const AskedToJoinDisplay = ({user, travelDocId}) => {
     const reject_user = async () => {
       console.log("reject clicked");
       try {
+           // add to notifications
+           const res3 = await fetch("http://"+IP+":1000/addNotification", {
+            method: "POST", 
+            headers: { Accept: "application/json",
+            "Content-Type": "application/json" 
+            },
+            body: JSON.stringify({
+              this_id: user.user_id,
+              other_id: currentUser.uid,
+              message: "rejected your request to join the ride ",
+              ride_id: travelDocId
+            })});
+
+
         const res = await fetch("http://192.168.1.125:1000/rejectRequest", {
           method: "POST", 
           headers: { Accept: "application/json",

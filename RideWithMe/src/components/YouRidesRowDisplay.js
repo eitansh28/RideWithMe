@@ -15,6 +15,31 @@ const YouRidesRowDisplay = ({UseRides}) => {
 
   const leave_ride = async() => {
     try {
+            // get driver's id for notification
+            const res4 = await fetch("http://"+IP+":1000/getDriverId", {
+              method: "POST", 
+              headers: { Accept: "application/json",
+              "Content-Type": "application/json" 
+              },
+              body: JSON.stringify({
+                doc_id: UseRides.doc_id 
+              })});
+              const this_id = (await res4.json()).driver_id;
+
+            // add to notifications
+            const res3 = await fetch("http://"+IP+":1000/addNotification", {
+              method: "POST", 
+              headers: { Accept: "application/json",
+              "Content-Type": "application/json" 
+              },
+              body: JSON.stringify({
+                this_id: this_id,
+                other_id: currentUser.uid,
+                message: "has decided to leave your ride ",
+                ride_id: UseRides.doc_id
+              })});
+
+
       const res = await fetch("http://"+IP+":1000/leaveRide", {
       method: "POST",
       headers: { Accept: "application/json",
