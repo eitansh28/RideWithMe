@@ -55,6 +55,9 @@ import { IP } from "../components/constants";
     function enter() {
 
       if (email && pass) {
+        console.log("prog")
+        console.log(email)
+        console.log(pass)
         auth()
         .signInWithEmailAndPassword(email, pass)
         .then(() => {

@@ -1,5 +1,6 @@
 {
   "dependencies": {
-    "@react-native-firebase/messaging": "^18.1.0"
+    "@react-native-firebase/messaging": "^18.1.0",
+    "react-native-maps": "^1.7.1"
   }
 }
