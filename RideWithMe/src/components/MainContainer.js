@@ -19,6 +19,7 @@ import UserDetails from '../screens/UserDetails';
 import Passengers from '../screens/Passengers';
 import Movetofullpath from '../screens/Movetofullpath';
 import Notifications from '../screens/Notifications';
+import Map from '../screens/Map';
 
 const Stack = createNativeStackNavigator();
 
@@ -102,6 +103,10 @@ function MainContainer() {
             name="Notifications"
             options={{ headerShown: false }} 
             component={Notifications}/>
+            <Stack.Screen 
+            name="Map"
+            options={{ headerShown: false }} 
+            component={Map}/>
         </Stack.Navigator>
     </NavigationContainer>
   )

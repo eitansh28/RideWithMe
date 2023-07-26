@@ -7,12 +7,36 @@ import { IP } from './constants';
 // import Sms from 'react-native-sms';
 
 const MyRidesRowDisplay = ({UseRides}) => {
+
+  console.log("ride: ", UseRides)
+
   const navigation = useNavigation();
   const { currentUser } = firebase.auth();
 
   function move_to_passengers() {
     const travel_doc_id = UseRides.doc_id;
     navigation.navigate('Passengers', {params: travel_doc_id});
+  }
+
+  function move_to_map() {
+    try {
+      // Parse the destination and origin data from the string to JSON objects
+      const destinationLocation = JSON.parse(UseRides.destination);
+      const driverLocation = JSON.parse(UseRides.origin);
+      const travel_doc_id = UseRides.doc_id;
+      console.log("loc1: ", driverLocation)
+      console.log("loc2: ", destinationLocation)
+      // Navigate to the Map component and pass driverLocation and destinationLocation as props
+      navigation.navigate('Map', {
+        driverLocation: driverLocation,
+        destinationLocation: destinationLocation,
+        travel_doc_id: travel_doc_id
+      });
+    } catch (error) {
+      console.error('Error parsing locations: ', error);
+      // Show an error message if there's an issue with parsing the locations
+      // You can handle this error based on your app's requirements
+    }
   }
   
 
@@ -54,6 +78,11 @@ const MyRidesRowDisplay = ({UseRides}) => {
           title="passengers"
           color={'darkorange'}
           onPress={move_to_passengers}
+        />
+        <Button 
+          title="map"
+          color={'green'}
+          onPress={move_to_map}
         />
         <Button title="cancel ride" color="red" onPress={handleCancelRide} />
       </View>

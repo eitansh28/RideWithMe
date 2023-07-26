@@ -80,6 +80,9 @@ const HomeScreen = ({navigation}) => {
   function move_to_notifications(){
     navigation.navigate("Notifications");
   }
+  function move_to_map(){
+    navigation.navigate("Map")
+  }
 
 
   const logout = () => {
@@ -111,8 +114,8 @@ const HomeScreen = ({navigation}) => {
           <Text style={styles.buttonText}>Post Ride</Text>
         </TouchableOpacity>
         <View style={styles.separator1}></View>
-        <TouchableOpacity onPress={move_to_my_rides} style={styles.roundButton}>
-          <Text style={styles.buttonText}>My Rides</Text>
+        <TouchableOpacity onPress={move_to_map} style={styles.roundButton}>
+          <Text style={styles.buttonText}>Map</Text>
         </TouchableOpacity>
         <View style={styles.separator1}></View>
         <TouchableOpacity onPress={move_to_notifications} style={styles.roundButton}>
