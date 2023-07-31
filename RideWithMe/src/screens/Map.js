@@ -1,11 +1,16 @@
 import React, { useState, useEffect } from 'react';
 import MapView, { Marker } from 'react-native-maps';
-import { StyleSheet, View } from 'react-native';
+import { StyleSheet, View, Text } from 'react-native';
 import BackButton from '../components/BackButton';
 import { IP } from '../components/constants';
 
 const Map = ({ route }) => {
   const { driverLocation, destinationLocation, travel_doc_id } = route.params; // Receive the props
+  console.log("hi")
+  console.log(driverLocation)
+  console.log(destinationLocation)
+  console.log(travel_doc_id)
+  
   const [passengers, setPassengers] = useState([]);
 
   const convertToCoordinates = async (locationString) => {
@@ -92,6 +97,10 @@ const Map = ({ route }) => {
     longitudeDelta: 0.0421,
   };
 
+  console.log("region: ", initialRegion)
+  console.log("driver: ", driverLocation)
+  console.log("driver: ", driverLocation.latitude)
+
   return (
     <View style={styles.container}>
       <BackButton />
@@ -102,7 +111,8 @@ const Map = ({ route }) => {
         showsUserLocation={true}
       >
         {/* Markers for each passenger */}
-        {passengers.map((passenger, index) => (
+        {passengers.length > 0 &&
+          passengers.map((passenger, index) => (
           <Marker
             key={index}
             coordinate={passenger.coordinates}
@@ -116,7 +126,7 @@ const Map = ({ route }) => {
             latitude: driverLocation.latitude,
             longitude: driverLocation.longitude,
           }}
-          title="Driver"
+          title="Start"
           pinColor="blue"
         />
   
@@ -126,7 +136,7 @@ const Map = ({ route }) => {
             latitude: destinationLocation.latitude,
             longitude: destinationLocation.longitude,
           }}
-          title="Destination"
+          title="End"
           pinColor="red"
         />
       </MapView>
