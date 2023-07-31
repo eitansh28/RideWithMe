@@ -15,6 +15,7 @@ const {
     getRidesWithYou,
     getUserNotifications,
     addNotification,
+    deleteNotification,
     getUserName,
     getRideDetails,
     getDriverId,
@@ -34,6 +35,7 @@ router.post("/getAskedToJoin", getAskedToJoin);
 router.post("/getPassengers", getPassengers);
 router.post("/getRidesWithYou", getRidesWithYou);
 router.post("/deleteRide", deleteRide);
+router.post("/deleteNotification", deleteNotification);
 router.post("/leaveRide", leaveRide);
 router.post("/getUserNotifications", getUserNotifications);
 router.post("/addNotification", addNotification);

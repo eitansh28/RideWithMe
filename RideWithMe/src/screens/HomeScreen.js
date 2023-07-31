@@ -114,8 +114,8 @@ const HomeScreen = ({navigation}) => {
           <Text style={styles.buttonText}>Post Ride</Text>
         </TouchableOpacity>
         <View style={styles.separator1}></View>
-        <TouchableOpacity onPress={move_to_map} style={styles.roundButton}>
-          <Text style={styles.buttonText}>Map</Text>
+        <TouchableOpacity onPress={move_to_my_rides} style={styles.roundButton}>
+          <Text style={styles.buttonText}>MyRides</Text>
         </TouchableOpacity>
         <View style={styles.separator1}></View>
         <TouchableOpacity onPress={move_to_notifications} style={styles.roundButton}>

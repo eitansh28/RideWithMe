@@ -1,12 +1,35 @@
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native'
 import React, { useState } from 'react'
+import { IP } from './constants'; 
 
-const NotificationsDisplay = ({notification}) => {
+
+
+const NotificationsDisplay = ({notification, user_id}) => {
+
+  const delete_notification = async() => {
+    try {
+      const res = await fetch("http://"+IP+":1000/deleteNotification", {
+      method: "POST",
+      headers: { Accept: "application/json",
+      "Content-Type": "application/json" 
+      },
+      body: JSON.stringify({ noti_id: notification.doc_id, user_id: user_id})});
+      const answer = (await res.json()).send;
+      console.log(answer);
+    } catch (e) {
+      console.error("Error delete document: ", e);
+    }
+  }
+
     return (
         <View style = {{flex : 1,paddingBottom:10}}>    
             <View style = {{flex:0.5,backgroundColor:'white',borderRadius:10}}>
-                <Text style={[styles.User,{marginBottom:10}]}> {notification.message} </Text>
-                </View>
+                <Text style={[styles.User,{marginBottom:10}]}> { notification.message} </Text>
+                <Text style={[styles.User,{marginBottom:10}]}> { notification.doc_id} </Text>
+                <TouchableOpacity onPress={delete_notification} style={styles.buttonContainer}>
+                  <Text style={styles.buttonText}>delete notification</Text>
+                </TouchableOpacity>
+            </View>
         </View>
     )
 }
@@ -33,10 +56,10 @@ const styles = StyleSheet.create({
           color: 'white',
         },
         buttonContainer: {
-            backgroundColor: 'lightgreen',
+            backgroundColor: 'red',
             borderRadius: 8,
-            paddingVertical: 10,
-            paddingHorizontal: 20,
+            paddingVertical: 5,
+            paddingHorizontal: 10,
             justifyContent: 'center',
             alignItems: 'center'
           },

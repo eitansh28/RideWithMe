@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from "react";
 import { View,  Text,  StyleSheet, ImageBackground, FlatList } from "react-native";
 import { firebase } from "@react-native-firebase/auth";
@@ -57,7 +58,7 @@ import NotificationsDisplay from "../components/NotificationsDisplay";
       <FlatList
            data={user_notifications}
            keyExtractor = {item=> item.doc_id}
-           renderItem = {({item}) => <NotificationsDisplay notification = {item}/>}
+           renderItem = {({item}) => <NotificationsDisplay notification = {item} user_id = {currentUser.uid}/>}
       />
     </View>
   </ImageBackground>     

@@ -500,6 +500,25 @@ const addNotification = async (req, res, next) => {
   }
 };
 
+const deleteNotification = async (req, res, next) => {
+  console.log("delete Notifications is ready!");
+
+  const noti_Id = req.body.noti_id || '';
+  const user_Id = req.body.user_id || '';
+  
+  try {
+    const db = firebase.firestore();
+    // Delete the document directly using the noti_id as the document ID
+    await db.collection('Notifications').doc(user_Id).collection('notifications').doc(noti_Id).delete();
+    console.log(noti_Id);
+    res.status(200).json({ message: 'notification deleted successfully' });
+
+  } catch (error) {
+    console.error('Error deleting notification:', error);
+    res.status(500).json({ message: 'Failed to delete notification' });
+  }
+};
+
 const getUserNotifications = async (req, res, next) => {
   console.log('Get user notifications ready!');
   let db = firebase.firestore();
@@ -804,6 +823,7 @@ module.exports = {
     deleteRide,
     getUserNotifications,
     addNotification,
+    deleteNotification,
     getUserName,
     getRideDetails,
     getDriverId,
