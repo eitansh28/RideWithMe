@@ -47,7 +47,7 @@ import NotificationsDisplay from "../components/NotificationsDisplay";
       }
     };
     getUserNotifications();
-  }, [currentUser.uid]);
+  }, [currentUser.uid, user_notifications]);
 
   return (
    <ImageBackground source={require('../components/pic4.jpg')} style={theStyle.background}>
