@@ -176,9 +176,6 @@ const handleToLocation = (data, details = null) => {
                   language: 'en',
               }}
             />
-            {/* <TouchableOpacity onPress={back} style={theStyle.roundButton1}>
-              <Text style={theStyle.buttonText1} color={'green'}>back</Text>
-            </TouchableOpacity> */}
             <TouchableOpacity onPress={increment_check_input} style={theStyle.roundButton}>
               <Text style={theStyle.buttonText} color={'green'}>Next</Text>
             </TouchableOpacity>

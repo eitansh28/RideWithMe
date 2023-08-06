@@ -126,9 +126,6 @@ import { IP } from "../components/constants";
                     language: 'en',
                 }}
             />
-            {/* <TouchableOpacity onPress={back} style={styles.roundButton1}>
-              <Text style={styles.buttonText1} color={'green'}>back</Text>
-            </TouchableOpacity> */}
             <TouchableOpacity onPress={increment_check_input} style={styles.roundButton}>
               <Text style={styles.buttonText} color={'green'}>Next</Text>
             </TouchableOpacity>

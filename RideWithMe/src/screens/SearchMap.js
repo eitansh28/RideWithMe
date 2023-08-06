@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react';
 import MapView, { Marker } from 'react-native-maps';
 import { StyleSheet, View, Text } from 'react-native';
 import BackButton from '../components/BackButton';
-import { IP } from '../components/constants';
 
 const SearchMap = ({ route }) => {
   const { start, end, middle } = route.params; // Receive the props

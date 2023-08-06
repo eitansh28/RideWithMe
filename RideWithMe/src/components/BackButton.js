@@ -14,8 +14,8 @@ const BackButton = () => {
     <View>
       <TouchableOpacity onPress={handleBackPress}>
       <Image
-        source={require('../components/arrow.png')} // Replace with the path to your arrow image in the assets folder
-        style={{ width: 30, height: 30 }} // Set the desired width and height of the arrow image
+        source={require('../components/arrow.png')} 
+        style={{ width: 30, height: 30 }} 
       />
     </TouchableOpacity>
     </View>

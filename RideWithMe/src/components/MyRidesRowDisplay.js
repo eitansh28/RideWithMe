@@ -4,7 +4,6 @@ import firestore from "@react-native-firebase/firestore";
 import { firebase } from "@react-native-firebase/auth";
 import { useNavigation } from '@react-navigation/native';
 import { IP } from './constants'; 
-// import Sms from 'react-native-sms';
 
 const MyRidesRowDisplay = ({UseRides}) => {
 

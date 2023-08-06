@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { View, Text, StyleSheet, ImageBackground,FlatList} from "react-native";
 import { firebase } from "@react-native-firebase/auth";
-import { useRoute } from '@react-navigation/native';
 import { IP } from '../components/constants';
 import BackButton from "../components/BackButton";
 import MyRidesRowDisplay from "../components/MyRidesRowDisplay";

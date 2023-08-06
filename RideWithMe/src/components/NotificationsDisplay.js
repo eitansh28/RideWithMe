@@ -1,4 +1,4 @@
-import { View, Text, StyleSheet, TouchableOpacity } from 'react-native'
+import { View, Text, StyleSheet, TouchableOpacity,Alert } from 'react-native'
 import React, { useState } from 'react'
 import { IP } from './constants'; 
 
@@ -21,12 +21,24 @@ const NotificationsDisplay = ({notification, user_id}) => {
     }
   }
 
+
+  const handleCancelNoti = () => {
+    Alert.alert(
+      'Confirmation',
+      'Are you sure you want to delete this notification?',
+      [
+        { text: 'No', style: 'cancel' },
+        { text: 'Yes', onPress: delete_notification },
+      ]
+    );
+  };
+
     return (
         <View style = {{flex : 1,paddingBottom:10}}>    
             <View style = {{flex:0.5,backgroundColor:'white',borderRadius:10}}>
                 <Text style={[styles.User,{marginBottom:10}]}> { notification.message} </Text>
                 <Text style={[styles.User,{marginBottom:10}]}> { notification.doc_id} </Text>
-                <TouchableOpacity onPress={delete_notification} style={styles.buttonContainer}>
+                <TouchableOpacity onPress={handleCancelNoti} style={styles.buttonContainer}>
                   <Text style={styles.buttonText}>delete notification</Text>
                 </TouchableOpacity>
             </View>

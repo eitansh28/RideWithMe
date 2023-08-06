@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
 import { View,  Text, TouchableOpacity, StyleSheet, ImageBackground, Image } from "react-native";
-import { firebase } from "@react-native-firebase/auth";
 import { useRoute } from '@react-navigation/native';
 import BackButton from "../components/BackButton";
 import { IP } from "../components/constants";

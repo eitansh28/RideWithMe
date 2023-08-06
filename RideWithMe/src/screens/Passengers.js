@@ -1,16 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { View, Button, Text, TextInput, StyleSheet, ImageBackground,KeyboardAvoidingView,TouchableWithoutFeedback, FlatList } from "react-native";
-import { Picker } from "@react-native-picker/picker";
-import DateTimePickerModal from "react-native-modal-datetime-picker";
 import { firebase } from "@react-native-firebase/auth";
-import firestore from "@react-native-firebase/firestore";
 import { useRoute } from '@react-navigation/native';
-import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplete';
-import { Keyboard } from 'react-native'
-import { SafeAreaView } from "react-native-safe-area-context";
-import { ScrollView } from "react-native-gesture-handler";
 import BackButton from "../components/BackButton";
-import AskedToJoinDisplay from "../components/AskedToJoinDisplay";
 import { IP } from "../components/constants";
 import PassengersDisplay from "../components/PassengersDisplay";
 

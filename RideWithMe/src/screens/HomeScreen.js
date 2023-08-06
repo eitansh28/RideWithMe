@@ -11,25 +11,6 @@ const HomeScreen = ({navigation}) => {
   console.log("id", id);
   const [notification_size, SetNotification_size] = useState([]);
 
-  // useEffect(() => {
-  //   const getNotificationSize = async () => {
-  //     try {
-  //       const res = await fetch("http://"+IP+":1000/getNotificationSize", {
-  //         method: "POST", 
-  //         headers: { Accept: "application/json",
-  //          "Content-Type": "application/json" 
-  //         },
-  //         body: JSON.stringify({user_id: id})});
-
-  //       const notification_size_data = await res.json();
-  //       SetNotification_size(notification_size_data.notificationSize)
-  //     } catch (error) {
-  //       console.log("im error ", error);
-  //     }
-  //   };
-  //   getNotificationSize();
-  // }, [id, notification_size]);
-
   const getNotificationSize = async () => {
     try {
       const res = await fetch("http://"+IP+":1000/getNotificationSize", {

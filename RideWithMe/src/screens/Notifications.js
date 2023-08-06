@@ -4,7 +4,6 @@ import { View,  Text,  StyleSheet, ImageBackground, FlatList } from "react-nativ
 import { firebase } from "@react-native-firebase/auth";
 import BackButton from "../components/BackButton";
 import { IP } from "../components/constants";
-import RidesRequestDisplay from "../components/RidesRequestDisplay";
 import NotificationsDisplay from "../components/NotificationsDisplay";
 
   const Notifications = ({navigation}) => {
