@@ -2,6 +2,7 @@ import { View, StyleSheet, FlatList } from 'react-native'
 import React,{useState} from 'react'
 import { useRoute } from '@react-navigation/native';
 import SearchRidesRowDisplay from "../components/SearchRidesRowDisplay";
+import BackButton from '../components/BackButton';
 
 
 const Movetofullpath = () => {
@@ -10,6 +11,7 @@ const Movetofullpath = () => {
     const user_location = params.params.user_location;
     return (
     <View style = {{flex : 1,paddingBottom:10}}>
+      <BackButton/>
         <FlatList
             data={UseRides}
             keyExtractor={(item, index) => index.toString()}

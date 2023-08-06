@@ -62,6 +62,15 @@ const YouRidesRowDisplay = ({UseRides}) => {
       ]
     );
   };
+
+  function move_to_map() {
+    // Navigate to the Map component and pass driverLocation and destinationLocation as props
+    navigation.navigate('Map', {
+      driverLocation: JSON.parse(UseRides.origin),
+      destinationLocation: JSON.parse(UseRides.destination),
+      travel_doc_id: UseRides.doc_id
+    });
+  }
    
     return (  
     <View style = {{flex : 1,paddingBottom:10}}>    
@@ -74,6 +83,11 @@ const YouRidesRowDisplay = ({UseRides}) => {
           title="driver"
           color={'purple'}
           onPress={move_to_driver_details}
+        />
+        <Button 
+          title="Map"
+          color={'green'}
+          onPress={move_to_map}
         />
         <Button 
           title="leave ride"

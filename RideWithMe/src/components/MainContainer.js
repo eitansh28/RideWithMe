@@ -20,6 +20,7 @@ import Passengers from '../screens/Passengers';
 import Movetofullpath from '../screens/Movetofullpath';
 import Notifications from '../screens/Notifications';
 import Map from '../screens/Map';
+import SearchMap from '../screens/SearchMap';
 
 const Stack = createNativeStackNavigator();
 
@@ -107,6 +108,10 @@ function MainContainer() {
             name="Map"
             options={{ headerShown: false }} 
             component={Map}/>
+            <Stack.Screen 
+            name="SearchMap"
+            options={{ headerShown: false }} 
+            component={SearchMap}/>
         </Stack.Navigator>
     </NavigationContainer>
   )

@@ -3,6 +3,7 @@ import React, { useState } from 'react'
 import firestore from "@react-native-firebase/firestore";
 import { firebase } from "@react-native-firebase/auth";
 import { IP } from './constants';
+import BackButton from './BackButton';
 
 const SearchRidesRowDisplay = ({UseRides, user_location}) => {
     const { currentUser } = firebase.auth();
