@@ -74,15 +74,6 @@ const postRide = async (req,res,next) => {
             phone: `${phone}`,
             date: `${departureTime}`
         });
-    //   const id1 = uuidv4();
-    //   const id2 = uuidv4();
-    //   myGraph.addVertex(id1,1,originName,origin.longitude,origin.latitude,'org',departureTime);
-    //   myGraph.addVertex(id2,1,destinationName,destination.longitude,destination.latitude,'dest',departureTime);
-    //   //agian should called some func to calc the real drive wieght
-    //   const weight = myGraph.calculateDistance(myGraph.getVertexbyId(id1),myGraph.getVertexbyId(id2));
-    //   myGraph.addEdge(myGraph.getVertexbyId(id1),myGraph.getVertexbyId(id2),weight,'ride');
-    //   myGraph.addAllCloseVertex(myGraph.getVertexbyId(id1));
-    //   myGraph.addAllCloseVertex(myGraph.getVertexbyId(id2));
       
         // Create asked_to_join subcollection
         await docRef.collection('asked_to_join').add({});
@@ -112,7 +103,7 @@ const searchRide = async (req,res,next) => {
       const id2 = uuidv4();
       myGraph.addVertex(id1,1,originName,origin.longitude,origin.latitude,'start_point',time);
       myGraph.addVertex(id2,1,destName,dest.longitude,dest.latitude,'end_point',time);
-      const shortest_paths = myGraph.dijkstra(myGraph.getVertexbyId(id1),myGraph.getVertexbyId(id2),6,time,how_many);
+      const shortest_paths = myGraph.dijkstra(myGraph.getVertexbyId(id1),myGraph.getVertexbyId(id2),10,time,how_many);
 
       res.send({shortest_paths})
  
