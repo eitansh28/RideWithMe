@@ -38,7 +38,7 @@ npm install
 4. Download android studio to your computer and configure some emulator for the client use. 
 
 5. Start the RideWithMe server:
-* npm start
+* npx nodemon index.js
 * Server will run on your local network in port 1000
  
 6. Start the RideWithMe client:
